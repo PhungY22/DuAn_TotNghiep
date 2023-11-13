@@ -4,17 +4,60 @@
  */
 package com.poly.model;
 
+import com.poly.dao.KhachHangDAO;
+import com.poly.entity.KhachHang;
+import com.poly.utils.XDialog;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Nhu Y
  */
 public class KhachHangJPanel extends javax.swing.JPanel {
-
+    KhachHangDAO khdao = new KhachHangDAO();
+    int row = -1;
     /**
      * Creates new form KhachHangJPanel
      */
     public KhachHangJPanel() {
         initComponents();
+        init();
+    }
+    
+    public void init(){
+        this.fillTable();
+    }
+    
+    public void fillTable(){
+         DefaultTableModel model = (DefaultTableModel) tblDanhSachKH.getModel();
+        model.setRowCount(0);
+        try {
+            String keyword = txtSearch.getText();
+             List<KhachHang> list = khdao.selectAll();
+            for (KhachHang sp : list) {
+                Object[] row = {sp.getMaKhachHang(), sp.getTenKhachHang(),sp.getDiaChi(),sp.getSoDienThoai(),sp.getEmail(),sp.isGioiTinh() ? "Nam" : "Nữ"};
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+//            MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
+            throw new RuntimeException(e);
+//            System.out.println("Lỗi truy vấn dữ liệu");
+        }
+    }
+    
+    private void insert() {
+        KhachHang sp = this.getForm();
+        try {
+            khdao.insert(sp); // thêm mới
+            this.fillTable(); // đỗ lại bảng
+            this.clearForm(); // xóa trắng form
+            XDialog.alert(this, "Thêm sản phẩm mới thành công!");
+        } catch (Exception e) {
+            XDialog.alert(this, "Thêm sản phẩm mới thất bại!");
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -84,6 +127,11 @@ public class KhachHangJPanel extends javax.swing.JPanel {
         btnThem.setBackground(new java.awt.Color(204, 204, 255));
         btnThem.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
         btnCapNhat.setBackground(new java.awt.Color(204, 204, 255));
         btnCapNhat.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -231,6 +279,11 @@ public class KhachHangJPanel extends javax.swing.JPanel {
                 "Mã khách hàng", "Tên khách hàng", "Địa chỉ", "Số điện thoại", "Email", "Giới tính"
             }
         ));
+        tblDanhSachKH.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDanhSachKHMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblDanhSachKH);
 
         btnFirst.setBackground(new java.awt.Color(204, 204, 255));
@@ -331,6 +384,16 @@ public class KhachHangJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_rdoNuActionPerformed
 
+    private void tblDanhSachKHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDanhSachKHMouseClicked
+        if (evt.getClickCount() == 2) {
+            this.row = tblDanhSachKH.getSelectedRow();
+        }
+    }//GEN-LAST:event_tblDanhSachKHMouseClicked
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        this.insert();
+    }//GEN-LAST:event_btnThemActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCapNhat;
@@ -366,4 +429,21 @@ public class KhachHangJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtTenKH;
     // End of variables declaration//GEN-END:variables
+
+private KhachHang getForm() {
+        KhachHang sp = new KhachHang();
+        sp.setMaKhachHang(txtMaKH.getText());
+        sp.setTenKhachHang(txtTenKH.getText());
+        sp.setDiaChi(txtDiachi.getText());
+        sp.setSoDienThoai(txtSDT.getText());
+        sp.setEmail(txtEmail.getText());
+        sp.setGioiTinh(rdoNam.isSelected());
+        return sp;
+    }
+
+    private void clearForm() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
 }
+

@@ -306,8 +306,8 @@ List<DanhMucBean> listDanhMuc = new ArrayList<>();
 
     private void btnDangKyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangKyActionPerformed
         // TODO add your handling code here:
-         DangKyJFrame dn = new DangKyJFrame();
-        dn.setVisible(true);
+         DangKyJFrame dk = new DangKyJFrame();
+        dk.setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_btnDangKyActionPerformed
 

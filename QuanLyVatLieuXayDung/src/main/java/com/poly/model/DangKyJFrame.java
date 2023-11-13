@@ -44,11 +44,11 @@ public class DangKyJFrame extends javax.swing.JFrame {
 
         jPanel1.setLayout(null);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(DangKyJFrame.class, "DangKyJFrame.jLabel3.text")); // NOI18N
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(270, 10, 109, 30);
+        jLabel3.setBounds(270, 10, 130, 30);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -89,12 +89,12 @@ public class DangKyJFrame extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton1, org.openide.util.NbBundle.getMessage(DangKyJFrame.class, "DangKyJFrame.jButton1.text")); // NOI18N
         jPanel1.add(jButton1);
-        jButton1.setBounds(270, 340, 200, 40);
+        jButton1.setBounds(260, 340, 200, 40);
 
         jCheckBox1.setForeground(new java.awt.Color(255, 255, 255));
         org.openide.awt.Mnemonics.setLocalizedText(jCheckBox1, org.openide.util.NbBundle.getMessage(DangKyJFrame.class, "DangKyJFrame.jCheckBox1.text")); // NOI18N
         jPanel1.add(jCheckBox1);
-        jCheckBox1.setBounds(220, 300, 120, 20);
+        jCheckBox1.setBounds(220, 290, 120, 20);
 
         jPasswordField1.setText(org.openide.util.NbBundle.getMessage(DangKyJFrame.class, "DangKyJFrame.jPasswordField1.text")); // NOI18N
         jPanel1.add(jPasswordField1);
@@ -104,17 +104,17 @@ public class DangKyJFrame extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/banner5.jpg"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(DangKyJFrame.class, "DangKyJFrame.jLabel1.text")); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 0, 640, 430);
+        jLabel1.setBounds(0, 0, 627, 420);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
         );
 
         pack();

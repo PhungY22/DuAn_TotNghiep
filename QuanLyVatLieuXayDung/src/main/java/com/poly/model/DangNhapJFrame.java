@@ -4,12 +4,24 @@
  */
 package com.poly.model;
 
+import com.poly.dao.NhanVienDAO;
+import com.poly.entity.NhanVien;
+import com.poly.utils.XAuth;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import org.openide.util.Exceptions;
+
 /**
  *
  * @author Nhu Y
  */
 public class DangNhapJFrame extends javax.swing.JFrame {
-
+        Connection ketnoi;
+        NhanVienDAO nvdao = new NhanVienDAO();
     /**
      * Creates new form DangNhapJFrame
      */
@@ -29,19 +41,21 @@ public class DangNhapJFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        txtPass = new javax.swing.JPasswordField();
+        txtTenTk = new javax.swing.JTextField();
+        lblQuenMk = new javax.swing.JLabel();
+        lblThoat = new javax.swing.JLabel();
+        btnDangNhap = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jLabel2.text")); // NOI18N
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(230, 20, 160, 32);
+        jLabel2.setBounds(220, 20, 160, 32);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -55,25 +69,45 @@ public class DangNhapJFrame extends javax.swing.JFrame {
         getContentPane().add(jLabel4);
         jLabel4.setBounds(110, 170, 70, 20);
 
-        jPasswordField1.setText(org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jPasswordField1.text")); // NOI18N
-        getContentPane().add(jPasswordField1);
-        jPasswordField1.setBounds(110, 200, 370, 40);
+        txtPass.setText(org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.txtPass.text")); // NOI18N
+        getContentPane().add(txtPass);
+        txtPass.setBounds(110, 200, 370, 40);
 
-        jTextField1.setText(org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jTextField1.text")); // NOI18N
-        getContentPane().add(jTextField1);
-        jTextField1.setBounds(110, 110, 370, 40);
+        txtTenTk.setText(org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.txtTenTk.text")); // NOI18N
+        getContentPane().add(txtTenTk);
+        txtTenTk.setBounds(110, 110, 370, 40);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel5, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jLabel5.text")); // NOI18N
-        getContentPane().add(jLabel5);
-        jLabel5.setBounds(110, 250, 120, 20);
+        lblQuenMk.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblQuenMk.setForeground(new java.awt.Color(255, 255, 255));
+        org.openide.awt.Mnemonics.setLocalizedText(lblQuenMk, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.lblQuenMk.text")); // NOI18N
+        lblQuenMk.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblQuenMkMouseClicked(evt);
+            }
+        });
+        getContentPane().add(lblQuenMk);
+        lblQuenMk.setBounds(110, 250, 120, 20);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel6, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jLabel6.text")); // NOI18N
-        getContentPane().add(jLabel6);
-        jLabel6.setBounds(430, 250, 50, 20);
+        lblThoat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblThoat.setForeground(new java.awt.Color(255, 255, 255));
+        org.openide.awt.Mnemonics.setLocalizedText(lblThoat, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.lblThoat.text")); // NOI18N
+        lblThoat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblThoatMouseClicked(evt);
+            }
+        });
+        getContentPane().add(lblThoat);
+        lblThoat.setBounds(430, 250, 50, 20);
+
+        btnDangNhap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(btnDangNhap, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.btnDangNhap.text")); // NOI18N
+        btnDangNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDangNhapActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnDangNhap);
+        btnDangNhap.setBounds(240, 310, 130, 27);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/wepik-export-20231108142252Lqnj.jpeg"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jLabel1.text")); // NOI18N
@@ -83,6 +117,78 @@ public class DangNhapJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
+        // TODO add your handling code here:
+        if (checknull() == true) {
+            try {
+                DangNhap();
+            } catch (SQLException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Không được để trống");
+        }
+    }//GEN-LAST:event_btnDangNhapActionPerformed
+
+    private void lblThoatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblThoatMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 1) {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_lblThoatMouseClicked
+
+    private void lblQuenMkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuenMkMouseClicked
+        // TODO add your handling code here:
+        new QuenMatKhauJFrame().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_lblQuenMkMouseClicked
+ public void DangNhap() throws SQLException {
+        KetNoiCSDL();
+        String sql = "SELECT * FROM NhanVien where TenNhanVien =? and MatKhau = ?";
+        PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
+        cauLenh.setString(1, txtTenTk.getText());
+        cauLenh.setString(2, String.copyValueOf(txtPass.getPassword()));
+        ResultSet ketQua = cauLenh.executeQuery();
+        if (ketQua.next()) {
+            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
+            System.out.println(ketQua.getString(9));
+            NhanVien nv = nvdao.selectById(txtTenTk.getText());
+            XAuth.user = nv;
+            String userID = XAuth.user.getTenNhanVien();
+            String role = XAuth.user.equals("ChucVu")? "Nhân Viên" : "Admin";
+            String hoTen = XAuth.user.getTenNhanVien();
+            //new MainJFrame(userID, role, hoTen).setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Tên tài khoản hoặc mật khẩu sai", "Đăng nhập thất bại", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public boolean checknull() {
+        String tendangnhap = txtTenTk.getText();
+        String matkhau = txtPass.getText();
+
+        if (tendangnhap.isEmpty() && matkhau.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void KetNoiCSDL() throws SQLException {
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=quanlydonoithat;encrypt=true;trustServerCertificate=true";
+            String user = "sa";
+            String pass = "123";
+            ketnoi = DriverManager.getConnection(url, user, pass);
+
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+
+        }
+
+    }
     /**
      * @param args the command line arguments
      */
@@ -119,13 +225,14 @@ public class DangNhapJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDangNhap;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblQuenMk;
+    private javax.swing.JLabel lblThoat;
+    private javax.swing.JPasswordField txtPass;
+    private javax.swing.JTextField txtTenTk;
     // End of variables declaration//GEN-END:variables
 }
