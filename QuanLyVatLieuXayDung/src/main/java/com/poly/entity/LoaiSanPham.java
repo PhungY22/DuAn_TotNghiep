@@ -9,22 +9,22 @@ package com.poly.entity;
  * @author Nhu Y
  */
 public class LoaiSanPham {
-    private int MaLoaiSanPham;
+    private String MaLoaiSanPham;
     private String TenLoaiSanPham;
     public LoaiSanPham (){
     
 }
 
-    public LoaiSanPham(int MaLoaiSanPham, String TenLoaiSanPham) {
+    public LoaiSanPham(String MaLoaiSanPham, String TenLoaiSanPham) {
         this.MaLoaiSanPham = MaLoaiSanPham;
         this.TenLoaiSanPham = TenLoaiSanPham;
     }
 
-    public int getMaLoaiSanPham() {
+    public String getMaLoaiSanPham() {
         return MaLoaiSanPham;
     }
 
-    public void setMaLoaiSanPham(int MaLoaiSanPham) {
+    public void setMaLoaiSanPham(String MaLoaiSanPham) {
         this.MaLoaiSanPham = MaLoaiSanPham;
     }
 
