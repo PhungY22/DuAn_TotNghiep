@@ -12,7 +12,7 @@ public class SanPham {
     private String MaSanPham;
     private String TenSanPham;
     private String Hinh;
-    private String Loai;
+    private String MaLoaiSanPham;
     private String GiaNhap;
     private String GiaXuat;
     private String SoLuong;
@@ -23,7 +23,7 @@ public class SanPham {
         this.MaSanPham = MaSanPham;
         this.TenSanPham = TenSanPham;
         this.Hinh = Hinh;
-        this.Loai = Loai;
+        this.MaLoaiSanPham = MaLoaiSanPham;
         this.GiaNhap = GiaNhap;
         this.GiaXuat = GiaXuat;
         this.SoLuong = SoLuong;
@@ -55,11 +55,11 @@ public class SanPham {
     }
 
     public String getLoai() {
-        return Loai;
+        return MaLoaiSanPham;
     }
 
     public void setLoai(String Loai) {
-        this.Loai = Loai;
+        this.MaLoaiSanPham = MaLoaiSanPham;
     }
 
     public String getGiaNhap() {
