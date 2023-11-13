@@ -32,7 +32,7 @@ public class SanPhamDAO extends QuanLyVatLieuXayDungDAO<SanPham, String>{
                 entity.getMaSanPham(),
                 entity.getTenSanPham(),
                 entity.getHinh(),
-                entity.getLoai(),
+                entity.getMaLoaiSanPham(),
                 entity.getGiaNhap(),
                 entity.getGiaXuat(),
                 entity.getSoLuong());
@@ -45,7 +45,7 @@ public class SanPhamDAO extends QuanLyVatLieuXayDungDAO<SanPham, String>{
                entity.getMaSanPham(),
                 entity.getTenSanPham(),
                 entity.getHinh(),
-                entity.getLoai(),
+                entity.getMaLoaiSanPham(),
                 entity.getGiaNhap(),
                 entity.getGiaXuat(),
                 entity.getSoLuong());
@@ -81,7 +81,7 @@ public class SanPhamDAO extends QuanLyVatLieuXayDungDAO<SanPham, String>{
                 entity.setMaSanPham(rs.getString("MaSanPham"));
                 entity.setTenSanPham(rs.getString("TenSanPham"));
                 entity.setHinh(rs.getString("Hinh"));
-                entity.setLoai(rs.getString("Loai"));
+                entity.setMaLoaiSanPham(rs.getString("MaLoaiSanPham"));
                 entity.setGiaNhap(rs.getString("GiaNhap"));
                 entity.setGiaXuat(rs.getString("GiaXuat"));
                 entity.setSoLuong(rs.getString("SoLuong"));

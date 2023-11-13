@@ -17,15 +17,15 @@ import java.util.List;
  */
 public class LoaiSanPhamDAO extends QuanLyVatLieuXayDungDAO<LoaiSanPham, String>{
 
-     String INSERT_SQL = "INSERT INTO LoaiSanPham (MaLoaiSanPham,TenLoaiSanPham) VALUES (?,?)";
-    String UPDATE_SQL = "UPDATE LoaiSanPham SET TenSanPham =? WHERE MaLoaiSanPham=?";
+    String INSERT_SQL = "INSERT INTO LoaiSanPham (MaLoaiSanPham,TenLoaiSanPham) VALUES (?,?)";
+    String UPDATE_SQL = "UPDATE LoaiSanPham SET TenLoaiSanPham =? WHERE MaLoaiSanPham=?";
     String DELETE_SQL = "DELETE FROM LoaiSanPham WHERE MaLoaiSanPham=?";
     String SELECT_ALL_SQL = "SELECT * FROM LoaiSanPham";
     String SELECT_BY_ID_SQL = "SELECT * FROM LoaiSanPham WHERE MaLoaiSanPham= ?";
-    String SORT_DECS = "SELECT * FROM LoaiSanPham WHERE isDelete = 0 ORDER BY ID DESC";
-    String SORT_ASC = "SELECT * FROM LoaiSanPham WHERE isDelete = 0 ORDER BY ID ASC";
-    String FIND_ID_BY_NAME = "SELECT ID FROM LoaiSanPham WHERE TenLoaiSanPham = ?";
-    public static String SELECT_BY_KEYWORD_SQL = "SELECT * FROM LoaiSanPham WHERE (TenLoaiSanPham LIKE ? )";
+    String SORT_DECS = "SELECT * FROM LoaiSanPham WHERE isDelete = 0 ORDER BY MaLoaiSanPham DESC";
+    String SORT_ASC = "SELECT * FROM LoaiSanPham WHERE isDelete = 0 ORDER BY MaLoaiSanPham ASC";
+    String FIND_ID_BY_NAME = "SELECT MaLoaiSanPham FROM LoaiSanPham WHERE TenLoaiSanPham = ?";
+    public static String SELECT_BY_KEYWORD_SQL = "SELECT * FROM LoaiSanPham WHERE (MaLoaiSanPham LIKE ? )";
 
     @Override
     public void insert(LoaiSanPham entity) {
@@ -69,8 +69,8 @@ public class LoaiSanPhamDAO extends QuanLyVatLieuXayDungDAO<LoaiSanPham, String>
             ResultSet rs = JdbcUtil.executeQuery(sql, args);
             while (rs.next()) {
                LoaiSanPham entity = new LoaiSanPham();
-                entity.setMaLoaiSanPham(rs.getInt("MaSanPham"));
-                entity.setTenLoaiSanPham(rs.getString("TenSanPham"));
+                entity.setMaLoaiSanPham(rs.getString("MaLoaiSanPham"));
+                entity.setTenLoaiSanPham(rs.getString("TenLoaiSanPham"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();
