@@ -16,8 +16,8 @@ import java.util.List;
  * @author Nhu Y
  */
 public class SanPhamDAO extends QuanLyVatLieuXayDungDAO<SanPham, String>{
-    String INSERT_SQL = "INSERT INTO SanPham (MaSanPham,TenSanPham,Hinh,Loai,GiaNhap,GiaXuat,SoLuong) VALUES (?,?,?,?,?,?,?)";
-    String UPDATE_SQL = "UPDATE SanPham SET TenSanPham =?,Hinh =?,Loai=?,GiaNhap=?,GiaXuat=?,SoLuong=? WHERE MaSanPham=?";
+    String INSERT_SQL = "INSERT INTO SanPham (MaSanPham,TenSanPham,Hinh,MaLoaiSanPham,GiaNhap,GiaXuat,SoLuong) VALUES (?,?,?,?,?,?,?)";
+    String UPDATE_SQL = "UPDATE SanPham SET TenSanPham =?,Hinh =?,MaLoaiSanPham=?,GiaNhap=?,GiaXuat=?,SoLuong=? WHERE MaSanPham=?";
     String DELETE_SQL = "DELETE FROM SanPham WHERE MaSanPham=?";
     String SELECT_ALL_SQL = "SELECT * FROM SanPham";
     String SELECT_BY_ID_SQL = "SELECT * FROM SanPham WHERE MaSanPham= ?";
