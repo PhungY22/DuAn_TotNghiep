@@ -19,7 +19,7 @@ public class SanPham {
     public SanPham() {
         
 }
-    public SanPham(String MaSanPham, String TenSanPham, String Hinh, String Loai, String GiaNhap, String GiaXuat, String SoLuong) {
+    public SanPham(String MaSanPham, String TenSanPham, String Hinh, String MaLoaiSanPham, String GiaNhap, String GiaXuat, String SoLuong) {
         this.MaSanPham = MaSanPham;
         this.TenSanPham = TenSanPham;
         this.Hinh = Hinh;
@@ -54,12 +54,12 @@ public class SanPham {
         this.Hinh = Hinh;
     }
 
-    public String getLoai() {
+    public String getMaLoaiSanPham() {
         return MaLoaiSanPham;
     }
 
-    public void setLoai(String Loai) {
-        this.MaLoaiSanPham = MaLoaiSanPham;
+    public void setMaLoaiSanPham(String Loai) {
+        this.MaLoaiSanPham = Loai;
     }
 
     public String getGiaNhap() {

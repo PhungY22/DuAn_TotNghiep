@@ -4,6 +4,8 @@
  */
 package com.poly.entity;
 
+import java.util.Date;
+
 /**
  *
  * @author Nhu Y
@@ -16,14 +18,14 @@ public class NhanVien {
     private String SoDienThoai;
     private String Email;
     private String DiaChi;
-    private String NgayThangNamSinh;
-    private Boolean GioiTinh;
+    private Date NgayThangNamSinh;
+    private boolean GioiTinh;
     private String ChucVu;
 
     public NhanVien() {
     }
 
-    public NhanVien(String MaNhanVien, String TenNhanVien, String Hinh, String MatKhau, String SoDienThoai, String Email, String DiaChi, String NgayThangNamSinh, Boolean GioiTinh, String ChucVu) {
+    public NhanVien(String MaNhanVien, String TenNhanVien, String Hinh, String MatKhau, String SoDienThoai, String Email, String DiaChi, Date NgayThangNamSinh, boolean GioiTinh, String ChucVu) {
         this.MaNhanVien = MaNhanVien;
         this.TenNhanVien = TenNhanVien;
         this.Hinh = Hinh;
@@ -92,19 +94,19 @@ public class NhanVien {
         this.DiaChi = DiaChi;
     }
 
-    public String getNgayThangNamSinh() {
+    public Date getNgayThangNamSinh() {
         return NgayThangNamSinh;
     }
 
-    public void setNgayThangNamSinh(String NgayThangNamSinh) {
+    public void setNgayThangNamSinh(Date NgayThangNamSinh) {
         this.NgayThangNamSinh = NgayThangNamSinh;
     }
 
-    public Boolean getGioiTinh() {
+    public boolean isGioiTinh() {
         return GioiTinh;
     }
 
-    public void setGioiTinh(Boolean GioiTinh) {
+    public void setGioiTinh(boolean GioiTinh) {
         this.GioiTinh = GioiTinh;
     }
 
@@ -115,5 +117,9 @@ public class NhanVien {
     public void setChucVu(String ChucVu) {
         this.ChucVu = ChucVu;
     }
+
+    
+
+    
     
 }
