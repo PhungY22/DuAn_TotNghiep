@@ -6,7 +6,7 @@ package com.poly.model;
 
 import com.poly.dao.NhanVienDAO;
 import com.poly.entity.NhanVien;
-import com.poly.utils.XAuth;
+//import com.poly.utils.XAuth;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -153,10 +153,10 @@ public class DangNhapJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
             System.out.println(ketQua.getString(9));
             NhanVien nv = nvdao.selectById(txtTenTk.getText());
-            XAuth.user = nv;
-            String userID = XAuth.user.getTenNhanVien();
-            String role = XAuth.user.equals("ChucVu")? "Nhân Viên" : "Admin";
-            String hoTen = XAuth.user.getTenNhanVien();
+            //XAuth.user = nv;
+            //String userID = XAuth.user.getTenNhanVien();
+            //String role = XAuth.user.equals("ChucVu")? "Nhân Viên" : "Admin";
+            //String hoTen = XAuth.user.getTenNhanVien();
             //new MainJFrame(userID, role, hoTen).setVisible(true);
             this.dispose();
         } else {

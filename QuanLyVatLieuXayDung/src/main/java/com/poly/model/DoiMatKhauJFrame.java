@@ -4,12 +4,19 @@
  */
 package com.poly.model;
 
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Nhu Y
  */
 public class DoiMatKhauJFrame extends javax.swing.JFrame {
-
+         Connection ketnoi;
     /**
      * Creates new form DoiMatKhau
      */
@@ -30,21 +37,21 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
-        jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        txtPass1 = new javax.swing.JPasswordField();
+        txtPass2 = new javax.swing.JPasswordField();
+        lblQuaylai = new javax.swing.JLabel();
+        btnDangNhap = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(null);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ĐỔI MẬT KHẨU");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(190, 10, 150, 30);
+        jLabel2.setBounds(160, 10, 190, 30);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -57,32 +64,42 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
         jLabel4.setText("Nhập lại mật khẩu mới:");
         jPanel1.add(jLabel4);
         jLabel4.setBounds(70, 130, 160, 20);
-        jPanel1.add(jPasswordField1);
-        jPasswordField1.setBounds(70, 80, 350, 40);
-        jPanel1.add(jPasswordField2);
-        jPasswordField2.setBounds(70, 160, 350, 40);
+        jPanel1.add(txtPass1);
+        txtPass1.setBounds(70, 80, 350, 40);
+        jPanel1.add(txtPass2);
+        txtPass2.setBounds(70, 160, 350, 40);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Quay lại");
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(360, 210, 60, 20);
-
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setText("Đăng nhập");
-        jButton1.setToolTipText("");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        lblQuaylai.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblQuaylai.setText("Quay lại");
+        lblQuaylai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblQuaylaiMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblQuaylaiMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblQuaylaiMouseExited(evt);
             }
         });
-        jPanel1.add(jButton1);
-        jButton1.setBounds(180, 250, 140, 27);
+        jPanel1.add(lblQuaylai);
+        lblQuaylai.setBounds(360, 210, 60, 20);
+
+        btnDangNhap.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnDangNhap.setText("Đăng nhập");
+        btnDangNhap.setToolTipText("");
+        btnDangNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDangNhapActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnDangNhap);
+        btnDangNhap.setBounds(160, 250, 140, 40);
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/wepik-export-20231108150809QVqb.jpeg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/wepik-export-20231115081358PaZZ.jpeg"))); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 0, 500, 320);
+        jLabel1.setBounds(0, 0, 500, 330);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -92,16 +109,57 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnDangNhapActionPerformed
 
+    private void lblQuaylaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuaylaiMouseClicked
+        // TODO add your handling code here:
+        new DangNhapJFrame().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_lblQuaylaiMouseClicked
+
+    private void lblQuaylaiMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuaylaiMouseEntered
+        // TODO add your handling code here:
+          lblQuaylai.setForeground(Color.red);
+    }//GEN-LAST:event_lblQuaylaiMouseEntered
+
+    private void lblQuaylaiMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuaylaiMouseExited
+        // TODO add your handling code here:
+         lblQuaylai.setForeground(Color.white);
+    }//GEN-LAST:event_lblQuaylaiMouseExited
+ public void KetNoiCSDL() throws SQLException {
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=quanlydonoithat;encrypt=true;trustServerCertificate=true";
+            String user = "sa";
+            String pass = "123";
+            ketnoi = DriverManager.getConnection(url, user, pass);
+
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+
+        }
+
+    }
+    
+    public void doimatkhau() throws SQLException{
+        KetNoiCSDL();
+        String sql = "UPDATE Users Set Password = ? Where Username = ?";
+        PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
+         
+       
+        cauLenh.executeUpdate();
+        ketnoi.close();
+    }
     /**
      * @param args the command line arguments
      */
@@ -139,14 +197,14 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnDangNhap;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
+    private javax.swing.JLabel lblQuaylai;
+    private javax.swing.JPasswordField txtPass1;
+    private javax.swing.JPasswordField txtPass2;
     // End of variables declaration//GEN-END:variables
 }

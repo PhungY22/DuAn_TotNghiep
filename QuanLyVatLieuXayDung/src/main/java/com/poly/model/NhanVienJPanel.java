@@ -7,8 +7,11 @@ package com.poly.model;
 import com.poly.dao.NhanVienDAO;
 import com.poly.entity.NhanVien;
 import static com.poly.model.DangNhapJFrame.main;
+import com.poly.utils.XDate;
 import com.poly.utils.XDialog;
 import com.poly.utils.XImage;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
@@ -22,8 +25,9 @@ import static org.apache.logging.log4j.ThreadContext.init;
  * @author Nhu Y
  */
 public class NhanVienJPanel extends javax.swing.JPanel {
+//    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
     NhanVienDAO nvdao = new NhanVienDAO();
-    int row = -1;
+    int row = 0;
     MainJFrame main;
     /**
      * Creates new form NhanVienJPanel
@@ -34,15 +38,16 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     }
     public void init(){
         this.fillTable();
+        this.fillComboBox();
     }
     public void fillTable(){
          DefaultTableModel model = (DefaultTableModel) tblNhanVien.getModel();
         model.setRowCount(0);
         try {
-            String keyword = txtTimKiem.getText();
+//            String keyword = txtTimKiem.getText();
              List<NhanVien> list = nvdao.selectAll();
             for (NhanVien nv : list) {
-                Object[] row = {nv.getMaNhanVien(),nv.getTenNhanVien(),nv.getSoDienThoai(),nv.getEmail(),nv.getDiaChi(),nv.getNgayThangNamSinh(),nv.isGioiTinh()? "Nam" : "Nữ",nv.getChucVu()};
+                Object[] row = {nv.getMaNhanVien(),nv.getTenNhanVien(),nv.getSoDienThoai(),nv.getEmail(),nv.getDiaChi(),nv.getNgayThangNamSinh(),nv.isGioiTinh() ? "Nam" : "Nữ",nv.getChucVu()};
                 model.addRow(row);
             }
         } catch (Exception e) {
@@ -322,7 +327,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
 
         jLabel11.setText("Chức vụ:");
 
-        cboChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Chọn chức vụ--" }));
         cboChucVu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboChucVuActionPerformed(evt);
@@ -683,8 +688,9 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     private void tblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNhanVienMouseClicked
         if (evt.getClickCount() == 2) {
             this.edit();
-    }//GEN-LAST:event_tblNhanVienMouseClicked
     }
+    }//GEN-LAST:event_tblNhanVienMouseClicked
+ 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         if (btnThem.getText().equalsIgnoreCase("Thêm")) {
             this.reset();
@@ -819,7 +825,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 
-    private NhanVien getForm() {
+    private NhanVien getForm(){
         NhanVien nv = new NhanVien();
         nv.setMaNhanVien(txtMaNhanVien.getText());
         nv.setHinh(lblHinh.getToolTipText());
@@ -828,7 +834,12 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         nv.setSoDienThoai(txtSoDienThoai.getText());
         nv.setEmail(txtEmail.getText());
         nv.setDiaChi(txtDiaChi.getText());
-//        nv.setNgayThangNamSinh(txtNamSinh.getText());
+        nv.setNgayThangNamSinh(XDate.toDate(txtNamSinh.getText()));
+        boolean gt = false;
+        if(rdoGioiTinhNam.isSelected()){
+            gt = true;
+        }
+        nv.setGioiTinh(gt);
         nv.setMaNhanVien(nvdao.findIdByName((String) cboChucVu.getSelectedItem()));
         return nv;
     }
@@ -845,7 +856,14 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         txtTenNhanVien.setText(nv.getTenNhanVien());
         txtMatKhau.setText(nv.getMatKhau());
         txtSoDienThoai.setText(nv.getSoDienThoai());
+        txtDiaChi.setText(nv.getDiaChi());
         txtEmail.setText(nv.getEmail());
+        txtNamSinh.setText(XDate.toString(nv.getNgayThangNamSinh()));
+        boolean gt = nv.isGioiTinh();
+        if(gt == false){
+            rdoGioiTinhNu.isSelected();
+        }
+        nv.setGioiTinh(gt);
         String tenLNV = nvdao.selectById(nv.getMaNhanVien()).getTenNhanVien();
         cboChucVu.setSelectedItem(tenLNV);
     }

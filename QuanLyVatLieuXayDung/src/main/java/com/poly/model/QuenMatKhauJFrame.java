@@ -4,12 +4,21 @@
  */
 package com.poly.model;
 
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import org.openide.util.Exceptions;
+
 /**
  *
  * @author Nhu Y
  */
 public class QuenMatKhauJFrame extends javax.swing.JFrame {
-
+         Connection ketnoi;
     /**
      * Creates new form QuenMatKhau
      */
@@ -32,12 +41,12 @@ public class QuenMatKhauJFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        txtTenTaiKhoan = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
+        lblQuayLai = new javax.swing.JLabel();
+        btnDoiMatKhau = new javax.swing.JButton();
+        txtPass = new javax.swing.JPasswordField();
+        txtNhapLaiPass = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -45,55 +54,66 @@ public class QuenMatKhauJFrame extends javax.swing.JFrame {
         jPanel1.setLayout(null);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("QUÊN MẬT KHẨU");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(220, 20, 210, 32);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Tên tài khoản:");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(80, 90, 120, 20);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Email:");
         jPanel1.add(jLabel4);
         jLabel4.setBounds(360, 90, 50, 20);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Mật khẩu mới:");
         jPanel1.add(jLabel5);
         jLabel5.setBounds(80, 180, 110, 20);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Xác nhận lại mật khẩu:");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(360, 170, 170, 20);
-        jPanel1.add(jTextField1);
-        jTextField1.setBounds(80, 120, 220, 40);
-        jPanel1.add(jTextField2);
-        jTextField2.setBounds(360, 120, 220, 40);
-        jPanel1.add(jTextField3);
-        jTextField3.setBounds(80, 210, 220, 40);
-        jPanel1.add(jTextField4);
-        jTextField4.setBounds(370, 210, 210, 40);
+        jLabel6.setBounds(360, 180, 170, 20);
+        jPanel1.add(txtTenTaiKhoan);
+        txtTenTaiKhoan.setBounds(80, 120, 220, 40);
+        jPanel1.add(txtEmail);
+        txtEmail.setBounds(360, 120, 220, 40);
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Quay lại");
-        jPanel1.add(jLabel7);
-        jLabel7.setBounds(560, 380, 60, 20);
+        lblQuayLai.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblQuayLai.setForeground(new java.awt.Color(255, 255, 255));
+        lblQuayLai.setText("Quay lại");
+        lblQuayLai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblQuayLaiMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblQuayLaiMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblQuayLaiMouseExited(evt);
+            }
+        });
+        jPanel1.add(lblQuayLai);
+        lblQuayLai.setBounds(550, 380, 60, 20);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setText("Đổi mật khẩu");
-        jPanel1.add(jButton1);
-        jButton1.setBounds(260, 340, 160, 40);
+        btnDoiMatKhau.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnDoiMatKhau.setText("Đăng nhập");
+        btnDoiMatKhau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDoiMatKhauActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnDoiMatKhau);
+        btnDoiMatKhau.setBounds(230, 320, 160, 40);
+        jPanel1.add(txtPass);
+        txtPass.setBounds(80, 210, 220, 40);
+        jPanel1.add(txtNhapLaiPass);
+        txtNhapLaiPass.setBounds(360, 210, 220, 40);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/wepik-export-20231109103051ZKf7.jpeg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/BANNER2.jpg"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 0, 640, 420);
 
@@ -111,6 +131,95 @@ public class QuenMatKhauJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void lblQuayLaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuayLaiMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 1) {
+            this.setVisible(false);
+            DangNhapJFrame dn = new DangNhapJFrame();
+            dn.setVisible(true);
+        }
+    }//GEN-LAST:event_lblQuayLaiMouseClicked
+
+    private void lblQuayLaiMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuayLaiMouseEntered
+        // TODO add your handling code here:
+         lblQuayLai.setForeground(Color.red);
+    }//GEN-LAST:event_lblQuayLaiMouseEntered
+
+    private void lblQuayLaiMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuayLaiMouseExited
+        // TODO add your handling code here:
+         lblQuayLai.setForeground(Color.white);
+    }//GEN-LAST:event_lblQuayLaiMouseExited
+
+    private void btnDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoiMatKhauActionPerformed
+        // TODO add your handling code here:
+         if(checknull()==true){
+            try {
+                doimatkhau();
+            } catch (SQLException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        }
+    }//GEN-LAST:event_btnDoiMatKhauActionPerformed
+  public void KetNoiCSDL() throws SQLException {
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=quanlydonoithat;encrypt=true;trustServerCertificate=true";
+            String user = "sa";
+            String pass = "123";
+            Connection ketnoi = DriverManager.getConnection(url, user, pass);
+
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+
+        }
+
+    }
+    public boolean checknull() {
+        String username = txtTenTaiKhoan.getText();
+        String email = txtEmail.getText();
+        String mk = txtPass.getText();
+        String mk1 = txtNhapLaiPass.getText();
+        if (username.isEmpty() && email.isEmpty() && mk.isEmpty() && mk1.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không được để trống", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean checktk() {
+        String matkhau1 = txtPass.getText();
+        String matkhau2 = txtNhapLaiPass.getText();
+        if (matkhau1.equalsIgnoreCase(matkhau2)) {
+            return true;
+        } else { 
+            return false;
+        }
+    }
+    public void doimatkhau() throws SQLException {
+        KetNoiCSDL();
+        String sql = "SELECT * FROM NhanVien where TenTaiKhoan =? and Email = ?";
+        PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
+        cauLenh.setString(1, txtTenTaiKhoan.getText());
+        cauLenh.setString(2, txtEmail.getText());
+        ResultSet ketQua = cauLenh.executeQuery();
+        if (ketQua.next()) {
+            if (checktk()==true) {
+                String update = "UPDATE NhanVien SET MatKhau = ? WHERE TenTaiKhoan=? and Email= ?";
+                PreparedStatement updateStmt = ketnoi.prepareStatement(update);
+                updateStmt.setString(1, txtPass.getText());
+                updateStmt.setString(2, txtTenTaiKhoan.getText());
+                updateStmt.setString(3, txtEmail.getText());
+                updateStmt.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Mật khẩu cho tài khoản này đã được đổi", "Đổi mật khẩu", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(this, "Mật khẩu nhập lại không trùng nhau", "Đổi mật khẩu thất bại", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Tên tài khoản hoặc Email không tồn tại", "Đổi mật khẩu", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
     /**
      * @param args the command line arguments
      */
@@ -148,18 +257,18 @@ public class QuenMatKhauJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnDoiMatKhau;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel lblQuayLai;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JPasswordField txtNhapLaiPass;
+    private javax.swing.JPasswordField txtPass;
+    private javax.swing.JTextField txtTenTaiKhoan;
     // End of variables declaration//GEN-END:variables
 }
