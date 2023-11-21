@@ -11,15 +11,15 @@ package com.poly.entity;
 public class SanPham {
     private String MaSanPham;
     private String TenSanPham;
-    private String Hinh;
+    private String Hinh = "NoImage.png";
     private String MaLoaiSanPham;
     private String GiaNhap;
     private String GiaXuat;
-    private String SoLuong;
+    private int SoLuong;
     public SanPham() {
         
 }
-    public SanPham(String MaSanPham, String TenSanPham, String Hinh, String MaLoaiSanPham, String GiaNhap, String GiaXuat, String SoLuong) {
+    public SanPham(String MaSanPham, String TenSanPham, String Hinh, String MaLoaiSanPham, String GiaNhap, String GiaXuat, int SoLuong) {
         this.MaSanPham = MaSanPham;
         this.TenSanPham = TenSanPham;
         this.Hinh = Hinh;
@@ -78,11 +78,11 @@ public class SanPham {
         this.GiaXuat = GiaXuat;
     }
 
-    public String getSoLuong() {
+    public int getSoLuong() {
         return SoLuong;
     }
 
-    public void setSoLuong(String SoLuong) {
+    public void setSoLuong(int SoLuong) {
         this.SoLuong = SoLuong;
     }
 
