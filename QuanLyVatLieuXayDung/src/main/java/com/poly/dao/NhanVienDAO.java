@@ -17,8 +17,8 @@ import java.util.List;
  * @author Nhu Y
  */
 public class NhanVienDAO extends QuanLyVatLieuXayDungDAO<NhanVien, String>{
-    String INSERT_SQL = "INSERT INTO NhanVien (MaNhanVien,Hinh,TenNhanVien,MatKhau,SoDienThoai,Email,DiaChi,NgayThangNamSinh,GioiTinh,ChucVu) VALUES (?,?,?,?,?,?,?,?,?,?";
-    String UPDATE_SQL = "UPDATE NhanVien SET Hinh =?,TenNhanVien =?,MatKhau=?,SoDienThoai=?,Email=?,DiaChi=?,NgayThangNamSinh=?,GioiTinh=?,ChucVu=? WHERE MaSanPham=?";
+    String INSERT_SQL = "INSERT INTO NhanVien (MaNhanVien,Hinh,TenNhanVien,MatKhau,SoDienThoai,Email,DiaChi,NgayThangNamSinh,GioiTinh,ChucVu) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    String UPDATE_SQL = "UPDATE NhanVien SET Hinh=?, TenNhanVien=?, MatKhau=?, SoDienThoai=?, Email=?, DiaChi=?, NgayThangNamSinh=?, GioiTinh=?, ChucVu=? WHERE MaNhanVien=?";
     String DELETE_SQL = "DELETE FROM NhanVien WHERE MaNhanVien=?";
     String SELECT_ALL_SQL = "SELECT * FROM NhanVien";
     String SELECT_BY_ID_SQL = "SELECT * FROM NhanVien WHERE MaNhanVien= ?";

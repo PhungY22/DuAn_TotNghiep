@@ -18,7 +18,7 @@ import java.util.List;
 public class SanPhamDAO extends QuanLyVatLieuXayDungDAO<SanPham, String>{
     String INSERT_SQL = "INSERT INTO SanPham (MaSanPham,TenSanPham,Hinh,MaLoaiSanPham,GiaNhap,GiaXuat,SoLuong) VALUES (?,?,?,?,?,?,?)";
     String UPDATE_SQL = "UPDATE SanPham SET TenSanPham =?,Hinh =?,MaLoaiSanPham=?,GiaNhap=?,GiaXuat=?,SoLuong=? WHERE MaSanPham=?";
-    String DELETE_SQL = "DELETE FROM SanPham WHERE MaSanPham=?";
+    String DELETE_SQL = "UPDATE SanPham SET isDelete = 1 WHERE MaSanPham = ?";
     String SELECT_ALL_SQL = "SELECT * FROM SanPham";
     String SELECT_BY_ID_SQL = "SELECT * FROM SanPham WHERE MaSanPham= ?";
     String SORT_DECS = "SELECT * FROM SanPham WHERE isDelete = 0 ORDER BY MaSanPham DESC";
@@ -84,7 +84,7 @@ public class SanPhamDAO extends QuanLyVatLieuXayDungDAO<SanPham, String>{
                 entity.setMaLoaiSanPham(rs.getString("MaLoaiSanPham"));
                 entity.setGiaNhap(rs.getString("GiaNhap"));
                 entity.setGiaXuat(rs.getString("GiaXuat"));
-                entity.setSoLuong(rs.getString("SoLuong"));
+                entity.setSoLuong(rs.getInt("SoLuong"));
              
                 list.add(entity);
             }
