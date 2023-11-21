@@ -19,8 +19,7 @@ public class HoaDon {
     private String hinhThucThanhToan;
     private String maVoucher;
 
-   // Constructor
-    public HoaDon(String maHoaDon, String maKhachHang, String maNhanVien, Date ngayXuat, String hinhThucThanhToan, String maVoucher) {
+    public HoaDon(String maHoaDon, String maKhachHang, String maNhanVien, Date ngayXuat, String hinhThucThanhToan, String maVoucher, String voucherDiscountString) {
         this.maHoaDon = maHoaDon;
         this.maKhachHang = maKhachHang;
         this.maNhanVien = maNhanVien;
@@ -28,6 +27,8 @@ public class HoaDon {
         this.hinhThucThanhToan = hinhThucThanhToan;
         this.maVoucher = maVoucher;
     }
+
+
 
     public HoaDon() {
     }
