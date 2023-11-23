@@ -12,10 +12,9 @@ import java.math.BigDecimal;
  */
 public class ChiTietHoaDon {
 
-    private String maChiTietHoaDon;
+    private int maChiTietHoaDon;
     private String maHoaDon;
     private String maSanPham;
-    private String donViTinh;
     private int soLuong;
     private BigDecimal donGia;
     private BigDecimal tongTien;
@@ -25,21 +24,20 @@ public class ChiTietHoaDon {
 
     ;
 
-    public ChiTietHoaDon(String maChiTietHoaDon, String maHoaDon, String maSanPham, String donViTinh, int soLuong, BigDecimal donGia, BigDecimal tongTien) {
+    public ChiTietHoaDon(int maChiTietHoaDon, String maHoaDon, String maSanPham, String donViTinh, int soLuong, BigDecimal donGia, BigDecimal tongTien) {
         this.maChiTietHoaDon = maChiTietHoaDon;
         this.maHoaDon = maHoaDon;
         this.maSanPham = maSanPham;
-        this.donViTinh = donViTinh;
         this.soLuong = soLuong;
         this.donGia = donGia;
         this.tongTien = tongTien;
     }
 
-    public String getMaChiTietHoaDon() {
+    public int getMaChiTietHoaDon() {
         return maChiTietHoaDon;
     }
 
-    public void setMaChiTietHoaDon(String maChiTietHoaDon) {
+    public void setMaChiTietHoaDon(int maChiTietHoaDon) {
         this.maChiTietHoaDon = maChiTietHoaDon;
     }
 
@@ -59,13 +57,7 @@ public class ChiTietHoaDon {
         this.maSanPham = maSanPham;
     }
 
-    public String getDonViTinh() {
-        return donViTinh;
-    }
 
-    public void setDonViTinh(String donViTinh) {
-        this.donViTinh = donViTinh;
-    }
 
     public int getSoLuong() {
         return soLuong;
