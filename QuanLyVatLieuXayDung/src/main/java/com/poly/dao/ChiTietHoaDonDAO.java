@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class ChiTietHoaDonDAO extends QuanLyVatLieuXayDungDAO<ChiTietHoaDon, String> {
 
-    private static final String INSERT_SQL = "INSERT INTO ChiTietHoaDon (MaChiTietHoaDon, MaHoaDon, MaSanPham, DonViTinh, SoLuong, DonGia, TongTien) VALUES (?,?,?,?,?,?,?)";
-    private static final String UPDATE_SQL = "UPDATE ChiTietHoaDon SET MaHoaDon = ?, MaSanPham = ?, DonViTinh = ?, SoLuong = ?, DonGia = ?, TongTien = ? WHERE MaChiTietHoaDon = ?";
+    private static final String INSERT_SQL = "INSERT INTO ChiTietHoaDon ( MaHoaDon, MaSanPham, SoLuong, DonGia, TongTien) VALUES (?,?,?,?,?)";
+    private static final String UPDATE_SQL = "UPDATE ChiTietHoaDon SET MaHoaDon = ?, MaSanPham = ?, SoLuong = ?, DonGia = ?, TongTien = ? WHERE MaChiTietHoaDon = ?";
     private static final String DELETE_SQL = "DELETE FROM ChiTietHoaDon WHERE MaChiTietHoaDon = ?";
     private static final String SELECT_ALL_SQL = "SELECT * FROM ChiTietHoaDon";
     private static final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietHoaDon WHERE MaHoaDon = ?";
@@ -27,10 +27,8 @@ public class ChiTietHoaDonDAO extends QuanLyVatLieuXayDungDAO<ChiTietHoaDon, Str
     @Override
     public void insert(ChiTietHoaDon entity) {
         JdbcUtil.executeUpdate(INSERT_SQL,
-                entity.getMaChiTietHoaDon(),
                 entity.getMaHoaDon(),
                 entity.getMaSanPham(),
-                entity.getDonViTinh(),
                 entity.getSoLuong(),
                 entity.getDonGia(),
                 entity.getTongTien());
@@ -41,11 +39,10 @@ public class ChiTietHoaDonDAO extends QuanLyVatLieuXayDungDAO<ChiTietHoaDon, Str
         JdbcUtil.executeUpdate(UPDATE_SQL,
                 entity.getMaHoaDon(),
                 entity.getMaSanPham(),
-                entity.getDonViTinh(),
                 entity.getSoLuong(),
                 entity.getDonGia(),
-                entity.getTongTien(),
-                entity.getMaChiTietHoaDon());
+                entity.getTongTien());
+
     }
 
     @Override
@@ -73,10 +70,9 @@ public class ChiTietHoaDonDAO extends QuanLyVatLieuXayDungDAO<ChiTietHoaDon, Str
             ResultSet rs = JdbcUtil.executeQuery(sql, args);
             while (rs.next()) {
                 ChiTietHoaDon entity = new ChiTietHoaDon();
-                entity.setMaChiTietHoaDon(rs.getString("MaChiTietHoaDon"));
+                entity.setMaChiTietHoaDon(rs.getInt("MaChiTietHoaDon"));
                 entity.setMaHoaDon(rs.getString("MaHoaDon"));
                 entity.setMaSanPham(rs.getString("MaSanPham"));
-                entity.setDonViTinh(rs.getString("DonViTinh"));
                 entity.setSoLuong(rs.getInt("SoLuong")); // Assuming SoLuong is an int
                 entity.setDonGia(rs.getBigDecimal("DonGia"));
                 entity.setTongTien(rs.getBigDecimal("TongTien"));
