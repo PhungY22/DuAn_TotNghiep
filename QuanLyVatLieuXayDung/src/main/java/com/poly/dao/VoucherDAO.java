@@ -7,7 +7,6 @@ package com.poly.dao;
 import com.poly.entity.KhachHang;
 import com.poly.entity.Voucher;
 import com.poly.utils.JdbcUtil;
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,9 +16,8 @@ import java.util.List;
  *
  * @author Nguyên An
  */
-public class VoucherDAO extends QuanLyVatLieuXayDungDAO<Voucher, String> {
-
-    String INSERT_SQL = "INSERT INTO Voucher (MaVoucher,TenVoucher,GiaTriVoucher,NgayHetHan,SoLuong) VALUES (?,?,?,?,?)";
+    public class VoucherDAO extends QuanLyVatLieuXayDungDAO<Voucher, String>{
+     String INSERT_SQL = "INSERT INTO Voucher (MaVoucher,TenVoucher,GiaTriVoucher,NgayHetHan,SoLuong) VALUES (?,?,?,?,?)";
     String UPDATE_SQL = "UPDATE Voucher SET TenVoucher =?,GiaTriVoucher =?,NgayHetHan=?,SoLuong=? WHERE MaVoucher=?";
     String DELETE_SQL = "DELETE FROM Voucher WHERE MaVoucher=?";
     String SELECT_ALL_SQL = "SELECT * FROM Voucher";
@@ -42,7 +40,7 @@ public class VoucherDAO extends QuanLyVatLieuXayDungDAO<Voucher, String> {
     @Override
     public void update(Voucher entity) {
         JdbcUtil.executeUpdate(UPDATE_SQL,
-                entity.getMaVoucher(),
+               entity.getMaVoucher(),
                 entity.getTenVoucher(),
                 entity.getGiaTriVoucher(),
                 entity.getNgayHetHan(),
@@ -78,8 +76,8 @@ public class VoucherDAO extends QuanLyVatLieuXayDungDAO<Voucher, String> {
                 entity.setMaVoucher(rs.getString("MaVoucher"));
                 entity.setTenVoucher(rs.getString("TenVoucher"));
                 entity.setGiaTriVoucher(rs.getBigDecimal("GiaTriVoucher"));
-                entity.setNgayHetHan(rs.getString("NgayHetHan"));
-                entity.setSoLuong(rs.getString("SoLuong"));
+                entity.setNgayHetHan(rs.getDate("NgayHetHan"));
+                entity.setSoLuong(rs.getInt("SoLuong"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();
@@ -93,7 +91,7 @@ public class VoucherDAO extends QuanLyVatLieuXayDungDAO<Voucher, String> {
         String id = "";
         try {
             ResultSet rs = JdbcUtil.executeQuery(FIND_ID_BY_NAME, name);
-            while (rs.next()) {
+while (rs.next()) {
                 id = rs.getString(1);
             }
             rs.getStatement().getConnection().close();
@@ -102,26 +100,7 @@ public class VoucherDAO extends QuanLyVatLieuXayDungDAO<Voucher, String> {
             throw new RuntimeException(e);
         }
     }
-
-    public List<Voucher> selectByKeyword(String key) {
+     public List<Voucher> selectByKeyword( String key) {
         return this.selectBySql(SELECT_BY_KEYWORD_SQL, "%" + key + "%");
-    }
-
-//    public BigDecimal getDiscountPercentageByMaVoucher(String maVoucher) {
-//    }
-    public BigDecimal getDiscountPercentageByMaVoucher(String maVoucher) {
-        BigDecimal discountPercentage = BigDecimal.ZERO;
-
-        try {
-            ResultSet rs = JdbcUtil.executeQuery("SELECT GiaTriVoucher FROM Voucher WHERE MaVoucher = ?", maVoucher);
-            if (rs.next()) {
-                discountPercentage = rs.getBigDecimal("GiaTriVoucher");
-            }
-            rs.getStatement().getConnection().close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return discountPercentage;
     }
 }
