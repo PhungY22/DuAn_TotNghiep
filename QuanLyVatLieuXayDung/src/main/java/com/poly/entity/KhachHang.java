@@ -4,6 +4,9 @@
  */
 package com.poly.entity;
 
+import java.io.File;
+import java.util.List;
+
 /**
  *
  * @author ADMIN
@@ -25,7 +28,6 @@ public class KhachHang {
         this.Email = Email;
         this.GioiTinh = GioiTinh;
     }
-
     public String getMaKhachHang() {
         return MaKhachHang;
     }
@@ -72,6 +74,10 @@ public class KhachHang {
 
     public void setGioiTinh(boolean GioiTinh) {
         this.GioiTinh = GioiTinh;
+    }
+
+    public List<File> getDanhSachFile() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }

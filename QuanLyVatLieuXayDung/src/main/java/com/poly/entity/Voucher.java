@@ -15,15 +15,14 @@ public class Voucher {
     private String MaVoucher;
     private String TenVoucher;
     private BigDecimal GiaTriVoucher;
-    private String NgayHetHan;
-    private String SoLuong;
+    private Date NgayHetHan;
+    private int SoLuong;
     
     public Voucher() {
         
     }
 
-
-    public Voucher(String MaVoucher, String TenVoucher, BigDecimal GiaTriVoucher, String NgayHetHan, String SoLuong) {
+    public Voucher(String MaVoucher, String TenVoucher, BigDecimal GiaTriVoucher, Date NgayHetHan, int SoLuong) {
         this.MaVoucher = MaVoucher;
         this.TenVoucher = TenVoucher;
         this.GiaTriVoucher = GiaTriVoucher;
@@ -31,7 +30,6 @@ public class Voucher {
         this.SoLuong = SoLuong;
     }
 
-    
     public String getMaVoucher() {
         return MaVoucher;
     }
@@ -56,21 +54,21 @@ public class Voucher {
         this.GiaTriVoucher = GiaTriVoucher;
     }
 
-    public String getNgayHetHan() {
+    public Date getNgayHetHan() {
         return NgayHetHan;
     }
 
-    public void setNgayHetHan(String NgayHetHan) {
+    public void setNgayHetHan(Date NgayHetHan) {
         this.NgayHetHan = NgayHetHan;
     }
 
-    public String getSoLuong() {
+    public int getSoLuong() {
         return SoLuong;
     }
 
-    public void setSoLuong(String SoLuong) {
+    public void setSoLuong(int SoLuong) {
         this.SoLuong = SoLuong;
     }
 
-    
+
 }
