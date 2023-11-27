@@ -5,20 +5,28 @@
  */
 package com.poly.model;
 
-
+import com.poly.dao.ChiTietHoaDonDAO;
+import com.poly.dao.HoaDonDAO;
+import com.poly.dao.KhachHangDAO;
+import com.poly.dao.NhanVienDAO;
+import com.poly.dao.SanPhamDAO;
+import com.poly.dao.VoucherDAO;
+import com.poly.entity.ChiTietHoaDon;
 import com.poly.entity.HoaDon;
+import com.poly.entity.KhachHang;
+import com.poly.entity.NhanVien;
+import com.poly.entity.SanPham;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
+import java.awt.GridLayout;
+
 import java.lang.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JLabel;
+
 import javax.swing.JPanel;
 
 /**
@@ -27,102 +35,153 @@ import javax.swing.JPanel;
  */
 public class InHoaDon extends javax.swing.JFrame {
 
-    /**
-     * Creates new form fPrintInHoaDon
-     */
+    HoaDonDAO hoaDonDao = new HoaDonDAO();
+    ChiTietHoaDon chiTietHoaDonDao = new ChiTietHoaDon();
+
+    VoucherDAO voucherDao = new VoucherDAO();
+    KhachHangDAO khachHangDAO = new KhachHangDAO();
+    SanPhamDAO sanPhamDAO = new SanPhamDAO();
+    NhanVienDAO nhanVienDAO = new NhanVienDAO();
+    ChiTietHoaDonDAO chiTietHDDao = new ChiTietHoaDonDAO();
+
     public InHoaDon() {
         this.setUndecorated(true);
-        
+
         initComponents();
 //        init();
     }
-    
+
 //    public InHoaDon(HoaDon hoadon) {
 //      
 //        
 //        initComponents();
 //     
 //    }
-//    
-    
-//    public void init() {
-//        KhachHangBUS bus = null;
-//        
-//        try {
-//            bus = new KhachHangBUS();
-//        } catch (Exception ex) {
-//            Logger.getLogger(InHoaDon.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//        KhachHangDTO dto = new KhachHangDTO();
-//        dto = bus.getInfor(hoadon.getStrMaKH());
-//        
-//        jLabelsophieunhap.setText("Mã hóa dơn: " + hoadon.getStrMaHD());
-//        jLabelnhanvien.setText(jLabelnhanvien.getText() + Memory.nhanvien.getStrHo() + " " +Memory.nhanvien.getStrTen());
-//        jLabelnhanvien1.setText(jLabelnhanvien1.getText() + dto.getStrHo() + " " +dto.getStrTen());
-//        jLabelthoigian.setText(jLabelthoigian.getText() + hoadon.getStrNgayBan());
-//        jLabelTenSP7.setText(jLabelTenSP7.getText() + String.valueOf(hoadon.getTongTien()));
-//        
-//    }
+    void init(String maHoaDon) {
 
-    private JPanel createPanel_CTHD() {
-        JPanel panel = new JPanel();
-     
-        return panel;
+        HoaDon hoadon = hoaDonDao.selectById(maHoaDon);
+
+        NhanVien nhanvien = nhanVienDAO.selectById(hoadon.getMaNhanVien());
+
+        KhachHang khachhang = khachHangDAO.selectById(hoadon.getMaKhachHang());
+
+        List<ChiTietHoaDon> chiTietHD = chiTietHDDao.selectByMaHoaDon(maHoaDon);
+
+        List<SanPham> chiTietSP = sanPhamDAO.selectAllByChiTietHoaDon(chiTietHD);
+
+// Format date and time
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        String formattedNgayXuat = dateFormat.format(hoadon.getNgayXuat());
+
+        jLabelsophieunhap.setText("Mã hóa dơn: " + hoadon.getMaHoaDon());
+        jLabelnhanvien.setText("Nhân Viên: " + nhanvien.getTenNhanVien());
+        jLabelkhachang.setText("Khách Hàng: " + khachhang.getTenKhachHang());
+        jLabelthoigian.setText("Thời Gian: " + formattedNgayXuat);
+//        jLabelTenSP7.setText(jLabelTenSP7.getText() + String.valueOf(hoadon.getTongTien()));
+
+        // Assuming you want panels to be added horizontally
+        jPanel5.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+// Call this method after creating the panels
+        List<JPanel> panels = createPanels_SP(chiTietHD, chiTietSP);
+
+        for (JPanel panel : panels) {
+            jPanel5.add(panel);
+        }
+
+        jPanel5.revalidate();
+        jPanel5.repaint();
+
     }
+
 //    
-//    private JPanel createPanel_SP(ChiTietHDDTO hd, SanPhamDTO sp, double tilekm) {
+    private List<JPanel> createPanels_SP(List<ChiTietHoaDon> chiTietHDList, List<SanPham> listSP) {
+
+        for (ChiTietHoaDon chiTiet : chiTietHDList) {
+            System.out.println("chiTietHD: " + chiTiet.getMaHoaDon());
+        }
+
+        for (SanPham sanPham : listSP) {
+            System.out.println("chiTietSP: " + sanPham.getMaSanPham());
+        }
+
+        List<JPanel> panels = new ArrayList<>();
+
+        for (int i = 0; i < Math.min(chiTietHDList.size(), listSP.size()); i++) {
+            ChiTietHoaDon chiTietHD = chiTietHDList.get(i);
+            SanPham sp = listSP.get(i);
+
+            System.out.println("ChiTietHoaDon: MaHoaDon=" + chiTietHD.getMaHoaDon()
+                    + ", SoLuong=" + chiTietHD.getSoLuong());
+
+            System.out.println("SanPham: GiaXuat=" + sp.getGiaXuat());
+
+            JPanel panel = new JPanel();
+            JLabel[] list_lbl = new JLabel[3]; // Adjust the array size based on the number of labels you are using
+
+            panel.setLayout(new GridLayout(1, 3)); // Adjust the grid layout based on the number of labels
+
+            list_lbl[0] = new JLabel(chiTietHD.getMaHoaDon());
+            list_lbl[1] = new JLabel(String.valueOf(chiTietHD.getSoLuong()));
+            list_lbl[2] = new JLabel(String.valueOf(sp.getGiaXuat()) + " đồng");
+
+            for (JLabel label : list_lbl) {
+                label.setFont(new Font("Arial", Font.PLAIN, 20));
+                label.setBackground(new Color(255, 255, 255));
+                panel.add(label);
+            }
+
+            panels.add(panel);
+
+        }
+        return panels;
+
+    }
+
+//    private JPanel createPanel_SP(List<ChiTietHoaDon> chiTietHD, List<SanPham> listSP) {
+//
 //        JPanel panel = new JPanel();
-//        list_lbl = new JLabel[5];
+//        JLabel[] list_lbl = new JLabel[5];
 //        list_lbl[0] = new JLabel();
 //        list_lbl[1] = new JLabel();
 //        list_lbl[2] = new JLabel();
 //        list_lbl[3] = new JLabel();
 //        list_lbl[4] = new JLabel();
-//        
+//
 //        panel.setLayout(null);
-//        
-//        System.out.println(sp.toString());
-//        System.out.println(hd.toString());
-//        
-//        list_lbl[0].setText(sp.getStrTenGiay());
+//
+//        list_lbl[0].setText(chiTietHD.getStrTenGiay());
 //        list_lbl[1].setText(String.valueOf(hd.getiSoLuong()));
 //        list_lbl[2].setText(String.valueOf(sp.getiGia()) + " đồng");
 //        list_lbl[3].setText((tilekm * 100) + "%");
 //        
-//        double giatien = Integer.valueOf(hd.getiSoLuong()) 
-//                * Integer.valueOf(hd.getiGiaBan())
-//                * (1 - tilekm);
-//        list_lbl[4].setText(String.valueOf(giatien));
-//        
-//        list_lbl[0].setBounds(  0, 0, 270, 30);
+//        list_lbl[0].setBounds(0, 0, 270, 30);
 //        list_lbl[1].setBounds(280, 0, 100, 30);
 //        list_lbl[2].setBounds(400, 0, 150, 30);
 //        list_lbl[3].setBounds(600, 0, 100, 30);
 //        list_lbl[4].setBounds(750, 0, 200, 30);
-//        
+//
 //        list_lbl[0].setFont(new Font("Arial", Font.PLAIN, 20));
 //        list_lbl[1].setFont(new Font("Arial", Font.PLAIN, 20));
 //        list_lbl[2].setFont(new Font("Arial", Font.PLAIN, 20));
 //        list_lbl[3].setFont(new Font("Arial", Font.PLAIN, 20));
 //        list_lbl[4].setFont(new Font("Arial", Font.PLAIN, 20));
-//        
-//        list_lbl[0].setBackground(new Color(255,255,255));
-//        list_lbl[1].setBackground(new Color(255,255,255));
-//        list_lbl[2].setBackground(new Color(255,255,255));
-//        list_lbl[3].setBackground(new Color(255,255,255));
-//        list_lbl[4].setBackground(new Color(255,255,255));
-//        
+//
+//        list_lbl[0].setBackground(new Color(255, 255, 255));
+//        list_lbl[1].setBackground(new Color(255, 255, 255));
+//        list_lbl[2].setBackground(new Color(255, 255, 255));
+//        list_lbl[3].setBackground(new Color(255, 255, 255));
+//        list_lbl[4].setBackground(new Color(255, 255, 255));
+//
 //        panel.add(list_lbl[0]);
 //        panel.add(list_lbl[1]);
 //        panel.add(list_lbl[2]);
 //        panel.add(list_lbl[3]);
 //        panel.add(list_lbl[4]);
-//        
-//        panel.setBackground(new Color(255,255,255));
+//
+//        panel.setBackground(new Color(255, 255, 255));
 //        return panel;
 //    }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -140,7 +199,7 @@ public class InHoaDon extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JSeparator();
         jLabelnhanvien = new javax.swing.JLabel();
         jLabelthoigian = new javax.swing.JLabel();
-        jLabelnhanvien1 = new javax.swing.JLabel();
+        jLabelkhachang = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanelControl = new javax.swing.JPanel();
         jButtonPrint = new javax.swing.JButton();
@@ -152,7 +211,7 @@ public class InHoaDon extends javax.swing.JFrame {
         jLabelTenSP2 = new javax.swing.JLabel();
         jLabelTenSP3 = new javax.swing.JLabel();
         jLabelTenSP4 = new javax.swing.JLabel();
-        jPanel5 = createPanel_CTHD();
+        jPanel5 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabelTenSP7 = new javax.swing.JLabel();
 
@@ -177,8 +236,8 @@ public class InHoaDon extends javax.swing.JFrame {
         jLabelthoigian.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabelthoigian.setText("Thời gian :");
 
-        jLabelnhanvien1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabelnhanvien1.setText("Khách Hàng:");
+        jLabelkhachang.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabelkhachang.setText("Khách Hàng:");
 
         javax.swing.GroupLayout jPanelHeaderLayout = new javax.swing.GroupLayout(jPanelHeader);
         jPanelHeader.setLayout(jPanelHeaderLayout);
@@ -198,12 +257,12 @@ public class InHoaDon extends javax.swing.JFrame {
                                 .addComponent(jLabel1)
                                 .addGap(48, 48, 48)))
                         .addGap(162, 162, 162)))
-                .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelthoigian, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelsophieunhap, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelnhanvien, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelnhanvien1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(159, 159, 159))
+                .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabelthoigian, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelkhachang, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                    .addComponent(jLabelnhanvien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelsophieunhap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(77, 77, 77))
         );
         jPanelHeaderLayout.setVerticalGroup(
             jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,9 +273,9 @@ public class InHoaDon extends javax.swing.JFrame {
                     .addGroup(jPanelHeaderLayout.createSequentialGroup()
                         .addComponent(jLabelsophieunhap)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelnhanvien)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelnhanvien1)))
+                        .addComponent(jLabelnhanvien)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelkhachang)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -289,8 +348,6 @@ public class InHoaDon extends javax.swing.JFrame {
         jLabelTenSP4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabelTenSP4.setText("Tỉ lệ khuyến mãi:");
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -308,10 +365,11 @@ public class InHoaDon extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelTenSP, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabelTenSP1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -320,8 +378,7 @@ public class InHoaDon extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabelTenSP4, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabelTenSP3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabelTenSP3, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -421,8 +478,8 @@ public class InHoaDon extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrintActionPerformed
-   
-        
+
+
     }//GEN-LAST:event_jButtonPrintActionPerformed
 
     private void jButtonThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonThoatActionPerformed
@@ -484,8 +541,8 @@ public class InHoaDon extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTenSP3;
     private javax.swing.JLabel jLabelTenSP4;
     private javax.swing.JLabel jLabelTenSP7;
+    private javax.swing.JLabel jLabelkhachang;
     private javax.swing.JLabel jLabelnhanvien;
-    private javax.swing.JLabel jLabelnhanvien1;
     private javax.swing.JLabel jLabelsophieunhap;
     private javax.swing.JLabel jLabelthoigian;
     private javax.swing.JPanel jPanel1;
@@ -497,4 +554,5 @@ public class InHoaDon extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelHeader;
     private javax.swing.JSeparator jSeparator4;
     // End of variables declaration//GEN-END:variables
+
 }

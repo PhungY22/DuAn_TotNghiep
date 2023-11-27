@@ -87,13 +87,13 @@
                               <EmptySpace min="-2" pref="162" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabelthoigian" min="-2" pref="191" max="-2" attributes="0"/>
-                          <Component id="jLabelsophieunhap" min="-2" pref="148" max="-2" attributes="0"/>
-                          <Component id="jLabelnhanvien" min="-2" pref="195" max="-2" attributes="0"/>
-                          <Component id="jLabelnhanvien1" min="-2" pref="195" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jLabelthoigian" max="32767" attributes="0"/>
+                          <Component id="jLabelkhachang" alignment="0" pref="277" max="32767" attributes="0"/>
+                          <Component id="jLabelnhanvien" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabelsophieunhap" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="159" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -107,10 +107,10 @@
                               <Component id="jLabelsophieunhap" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jLabelnhanvien" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabelnhanvien1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jLabelkhachang" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel1" alignment="3" min="-2" pref="27" max="-2" attributes="0"/>
@@ -166,7 +166,7 @@
                 <Property name="text" type="java.lang.String" value="Th&#x1edd;i gian :"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabelnhanvien1">
+            <Component class="javax.swing.JLabel" name="jLabelkhachang">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="14" style="1"/>
@@ -291,10 +291,11 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel7" min="-2" pref="100" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jPanel5" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
+                                  <Component id="jLabel7" min="-2" pref="100" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabelTenSP" min="-2" pref="249" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jLabelTenSP1" min="-2" pref="126" max="-2" attributes="0"/>
@@ -303,9 +304,8 @@
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jLabelTenSP4" min="-2" pref="126" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jLabelTenSP3" max="32767" attributes="0"/>
+                                  <Component id="jLabelTenSP3" pref="260" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="jPanel5" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -383,14 +383,6 @@
                   </Properties>
                 </Component>
                 <Container class="javax.swing.JPanel" name="jPanel5">
-                  <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
-                  </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="createPanel_CTHD()"/>
-                  </AuxValues>
 
                   <Layout>
                     <DimensionLayout dim="0">

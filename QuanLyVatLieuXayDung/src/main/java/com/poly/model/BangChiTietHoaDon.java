@@ -46,7 +46,7 @@ public final class BangChiTietHoaDon extends javax.swing.JFrame {
 
             for (ChiTietHoaDon chiTietHoaDon : list) {
                 Object[] row = {chiTietHoaDon.getMaChiTietHoaDon(), chiTietHoaDon.getMaHoaDon(), chiTietHoaDon.getMaSanPham(),
-                    chiTietHoaDon.getDonViTinh(), chiTietHoaDon.getSoLuong(), chiTietHoaDon.getDonGia(), chiTietHoaDon.getTongTien()};
+                     chiTietHoaDon.getSoLuong(), chiTietHoaDon.getDonGia(), chiTietHoaDon.getTongTien()};
                 model.addRow(row);
             }
 
@@ -81,13 +81,13 @@ public final class BangChiTietHoaDon extends javax.swing.JFrame {
 
         tblDanhSachCTHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Mã Chi Tiết Hóa Đơn", "Mã Hóa Đơn", "Mã Sản Phẩm", "Đơn Vị Tính", "Số Lượng", "Tổng Tiền"
+                "Mã Chi Tiết Hóa Đơn", "Mã Hóa Đơn", "Mã Sản Phẩm", "Số Lượng", "Tổng Tiền"
             }
         ));
         jScrollPane1.setViewportView(tblDanhSachCTHoaDon);
