@@ -12,14 +12,15 @@ import java.util.Date;
  * @author thien ban
  */
 public class HoaDon {
-       private String maHoaDon;
+
+    private String maHoaDon;
     private String maKhachHang;
     private String maNhanVien;
     private Date ngayXuat;
     private String hinhThucThanhToan;
     private String maVoucher;
 
-    public HoaDon(String maHoaDon, String maKhachHang, String maNhanVien, Date ngayXuat, String hinhThucThanhToan, String maVoucher, String voucherDiscountString) {
+    public HoaDon(String maHoaDon, String maKhachHang, String maNhanVien, Date ngayXuat, String hinhThucThanhToan, String maVoucher) {
         this.maHoaDon = maHoaDon;
         this.maKhachHang = maKhachHang;
         this.maNhanVien = maNhanVien;
@@ -28,14 +29,9 @@ public class HoaDon {
         this.maVoucher = maVoucher;
     }
 
-
-
     public HoaDon() {
     }
     // Các phương thức getter và setter cho trường tongTien
- 
-
-    
 
     // Các phương thức getter và setter cho các trường dữ liệu khác
     public String getMaHoaDon() {
@@ -86,5 +82,4 @@ public class HoaDon {
         this.maVoucher = maVoucher;
     }
 
- 
 }
