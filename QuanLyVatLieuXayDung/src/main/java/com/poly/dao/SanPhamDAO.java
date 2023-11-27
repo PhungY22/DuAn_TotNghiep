@@ -4,21 +4,25 @@
  */
 package com.poly.dao;
 
+import com.poly.entity.ChiTietHoaDon;
 import com.poly.entity.SanPham;
 import com.poly.utils.JdbcUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author Nhu Y
  */
-public class SanPhamDAO extends QuanLyVatLieuXayDungDAO<SanPham, String>{
+public class SanPhamDAO extends QuanLyVatLieuXayDungDAO<SanPham, String> {
+
     String INSERT_SQL = "INSERT INTO SanPham (MaSanPham,TenSanPham,Hinh,MaLoaiSanPham,GiaNhap,GiaXuat,SoLuong) VALUES (?,?,?,?,?,?,?)";
     String UPDATE_SQL = "UPDATE SanPham SET TenSanPham =?,Hinh =?,MaLoaiSanPham=?,GiaNhap=?,GiaXuat=?,SoLuong=? WHERE MaSanPham=?";
-    String DELETE_SQL = "UPDATE SanPham SET isDelete = 1 WHERE MaSanPham = ?";
+    String DELETE_SQL = "DELETE FROM SanPham WHERE MaSanPham=?";
     String SELECT_ALL_SQL = "SELECT * FROM SanPham";
     String SELECT_BY_ID_SQL = "SELECT * FROM SanPham WHERE MaSanPham= ?";
     String SORT_DECS = "SELECT * FROM SanPham WHERE isDelete = 0 ORDER BY MaSanPham DESC";
@@ -36,20 +40,20 @@ public class SanPhamDAO extends QuanLyVatLieuXayDungDAO<SanPham, String>{
                 entity.getGiaNhap(),
                 entity.getGiaXuat(),
                 entity.getSoLuong());
-             
+
     }
 
     @Override
     public void update(SanPham entity) {
         JdbcUtil.executeUpdate(UPDATE_SQL,
-               entity.getMaSanPham(),
+                entity.getMaSanPham(),
                 entity.getTenSanPham(),
                 entity.getHinh(),
                 entity.getMaLoaiSanPham(),
                 entity.getGiaNhap(),
                 entity.getGiaXuat(),
                 entity.getSoLuong());
-             
+
     }
 
     @Override
@@ -84,8 +88,8 @@ public class SanPhamDAO extends QuanLyVatLieuXayDungDAO<SanPham, String>{
                 entity.setMaLoaiSanPham(rs.getString("MaLoaiSanPham"));
                 entity.setGiaNhap(rs.getString("GiaNhap"));
                 entity.setGiaXuat(rs.getString("GiaXuat"));
-                entity.setSoLuong(rs.getInt("SoLuong"));
-             
+                entity.setSoLuong(rs.getString("SoLuong"));
+
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();
@@ -108,7 +112,20 @@ public class SanPhamDAO extends QuanLyVatLieuXayDungDAO<SanPham, String>{
             throw new RuntimeException(e);
         }
     }
-     public List<SanPham> selectByKeyword( String key) {
+
+    public List<SanPham> selectByKeyword(String key) {
         return this.selectBySql(SELECT_BY_KEYWORD_SQL, "%" + key + "%");
     }
+
+    public List<SanPham> selectAllByChiTietHoaDon(List<ChiTietHoaDon> chiTietHD) {
+        List<String> maSanPhamList = chiTietHD.stream()
+                .map(ChiTietHoaDon::getMaSanPham)
+                .collect(Collectors.toList());
+
+        String sql = "SELECT * FROM SanPham WHERE MaSanPham IN ("
+                + String.join(",", Collections.nCopies(maSanPhamList.size(), "?")) + ")";
+
+        return selectBySql(sql, maSanPhamList.toArray());
+    }
+    
 }
