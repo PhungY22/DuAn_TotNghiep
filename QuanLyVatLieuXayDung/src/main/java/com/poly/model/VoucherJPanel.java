@@ -8,6 +8,7 @@ import com.poly.dao.VoucherDAO;
 import com.poly.entity.KhachHang;
 import com.poly.entity.Voucher;
 import com.poly.utils.XDialog;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -16,8 +17,10 @@ import javax.swing.table.DefaultTableModel;
  * @author Nhu Y
  */
 public class VoucherJPanel extends javax.swing.JPanel {
+
     VoucherDAO Voudao = new VoucherDAO();
     int row = -1;
+
     /**
      * Creates new form VoucherJPanel
      */
@@ -25,19 +28,19 @@ public class VoucherJPanel extends javax.swing.JPanel {
         initComponents();
         init();
     }
-    
-    public void init(){
+
+    public void init() {
         this.fillTable();
     }
-    
-    public void fillTable(){
-         DefaultTableModel model = (DefaultTableModel) tblDanhSachVou.getModel();
+
+    public void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) tblDanhSachVou.getModel();
         model.setRowCount(0);
         try {
             String keyword = txtSearch.getText();
-             List<Voucher> list = Voudao.selectAll();
+            List<Voucher> list = Voudao.selectAll();
             for (Voucher sp : list) {
-                Object[] row = {sp.getMaVoucher(), sp.getTenVoucher(), sp.getGiaTriVoucher(), sp.getNgayHetHan(),sp.getSoLuong()};
+                Object[] row = {sp.getMaVoucher(), sp.getTenVoucher(), sp.getGiaTriVoucher(), sp.getNgayHetHan(), sp.getSoLuong()};
                 model.addRow(row);
             }
         } catch (Exception e) {
@@ -46,7 +49,7 @@ public class VoucherJPanel extends javax.swing.JPanel {
 //            System.out.println("Lỗi truy vấn dữ liệu");
         }
     }
-    
+
     private void insert() {
         Voucher sp = this.getForm();
         try {
@@ -59,7 +62,7 @@ public class VoucherJPanel extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-    
+
     private void update() {
         Voucher sp = this.getForm();
         try {
@@ -71,37 +74,38 @@ public class VoucherJPanel extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-    
+
     private void delete() {
         if (XDialog.confirm(this, "Bạn có thực sự muốn xóa sản phẩm này không?")) {
-           String sp = txtMaVou.getText();
+            String sp = txtMaVou.getText();
             try {
                 Voudao.delete(sp);
-               this.fillTable();
+                this.fillTable();
                 this.clearForm();
-               XDialog.alert(this, "Xóa sản phẩm thành công!");
+                XDialog.alert(this, "Xóa sản phẩm thành công!");
             } catch (Exception e) {
-               XDialog.alert(this, "Xóa sản phẩm thất bại!");
-               e.printStackTrace();
-                 }
+                XDialog.alert(this, "Xóa sản phẩm thất bại!");
+                e.printStackTrace();
+            }
+        }
     }
-    }
+
     private void clearForm() {
         Voucher hv = new Voucher();
-        this.setForm(hv);
+//        this.setForm(hv);
         this.row = -1;
         //this.updateStatus();
     }
-    
+
     private void edit() {
-            this.row = tblDanhSachVou.getSelectedRow();
+        this.row = tblDanhSachVou.getSelectedRow();
         if (this.row >= 0) {
             String id = (String) tblDanhSachVou.getValueAt(this.row, 0);
             Voucher sp = Voudao.selectById(id);
-            this.setForm(sp);
+//            this.setForm(sp);
         }
     }
-    
+
     private void first() {
         this.row = 0;
         this.edit();
@@ -432,9 +436,36 @@ public class VoucherJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_txtNgayHetHanActionPerformed
 
     private void tblDanhSachVouMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDanhSachVouMouseClicked
-        if (evt.getClickCount() == 2) {
-            this.row = tblDanhSachVou.getSelectedRow();
-        }
+        int selectedRow = tblDanhSachVou.getSelectedRow();
+
+        if (selectedRow != -1) { // Check if a row is selected
+            DefaultTableModel model = (DefaultTableModel) tblDanhSachVou.getModel();
+            String maHoaDon = model.getValueAt(selectedRow, 0).toString();
+            String maKhachHang = model.getValueAt(selectedRow, 1).toString(); // Assuming the first column contains the MaKhachHang
+            String maNhanVien = model.getValueAt(selectedRow, 2).toString(); // Assuming the second column contains the TenKhachHang
+            String MaVoucher = model.getValueAt(selectedRow, 6).toString();
+
+            // Populate text fields with the retrieved data
+//            txtMaHoaDon.setText(maHoaDon);
+//            txtMaKhachHang.setText(maKhachHang);
+//            txtMaNhanVien.setText(maNhanVien);
+//
+//            // Calculate the total amount based on the selected row
+//            BigDecimal tongtien = tinhTongTien(maHoaDon);
+//
+//            // Set the total amount in the text field as a string
+//            txtTongTien.setText(tongtien.toString());
+//
+//            // Retrieve the corresponding maVoucher from the map
+//            String tenVoucher = voucherMap.get(MaVoucher);
+//
+//            cbMaVoucher.setSelectedItem(tenVoucher);
+//
+//            BangChiTietHoaDon bang = new BangChiTietHoaDon(maHoaDon);
+//
+//            bang.setVisible(true);
+//
+        } 
     }//GEN-LAST:event_tblDanhSachVouMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
@@ -476,17 +507,20 @@ public class VoucherJPanel extends javax.swing.JPanel {
         Voucher sp = new Voucher();
         sp.setMaVoucher(txtMaVou.getText());
         sp.setTenVoucher(txtTenVou.getText());
-//        sp.setGiaTriVoucher(txtGiaTriVou.getBigDecimal());
-        sp.setNgayHetHan(txtNgayHetHan.getText());
-        sp.setSoLuong(txtSoLuong.getText());
+        String voucher = txtGiaTriVou.getText();
+        BigDecimal value = new BigDecimal(voucher);
+        sp.setGiaTriVoucher(value);
+//        sp.setNgayHetHan(txtNgayHetHan.getText());
+//        sp.setSoLuong(txtSoLuong.getText());
         return sp;
     }
-    
-    private void setForm(Voucher hv) {
-        txtMaVou.setText(hv.getMaVoucher());
-        txtTenVou.setText(hv.getTenVoucher());
-//        txtGiaTriVou.set(hv.getGiaTriVoucher());
-        txtNgayHetHan.setText(hv.getNgayHetHan());
-        txtSoLuong.setText(hv.getSoLuong());
-    }
+
+//    private void setForm(Voucher hv) {
+//        txtMaVou.setText(hv.getMaVoucher());
+//        txtTenVou.setText(hv.getTenVoucher());
+//       String value = (hv.getGiaTriVoucher().toString());
+//       txtGiaTriVou.setText(value);
+//        txtNgayHetHan.setText(hv.getNgayHetHan());
+//        txtSoLuong.setText(hv.getSoLuong());
+//    }
 }

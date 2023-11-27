@@ -8,6 +8,7 @@ import com.poly.dao.KhachHangDAO;
 import com.poly.entity.KhachHang;
 import com.poly.entity.SanPham;
 import com.poly.utils.XDialog;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class KhachHangJPanel extends javax.swing.JPanel {
     KhachHangDAO khdao = new KhachHangDAO();
+    ArrayList<KhachHang> list = new ArrayList<>();
     int row = -1;
     /**
      * Creates new form KhachHangJPanel
@@ -37,7 +39,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
             String keyword = txtSearch.getText();
              List<KhachHang> list = khdao.selectAll();
             for (KhachHang sp : list) {
-                Object[] row = {sp.getMaKhachHang(), sp.getTenKhachHang(),sp.getDiaChi(),sp.getSoDienThoai(),sp.getEmail(),sp.isGioiTinh()};
+                Object[] row = {sp.getMaKhachHang(), sp.getTenKhachHang(),sp.getDiaChi(),sp.getSoDienThoai(),sp.getEmail(),sp.isGioiTinh() ? "Nam" : "Nữ"};
                 model.addRow(row);
             }
         } catch (Exception e) {
@@ -142,7 +144,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        jblGioiTinh = new javax.swing.JLabel();
         txtMaKH = new javax.swing.JTextField();
         txtTenKH = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
@@ -186,7 +188,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
 
         jLabel8.setText("Email:");
 
-        jLabel9.setText("Giới tính:");
+        jblGioiTinh.setText("Giới tính:");
 
         txtMaKH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,10 +208,20 @@ public class KhachHangJPanel extends javax.swing.JPanel {
         btnCapNhat.setBackground(new java.awt.Color(204, 204, 255));
         btnCapNhat.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnCapNhat.setText("Cập Nhật");
+        btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapNhatActionPerformed(evt);
+            }
+        });
 
         btnXoa.setBackground(new java.awt.Color(204, 204, 255));
         btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         btnLamMoi.setBackground(new java.awt.Color(204, 204, 255));
         btnLamMoi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -261,7 +273,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
                                     .addComponent(jLabel8)
-                                    .addComponent(jLabel9)))
+                                    .addComponent(jblGioiTinh)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(29, 29, 29))))
@@ -308,7 +320,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(txtDiachi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)
+                            .addComponent(jblGioiTinh)
                             .addComponent(rdoNam)
                             .addComponent(rdoNu)))
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -453,9 +465,37 @@ public class KhachHangJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_rdoNuActionPerformed
 
     private void tblDanhSachKHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDanhSachKHMouseClicked
-        if (evt.getClickCount() == 2) {
-            this.row = tblDanhSachKH.getSelectedRow();
+        int selectedRow = tblDanhSachKH.getSelectedRow();
+
+        if (selectedRow != -1) { // Check if a row is selected
+            DefaultTableModel model = (DefaultTableModel) tblDanhSachKH.getModel();
+            String MaKhachHang = model.getValueAt(selectedRow, 0).toString();
+            String TenKhachHang = model.getValueAt(selectedRow, 1).toString();
+            String DiaChi = model.getValueAt(selectedRow, 2).toString(); // Assuming the first column contains the MaKhachHang
+            String SoDienThoai = model.getValueAt(selectedRow, 3).toString(); // Assuming the second column contains the TenKhachHang
+            String Email = model.getValueAt(selectedRow, 4).toString();
+            if (model.getValueAt(selectedRow, 5) instanceof Boolean) {
+            Boolean GioiTinh = (Boolean) model.getValueAt(selectedRow, 5);
+            if (GioiTinh) {
+                rdoNam.setSelected(true);
+            } else {
+                rdoNu.setSelected(true);
+            }
+            }
+   
+            // Populate text fields with the retrieved data
+            txtMaKH.setText(MaKhachHang);
+            txtTenKH.setText(TenKhachHang);
+            txtDiachi.setText(DiaChi);
+            txtSDT.setText(SoDienThoai);
+            txtEmail.setText(Email);
+            if (model.getValueAt(selectedRow, 5) instanceof Boolean) {
+                rdoNam.setSelected(true);
+            }else {
+                rdoNu.setSelected(true);
+            }
         }
+            // Calculate the total amount based on the selected row
     }//GEN-LAST:event_tblDanhSachKHMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
@@ -467,8 +507,16 @@ public class KhachHangJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_txtMaKHActionPerformed
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
-        // TODO add your handling code here:
+        this.clearForm();
     }//GEN-LAST:event_btnLamMoiActionPerformed
+
+    private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
+        this.update();
+    }//GEN-LAST:event_btnCapNhatActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+       this.delete();
+    }//GEN-LAST:event_btnXoaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -491,10 +539,10 @@ public class KhachHangJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jblGioiTinh;
     private javax.swing.JRadioButton rdoNam;
     private javax.swing.JRadioButton rdoNu;
     private javax.swing.JTable tblDanhSachKH;
@@ -513,18 +561,23 @@ private KhachHang getForm() {
         sp.setDiaChi(txtDiachi.getText());
         sp.setSoDienThoai(txtSDT.getText());
         sp.setEmail(txtEmail.getText());
-        sp.setGioiTinh(rdoNam.isSelected());
+        boolean gt = false;
+        if(rdoNam.isSelected()){
+            gt = true;
+        }
+        sp.setGioiTinh(gt);
         return sp;
     }
 
     private void setForm(KhachHang hv) {
+        KhachHang sp = new KhachHang();
         txtMaKH.setText(hv.getMaKhachHang());
         txtTenKH.setText(hv.getTenKhachHang());
-        if (hv.isGioiTinh() == true) {
-            rdoNam.setSelected(true);
-        } else {
-            rdoNu.setSelected(true);
+        boolean gt = sp.isGioiTinh();
+        if(gt == false){
+            rdoNu.isSelected();
         }
+        sp.setGioiTinh(gt);
 //        rdoNam.setSelected(hv.isGioiTinh());
 //        rdoNu.setSelected(!hv.isGioiTinh());
         txtSDT.setText(hv.getSoDienThoai());
