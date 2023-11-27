@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class HoaDonDAO extends QuanLyVatLieuXayDungDAO<HoaDon, String> {
 
-    private static final String INSERT_SQL = "INSERT INTO HoaDon (MaHoaDon, MaKhachHang, MaNhanVien, NgayXuat, TongTien, HinhThucThanhToan, MaVoucher) VALUES (?,?,?,?,?,?,?)";
-    private static final String UPDATE_SQL = "UPDATE HoaDon SET MaKhachHang = ?, MaNhanVien = ?, NgayXuat = ?, TongTien = ?, HinhThucThanhToan = ?, MaVoucher = ? WHERE MaHoaDon = ?";
+    private static final String INSERT_SQL = "INSERT INTO HoaDon (MaHoaDon, MaKhachHang, MaNhanVien, NgayXuat, HinhThucThanhToan, MaVoucher) VALUES (?,?,?,?,?,?)";
+    private static final String UPDATE_SQL = "UPDATE HoaDon SET MaKhachHang = ?, MaNhanVien = ?, NgayXuat = ? , HinhThucThanhToan = ?, MaVoucher = ? WHERE MaHoaDon = ?";
     private static final String DELETE_SQL = "DELETE FROM HoaDon WHERE MaHoaDon = ?";
     private static final String SELECT_ALL_SQL = "SELECT * FROM HoaDon";
     private static final String SELECT_BY_ID_SQL = "SELECT * FROM HoaDon WHERE MaHoaDon = ?";
