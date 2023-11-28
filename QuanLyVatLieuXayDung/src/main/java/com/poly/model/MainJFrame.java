@@ -32,7 +32,6 @@ List<DanhMucBean> listDanhMuc = new ArrayList<>();
          this.listMenu.add(new MenuBean("LoaiSanPham", btnLoaiSanPham));
         this.listMenu.add(new MenuBean("PhieuNhapHang", btnPhieuNhapHang));
         this.listMenu.add(new MenuBean("HoaDon", btnHoaDon));
-        this.listMenu.add(new MenuBean("HoaDonChiTiet", btnHoaDonChiTiet));
         this.listMenu.add(new MenuBean("Voucher", btnVoucher));
         this.listMenu.add(new MenuBean("ThongKe", btnThongKe));
         //
@@ -70,7 +69,6 @@ List<DanhMucBean> listDanhMuc = new ArrayList<>();
         btnLoaiSanPham = new javax.swing.JButton();
         btnPhieuNhapHang = new javax.swing.JButton();
         btnHoaDon = new javax.swing.JButton();
-        btnHoaDonChiTiet = new javax.swing.JButton();
         btnVoucher = new javax.swing.JButton();
         btnThongKe = new javax.swing.JButton();
         pnlView = new javax.swing.JPanel();
@@ -172,11 +170,6 @@ List<DanhMucBean> listDanhMuc = new ArrayList<>();
         btnHoaDon.setText("HÓA ĐƠN");
         btnHoaDon.setBorder(null);
 
-        btnHoaDonChiTiet.setBackground(new java.awt.Color(204, 204, 255));
-        btnHoaDonChiTiet.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnHoaDonChiTiet.setText("HÓA ĐƠN CHI TIẾT");
-        btnHoaDonChiTiet.setBorder(null);
-
         btnVoucher.setBackground(new java.awt.Color(204, 204, 255));
         btnVoucher.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnVoucher.setText("VOUCHER");
@@ -220,7 +213,6 @@ List<DanhMucBean> listDanhMuc = new ArrayList<>();
                                     .addComponent(btnKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnSanPham, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnHoaDon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnHoaDonChiTiet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnVoucher, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
@@ -235,22 +227,20 @@ List<DanhMucBean> listDanhMuc = new ArrayList<>();
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(btnKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnLoaiSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnLoaiSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(btnPhieuNhapHang, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPhieuNhapHang, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnHoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnHoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnHoaDonChiTiet, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -266,17 +256,7 @@ List<DanhMucBean> listDanhMuc = new ArrayList<>();
         );
 
         pnlView.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout pnlViewLayout = new javax.swing.GroupLayout(pnlView);
-        pnlView.setLayout(pnlViewLayout);
-        pnlViewLayout.setHorizontalGroup(
-            pnlViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1238, Short.MAX_VALUE)
-        );
-        pnlViewLayout.setVerticalGroup(
-            pnlViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 778, Short.MAX_VALUE)
-        );
+        pnlView.setLayout(null);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -285,7 +265,7 @@ List<DanhMucBean> listDanhMuc = new ArrayList<>();
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlView, javax.swing.GroupLayout.DEFAULT_SIZE, 1256, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,7 +334,6 @@ List<DanhMucBean> listDanhMuc = new ArrayList<>();
     private javax.swing.JButton btnDangNhap;
     private javax.swing.JButton btnDoiMatKhau;
     private javax.swing.JButton btnHoaDon;
-    private javax.swing.JButton btnHoaDonChiTiet;
     private javax.swing.JButton btnKhachHang;
     private javax.swing.JButton btnLoaiSanPham;
     private javax.swing.JButton btnNhanVien;

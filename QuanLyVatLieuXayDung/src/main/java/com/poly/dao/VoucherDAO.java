@@ -78,8 +78,8 @@ public class VoucherDAO extends QuanLyVatLieuXayDungDAO<Voucher, String> {
                 entity.setMaVoucher(rs.getString("MaVoucher"));
                 entity.setTenVoucher(rs.getString("TenVoucher"));
                 entity.setGiaTriVoucher(rs.getBigDecimal("GiaTriVoucher"));
-                entity.setNgayHetHan(rs.getString("NgayHetHan"));
-                entity.setSoLuong(rs.getString("SoLuong"));
+                entity.setNgayHetHan(rs.getDate("NgayHetHan"));
+                entity.setSoLuong(rs.getInt("SoLuong"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();

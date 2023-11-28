@@ -7,7 +7,7 @@ package com.poly.model;
 import com.poly.dao.NhanVienDAO;
 import com.poly.entity.NhanVien;
 import static com.poly.model.DangNhapJFrame.main;
-import com.poly.utils.XDate;
+//import com.poly.utils.XDate;
 import com.poly.utils.XDialog;
 import com.poly.utils.XImage;
 import java.text.ParseException;
@@ -834,7 +834,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         nv.setSoDienThoai(txtSoDienThoai.getText());
         nv.setEmail(txtEmail.getText());
         nv.setDiaChi(txtDiaChi.getText());
-        nv.setNgayThangNamSinh(XDate.toDate(txtNamSinh.getText()));
+        //nv.setNgayThangNamSinh(XDate.toDate(txtNamSinh.getText()));
         boolean gt = false;
         if(rdoGioiTinhNam.isSelected()){
             gt = true;
@@ -858,7 +858,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         txtSoDienThoai.setText(nv.getSoDienThoai());
         txtDiaChi.setText(nv.getDiaChi());
         txtEmail.setText(nv.getEmail());
-        txtNamSinh.setText(XDate.toString(nv.getNgayThangNamSinh()));
+        //txtNamSinh.setText(XDate.toString(nv.getNgayThangNamSinh()));
         boolean gt = nv.isGioiTinh();
         if(gt == false){
             rdoGioiTinhNu.isSelected();

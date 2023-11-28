@@ -19,7 +19,7 @@ import javax.swing.ImageIcon;
  */
 public class XImage {
      public static Image getAppIcon() {
-        String file = "/com/demojavaswimg/icons/fpt.png";
+        String file = "/com/poly/quanlyvatlieuxaydung/icon/fpt.png";
         return new ImageIcon(XValidate.class.getResource(file)).getImage();
     }
 

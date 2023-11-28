@@ -88,7 +88,7 @@ public class SanPhamDAO extends QuanLyVatLieuXayDungDAO<SanPham, String> {
                 entity.setMaLoaiSanPham(rs.getString("MaLoaiSanPham"));
                 entity.setGiaNhap(rs.getString("GiaNhap"));
                 entity.setGiaXuat(rs.getString("GiaXuat"));
-                entity.setSoLuong(rs.getString("SoLuong"));
+                entity.setSoLuong(rs.getInt("SoLuong"));
 
                 list.add(entity);
             }
