@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -70,6 +71,7 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
         txtPass2.setBounds(70, 160, 350, 40);
 
         lblQuaylai.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblQuaylai.setForeground(new java.awt.Color(255, 255, 255));
         lblQuaylai.setText("Quay lại");
         lblQuaylai.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -97,7 +99,7 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
         btnDangNhap.setBounds(160, 250, 140, 40);
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/wepik-export-20231115081358PaZZ.jpeg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/banner5.jpg"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 0, 500, 330);
 
@@ -119,6 +121,7 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnDangNhapActionPerformed
 
     private void lblQuaylaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuaylaiMouseClicked
@@ -150,16 +153,44 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
         }
 
     }
-    
-    public void doimatkhau() throws SQLException{
-        KetNoiCSDL();
-        String sql = "UPDATE Users Set Password = ? Where Username = ?";
-        PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
-         
-       
-        cauLenh.executeUpdate();
+    public void doimatkhau(String TenNhanVien, String currentPassword, String newPassword) throws SQLException {
+    KetNoiCSDL();
+    try {
+        // Kiểm tra xem người dùng có quyền đổi mật khẩu hay không (ví dụ: dựa trên username và currentPassword)
+        if (kiemTraQuyenDoiMatKhau(TenNhanVien, currentPassword)) {
+            String sql = "UPDATE NhanVien SET MatKhau = ? WHERE TenNhanVien = ?";
+            PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
+            
+            // Thiết lập giá trị cho các tham số trong câu lệnh SQL
+            cauLenh.setString(1, newPassword);
+            cauLenh.setString(2, TenNhanVien);
+            
+            // Thực hiện cập nhật mật khẩu trong CSDL
+            cauLenh.executeUpdate();
+            
+            JOptionPane.showMessageDialog(this, "Mật khẩu đã được cập nhật thành công!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập hoặc không có quyền đổi mật khẩu.");
+        }
+    } finally {
+        // Đảm bảo đóng kết nối sau khi sử dụng
         ketnoi.close();
     }
+}
+
+private boolean kiemTraQuyenDoiMatKhau(String TenNhanVien, String currentPassword) throws SQLException {
+    String sql = "SELECT * FROM NhanVien WHERE TenNhanVien = ? AND Matkhau = ?";
+    PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
+    
+    // Thiết lập giá trị cho các tham số trong câu lệnh SQL
+    cauLenh.setString(1, TenNhanVien);
+    cauLenh.setString(2, currentPassword);
+    
+    ResultSet ketQua = cauLenh.executeQuery();
+    
+    // Nếu có kết quả, người dùng tồn tại và thông tin đăng nhập đúng
+    return ketQua.next();
+}
     /**
      * @param args the command line arguments
      */
