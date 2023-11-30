@@ -10,7 +10,7 @@ import com.poly.model.HoaDonJPanel;
 import com.poly.model.KhachHangJPanel;
 import com.poly.model.LoaiSanPhamJPanel;
 import com.poly.model.NhanVienJPanel;
-//import com.poly.model.PhieuNhapHangJPanel;
+import com.poly.model.PhieuNhapHanggJPanel;
 import com.poly.model.SanPhamJPanel;
 import com.poly.model.ThongKeJPanel;
 import com.poly.model.TrangChuJPanel;
@@ -113,10 +113,10 @@ public class ChuyenManHinhChinh {
                   node = new LoaiSanPhamJPanel();
                     setViews(node);
                     break;
-                  //case "PhieuNhapHang": 
-                   // node = new PhieuNhapHangJPanel();
-                    //setViews(node);
-                    //break;
+                  case "PhieuNhapHangg": 
+                   node = new PhieuNhapHanggJPanel();
+                    setViews(node);
+                    break;
                 case "HoaDon":
                     node = new HoaDonJPanel();
                     setViews(node);
