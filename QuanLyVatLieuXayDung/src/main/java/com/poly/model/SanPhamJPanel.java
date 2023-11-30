@@ -10,10 +10,15 @@ import com.poly.entity.LoaiSanPham;
 import com.poly.entity.SanPham;
 import com.poly.utils.XDialog;
 import com.poly.utils.XImage;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import static java.util.Locale.filter;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
@@ -27,10 +32,13 @@ import javax.swing.table.TableRowSorter;
  * @author Nhu Y
  */
 public class SanPhamJPanel extends javax.swing.JPanel {
-      SanPhamDAO spdao = new SanPhamDAO();
-      LoaiSanPhamDAO lspdao = new LoaiSanPhamDAO();
-     int row = -1;
-       MainJFrame main;
+
+    SanPhamDAO spdao = new SanPhamDAO();
+    LoaiSanPhamDAO lspdao = new LoaiSanPhamDAO();
+
+    int row = -1;
+    MainJFrame main;
+
     /**
      * Creates new form SanPhamJPanel
      */
@@ -38,17 +46,19 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         initComponents();
         init();
     }
-    public void init(){
+
+    public void init() {
         this.fillTable();
         this.fillComboBox();
     }
-    public void fillTable(){
+
+    public void fillTable() {
         DefaultTableModel model = (DefaultTableModel) tblDanhSachSP.getModel();
         model.setRowCount(0);
         try {
             List<SanPham> list = spdao.selectAll();
             for (SanPham sp : list) {
-               String tenLSP = lspdao.selectById(sp.getMaLoaiSanPham()).getTenLoaiSanPham();
+                String tenLSP = lspdao.selectById(sp.getMaLoaiSanPham()).getTenLoaiSanPham();
                 Object[] row = {sp.getMaSanPham(), sp.getTenSanPham(), tenLSP,
                     sp.getGiaNhap(), sp.getGiaXuat(), sp.getSoLuong(), sp.getHinh()};
                 model.addRow(row);
@@ -59,27 +69,56 @@ public class SanPhamJPanel extends javax.swing.JPanel {
 //            System.out.println("Lỗi truy vấn dữ liệu");
         }
     }
+
     void fillComboBox() {
         List<LoaiSanPham> listSP = lspdao.selectAll();
         for (int i = 0; listSP.size() > i; i++) {
             cboLoaiSP.addItem(listSP.get(i).getTenLoaiSanPham());
         }
     }
+
+ private void insert() {
+    // Tạo đối tượng DAO
+    SanPhamDAO dao = new SanPhamDAO();
     
-    private void insert() {
-         SanPham sp = getForm();
-        try {
-            spdao.insert(sp);
-            this.fillTable();
-            XDialog.alert(this, "Thêm mới sản phẩm thành công");
-        } catch (Exception e) {
-            XDialog.alert(this, "Thêm mới sản phẩm thất bại");
-            throw new RuntimeException(e);
-        }
+    // Lấy thông tin từ form
+    
+   
+        String MaSanPham = txtMaSP.getText();
+        String TenSanPham = txtTenSP.getText();
+        String Hinh = lblHinh.getToolTipText();
+        String MaLoaiSanPham = String.valueOf(cboLoaiSP.getSelectedItem());
+        String GiaNhap = txtGiaNhap.getText();
+        String GiaXuat = txtGiaXuat.getText();
+        int SoLuong;
+
+    try {
+        // Parse the quantity
+        SoLuong = Integer.parseInt(txtSoLuong.getText());
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "Xin vui lòng nhập số ", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
     }
 
+    // Tạo đối tượng sản phẩm
+    SanPham sp = new SanPham(MaSanPham, TenSanPham, Hinh, MaLoaiSanPham, GiaNhap, GiaXuat, SoLuong);
+
+    // Kiểm tra tính hợp lệ của sản phẩm
+    if (!sp.isValid()) {
+        JOptionPane.showMessageDialog(this, "Thông tin sản phẩm không hợp lệ. Vui lòng điền vào tất cả các lĩnh vực.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    
+    
+    // Thêm sản phẩm vào cơ sở dữ liệu bằng lớp DAO
+    dao.insert(sp);
+    // Đóng form (hoặc thực hiện các hành động khác sau khi thêm sản phẩm)
+    dispose();
+}
+
     private void update() {
-       SanPham sp = getForm();
+        SanPham sp = getForm();
         try {
             spdao.update(sp);
             this.fillTable();
@@ -103,6 +142,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
             throw new RuntimeException(e);
         }
     }
+
     private void reset() {
         txtMaSP.setText("");
         txtMaSP.setEditable(true);
@@ -121,7 +161,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
     }
 
     private void edit() {
-          this.row = tblDanhSachSP.getSelectedRow();
+        this.row = tblDanhSachSP.getSelectedRow();
         if (this.row >= 0) {
             String id = (String) tblDanhSachSP.getValueAt(this.row, 0);
             SanPham sp = spdao.selectById(id);
@@ -152,12 +192,21 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         this.row = tblDanhSachSP.getRowCount() - 1;
         this.edit();
     }
+
     void ASC() {
         DefaultTableModel model = (DefaultTableModel) tblDanhSachSP.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+
+        // Chỉ định cột "mã" và thứ tự sắp xếp là tăng dần
+        RowSorter.SortKey sortKey = new RowSorter.SortKey(0, SortOrder.ASCENDING);
+
+        // Đặt danh sách SortKey chỉ chứa một phần tử vào TableRowSorter
+        sorter.setSortKeys(List.of(sortKey));
+
+        // Đặt TableRowSorter cho JTable
         tblDanhSachSP.setRowSorter(sorter);
-        List<RowSorter.SortKey> sortKeys = List.of(new RowSorter.SortKey(2, SortOrder.ASCENDING));
-        sorter.setSortKeys(sortKeys);
+
+        // Thực hiện sắp xếp
         sorter.sort();
     }
 
@@ -165,97 +214,109 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tblDanhSachSP.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
         tblDanhSachSP.setRowSorter(sorter);
-        List<RowSorter.SortKey> sortKeys = List.of(new RowSorter.SortKey(2, SortOrder.DESCENDING));
+        List<RowSorter.SortKey> sortKeys = List.of(new RowSorter.SortKey(0, SortOrder.DESCENDING));
         sorter.setSortKeys(sortKeys);
         sorter.sort();
     }
-     void search(String str) {
+
+    void search(String str) {
         DefaultTableModel model = (DefaultTableModel) tblDanhSachSP.getModel();
         TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
         tblDanhSachSP.setRowSorter(trs);
-        trs.setRowFilter(RowFilter.regexFilter(str));
+
+        // Chỉ định cột "ID" và cột "Tên" để áp dụng bộ lọc
+        int columnIndexID = 0; // Index của cột "ID" trong model
+        int columnIndexTen = 1; // Index của cột "Tên" trong model
+
+        // Sử dụng RowFilter.orFilter để kết hợp hai điều kiện tìm kiếm
+        RowFilter<DefaultTableModel, Object> idFilter = RowFilter.regexFilter(str, columnIndexID);
+        RowFilter<DefaultTableModel, Object> tenFilter = RowFilter.regexFilter(str, columnIndexTen);
+
+        trs.setRowFilter(RowFilter.orFilter(Arrays.asList(idFilter, tenFilter)));
     }
-      boolean validateForm() {
-        List<SanPham> list = spdao.selectAll();
-        if (txtMaSP.getText().equalsIgnoreCase("")
-                && txtTenSP.getText().equalsIgnoreCase("")
-                && txtGiaNhap.getText().equalsIgnoreCase("")
-                && txtGiaXuat.getText().equalsIgnoreCase("")
-                && txtSoLuong.getText().equalsIgnoreCase("")
-                && cboLoaiSP.getSelectedIndex() == 0) {
-            lblMaSP.setText("*Không được để trống");
-            lblTenSP.setText("*Không được để trống");
-            lblGiaNhap.setText("*Không được để trống");
-            lblGiaXuat.setText("*Không được để trống");
-            lblSoLuong.setText("*Không được để trống");
-            lblLSP.setText("Vui lòng chọn loại sản phẩm");
-            return false;
-        }
-        if (txtMaSP.getText().equalsIgnoreCase("")) {
-            lblTenSP.setText("*Không được để trống");
-            return false;
-        }
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getMaSanPham().equalsIgnoreCase(txtMaSP.getText().trim())) {
-                lblMaSP.setText("Mã sản phẩm đã tồn tại!");
-                return false;
-            }
-        }
-        if (txtTenSP.getText().equalsIgnoreCase("")) {
-            lblTenSP.setText("*Không được để trống tên sản phẩm");
-            return false;
-        }
-        if (txtGiaNhap.getText().equalsIgnoreCase("")) {
-            lblGiaNhap.setText("*Không được để trống giá xuất");
-            return false;
-        }
-        if (txtGiaXuat.getText().equalsIgnoreCase("")) {
-            lblGiaXuat.setText("*Không được để trống giá nhập");
-            return false;
-        }
-        if (txtSoLuong.getText().equalsIgnoreCase("")) {
-            lblSoLuong.setText("*Không được để trống số lượng");
-            return false;
-        }
-        if (cboLoaiSP.getSelectedIndex() == 0) {
-            lblLSP.setText("Vui lòng chọn tên loại sản phẩm");
-            return false;
-        }
-        try {
-            Integer.parseInt(txtGiaNhap.getText());
-        } catch (NumberFormatException e) {
-            lblGiaNhap.setText("Vui lòng nhập số!");
-            return false;
-        }
-        try {
-            Integer.parseInt(txtGiaXuat.getText());
-        } catch (NumberFormatException e) {
-            lblGiaXuat.setText("Vui lòng nhập số!");
-            return false;
-        }
-        try {
-            Integer.parseInt(txtSoLuong.getText());
-        } catch (NumberFormatException e) {
-            lblSoLuong.setText("Vui lòng nhập số!");
-            return false;
-        }
-        return true;
-    }
-        private void selectIcon() {
+//      boolean validateForm() {
+//        List<SanPham> list = spdao.selectAll();
+//        if (txtMaSP.getText().equalsIgnoreCase("")
+//                && txtTenSP.getText().equalsIgnoreCase("")
+//                && txtGiaNhap.getText().equalsIgnoreCase("")
+//                && txtGiaXuat.getText().equalsIgnoreCase("")
+//                && txtSoLuong.getText().equalsIgnoreCase("")
+//                && cboLoaiSP.getSelectedIndex() == 0) {
+//            lblMaSP.setText("*Không được để trống");
+//            lblTenSP.setText("*Không được để trống");
+//            lblGiaNhap.setText("*Không được để trống");
+//            lblGiaXuat.setText("*Không được để trống");
+//            lblSoLuong.setText("*Không được để trống");
+//            lblLSP.setText("Vui lòng chọn loại sản phẩm");
+//            return false;
+//        }
+//        if (txtMaSP.getText().equalsIgnoreCase("")) {
+//            lblTenSP.setText("*Không được để trống");
+//            return false;
+//        }
+//        for (int i = 0; i < list.size(); i++) {
+//            if (list.get(i).getMaSanPham().equalsIgnoreCase(txtMaSP.getText().trim())) {
+//                lblMaSP.setText("Mã sản phẩm đã tồn tại!");
+//                return false;
+//            }
+//        }
+//        if (txtTenSP.getText().equalsIgnoreCase("")) {
+//            lblTenSP.setText("*Không được để trống tên sản phẩm");
+//            return false;
+//        }
+//        if (txtGiaNhap.getText().equalsIgnoreCase("")) {
+//            lblGiaNhap.setText("*Không được để trống giá xuất");
+//            return false;
+//        }
+//        if (txtGiaXuat.getText().equalsIgnoreCase("")) {
+//            lblGiaXuat.setText("*Không được để trống giá nhập");
+//            return false;
+//        }
+//        if (txtSoLuong.getText().equalsIgnoreCase("")) {
+//            lblSoLuong.setText("*Không được để trống số lượng");
+//            return false;
+//        }
+//        if (cboLoaiSP.getSelectedIndex() == 0) {
+//            lblLSP.setText("Vui lòng chọn tên loại sản phẩm");
+//            return false;
+//        }
+//        try {
+//            Integer.parseInt(txtGiaNhap.getText());
+//        } catch (NumberFormatException e) {
+//            lblGiaNhap.setText("Vui lòng nhập số!");
+//            return false;
+//        }
+//        try {
+//            Integer.parseInt(txtGiaXuat.getText());
+//        } catch (NumberFormatException e) {
+//            lblGiaXuat.setText("Vui lòng nhập số!");
+//            return false;
+//        }
+//        try {
+//            Integer.parseInt(txtSoLuong.getText());
+//        } catch (NumberFormatException e) {
+//            lblSoLuong.setText("Vui lòng nhập số!");
+//            return false;
+//        }
+//        return true;
+//    }
+
+    private void selectIcon() {
 
         JFileChooser fc = new JFileChooser("logos\\avatars");
         FileFilter filter = new FileNameExtensionFilter("Image Files", "gif", "jpeg", "jpg", "png");
         fc.setFileFilter(filter);
         fc.setMultiSelectionEnabled(false);
         int kq = fc.showOpenDialog(fc);
-       if (kq == JFileChooser.APPROVE_OPTION) {
+        if (kq == JFileChooser.APPROVE_OPTION) {
             java.io.File file = fc.getSelectedFile();
-            XImage.saveIconNH(file); 
-           ImageIcon icon = XImage.readIconNH(file.getName()); 
-           lblHinh.setIcon(icon);
-            lblHinh.setToolTipText(file.getName()); 
-       }
+            XImage.saveIconNH(file);
+            ImageIcon icon = XImage.readIconNH(file.getName());
+            lblHinh.setIcon(icon);
+            lblHinh.setToolTipText(file.getName());
+        }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -706,7 +767,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnInsertActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-         if (txtTenSP.getText().equals("")) {
+        if (txtTenSP.getText().equals("")) {
             XDialog.alert(main, "Vui lòng chọn sản phẩm cần sửa");
         } else {
             this.update();
@@ -714,7 +775,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-       if (btnInsert.getText().equalsIgnoreCase("Thêm")) {
+        if (btnInsert.getText().equalsIgnoreCase("Thêm")) {
             if (txtMaSP.getText().equals("")) {
                 XDialog.alert(main, "Vui lòng chọn sản phẩm cần xóa");
             } else {
@@ -748,8 +809,8 @@ public class SanPhamJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnGiamActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
-       String str = txtSearch.getText();
-       search(str);
+        String str = txtSearch.getText();
+        search(str);
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
@@ -780,22 +841,22 @@ public class SanPhamJPanel extends javax.swing.JPanel {
 
     private void lblTenSPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lblTenSPKeyReleased
         // TODO add your handling code here:
-         lblTenSP.setText("");
+        lblTenSP.setText("");
     }//GEN-LAST:event_lblTenSPKeyReleased
 
     private void lblGiaXuatKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lblGiaXuatKeyReleased
         // TODO add your handling code here:
-         lblGiaXuat.setText("");
+        lblGiaXuat.setText("");
     }//GEN-LAST:event_lblGiaXuatKeyReleased
 
     private void lblLSPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lblLSPKeyReleased
         // TODO add your handling code here:
-         lblLSP.setText("");
+        lblLSP.setText("");
     }//GEN-LAST:event_lblLSPKeyReleased
 
     private void lblSoLuongKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lblSoLuongKeyReleased
         // TODO add your handling code here:
-         lblSoLuong.setText("");
+        lblSoLuong.setText("");
     }//GEN-LAST:event_lblSoLuongKeyReleased
 
     private void lblHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHinhMouseClicked
@@ -856,16 +917,16 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         txtGiaXuat.setText(sp.getGiaXuat());
         int SoLuong = sp.getSoLuong();
         txtSoLuong.setText(String.valueOf(SoLuong));
-         String tenLSP = lspdao.selectById(sp.getMaLoaiSanPham()).getTenLoaiSanPham();
+        String tenLSP = lspdao.selectById(sp.getMaLoaiSanPham()).getTenLoaiSanPham();
         cboLoaiSP.setSelectedItem(tenLSP);
     }
 
     private void updateStatus() {
-     
+
     }
 
     private SanPham getForm() {
-      SanPham sp = new SanPham();
+        SanPham sp = new SanPham();
         sp.setMaSanPham(txtMaSP.getText());
         sp.setTenSanPham(txtTenSP.getText());
         sp.setHinh(lblHinh.getToolTipText());
@@ -874,5 +935,9 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         sp.setGiaXuat(txtTenSP.getText());
         int soLuong = Integer.parseInt(txtSoLuong.getText());
         return sp;
+    }
+
+    private void dispose() {
+        dispose();
     }
 }
