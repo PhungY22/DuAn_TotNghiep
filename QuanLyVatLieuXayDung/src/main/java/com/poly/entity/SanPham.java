@@ -86,4 +86,12 @@ public class SanPham {
         this.SoLuong = SoLuong;
     }
 
+    public boolean isValid() {
+       return MaSanPham != null && !MaSanPham.isEmpty() &&
+           TenSanPham != null && !TenSanPham.isEmpty() &&
+           SoLuong > 0 && Hinh != null && !Hinh.isEmpty()
+           && MaLoaiSanPham != null && !MaLoaiSanPham.isEmpty() && 
+              GiaNhap != null && !GiaNhap.isEmpty() && GiaXuat != null && !GiaXuat.isEmpty();
+    }
+
 }
