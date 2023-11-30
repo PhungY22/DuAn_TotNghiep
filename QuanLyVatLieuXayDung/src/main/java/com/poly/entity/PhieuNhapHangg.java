@@ -23,17 +23,16 @@ public class PhieuNhapHangg {
     private String DienDai;
     private String SoLuong;
     private String DonGia;
-    private String GhiChu;
-     public boolean isGhiChu;
-
-    public PhieuNhapHangg() {
+    private String NguoiGiao;
+    private String DonViTinh;
+    
+    private boolean isGhiChu;
+    
+    public PhieuNhapHangg(){
+    
     }
 
-     
-
-    
-
-    public PhieuNhapHangg(String MaPhieuNhapHang, String MaNhaCungCap, String MaNhanVien, String NgayNhap, String TongTien, String HinhThucThanhToan, String Vatlieu, String SoPhieuNhap, String DiaDiem, String DienDai, String SoLuong, String DonGia, String GhiChu, boolean isGhiChu) {
+    public PhieuNhapHangg(String MaPhieuNhapHang, String MaNhaCungCap, String MaNhanVien, String NgayNhap, String TongTien, String HinhThucThanhToan, String Vatlieu, String SoPhieuNhap, String DiaDiem, String DienDai, String SoLuong, String DonGia, String NguoiGiao, String DonViTinh, boolean isGhiChu) {
         this.MaPhieuNhapHang = MaPhieuNhapHang;
         this.MaNhaCungCap = MaNhaCungCap;
         this.MaNhanVien = MaNhanVien;
@@ -46,34 +45,13 @@ public class PhieuNhapHangg {
         this.DienDai = DienDai;
         this.SoLuong = SoLuong;
         this.DonGia = DonGia;
-        this.GhiChu = GhiChu;
+        this.NguoiGiao = NguoiGiao;
+        this.DonViTinh = DonViTinh;
         this.isGhiChu = isGhiChu;
     }
 
-    public String getVatlieu() {
-        return Vatlieu;
-    }
-
-    public void setVatlieu(String Vatlieu) {
-        this.Vatlieu = Vatlieu;
-    }
-
-    public String getSoPhieuNhap() {
-        return SoPhieuNhap;
-    }
-
-    public void setSoPhieuNhap(String SoPhieuNhap) {
-        this.SoPhieuNhap = SoPhieuNhap;
-    }
-
-    public String getDiaDiem() {
-        return DiaDiem;
-    }
-
-    public void setDiaDiem(String DiaDiem) {
-        this.DiaDiem = DiaDiem;
-    }
     
+
     public String getMaPhieuNhapHang() {
         return MaPhieuNhapHang;
     }
@@ -122,24 +100,28 @@ public class PhieuNhapHangg {
         this.HinhThucThanhToan = HinhThucThanhToan;
     }
 
-    public String getGhiChu() {
-        return GhiChu;
+    public String getVatlieu() {
+        return Vatlieu;
     }
 
-    public void setGhiChu(String GhiChu) {
-        this.GhiChu = GhiChu;
+    public void setVatlieu(String Vatlieu) {
+        this.Vatlieu = Vatlieu;
     }
 
-    public boolean isIsGhiChu() {
-        return isGhiChu;
+    public String getSoPhieuNhap() {
+        return SoPhieuNhap;
     }
 
-    public void setIsGhiChu(boolean isGhiChu) {
-        this.isGhiChu = isGhiChu;
+    public void setSoPhieuNhap(String SoPhieuNhap) {
+        this.SoPhieuNhap = SoPhieuNhap;
     }
 
-    public PhieuNhapHangg(boolean isGhiChu) {
-        this.isGhiChu = isGhiChu;
+    public String getDiaDiem() {
+        return DiaDiem;
+    }
+
+    public void setDiaDiem(String DiaDiem) {
+        this.DiaDiem = DiaDiem;
     }
 
     public String getDienDai() {
@@ -165,35 +147,32 @@ public class PhieuNhapHangg {
     public void setDonGia(String DonGia) {
         this.DonGia = DonGia;
     }
+
+    public String getNguoiGiao() {
+        return NguoiGiao;
+    }
+
+    public void setNguoiGiao(String NguoiGiao) {
+        this.NguoiGiao = NguoiGiao;
+    }
+
+    public boolean isIsGhiChu() {
+        return isGhiChu;
+    }
+
+    public void setIsGhiChu(boolean isGhiChu) {
+        this.isGhiChu = isGhiChu;
+    }
+
+    public String getDonViTinh() {
+        return DonViTinh;
+    }
+
+    public void setDonViTinh(String DonViTinh) {
+        this.DonViTinh = DonViTinh;
+    }
+
     
 
-    public List<PhieuNhapHangg> selectAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public void insert(NhanVien nv) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public void update(PhieuNhapHangg pnh) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public void delete(String maNhanVien) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public PhieuNhapHangg selectById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public String findIdByName(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public boolean isGhiChu() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
- 
     
 }
