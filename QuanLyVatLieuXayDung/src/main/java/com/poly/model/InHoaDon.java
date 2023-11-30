@@ -25,6 +25,7 @@ import java.lang.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 import javax.swing.JPanel;
@@ -80,7 +81,7 @@ public class InHoaDon extends javax.swing.JFrame {
 //        jLabelTenSP7.setText(jLabelTenSP7.getText() + String.valueOf(hoadon.getTongTien()));
 
         // Assuming you want panels to be added horizontally
-        jPanel5.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jPanel5.setLayout(new GridLayout(0, 1)); // 1 column, variable rows
 
 // Call this method after creating the panels
         List<JPanel> panels = createPanels_SP(chiTietHD, chiTietSP);
@@ -119,7 +120,7 @@ public class InHoaDon extends javax.swing.JFrame {
             JPanel panel = new JPanel();
             JLabel[] list_lbl = new JLabel[3]; // Adjust the array size based on the number of labels you are using
 
-            panel.setLayout(new GridLayout(1, 3)); // Adjust the grid layout based on the number of labels
+            panel.setLayout(new GridLayout(1, 3)); // You can change the number of columns here
 
             list_lbl[0] = new JLabel(chiTietHD.getMaHoaDon());
             list_lbl[1] = new JLabel(String.valueOf(chiTietHD.getSoLuong()));
@@ -128,6 +129,9 @@ public class InHoaDon extends javax.swing.JFrame {
             for (JLabel label : list_lbl) {
                 label.setFont(new Font("Arial", Font.PLAIN, 20));
                 label.setBackground(new Color(255, 255, 255));
+
+                // Add margin to labels
+                label.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
                 panel.add(label);
             }
 
@@ -138,50 +142,6 @@ public class InHoaDon extends javax.swing.JFrame {
 
     }
 
-//    private JPanel createPanel_SP(List<ChiTietHoaDon> chiTietHD, List<SanPham> listSP) {
-//
-//        JPanel panel = new JPanel();
-//        JLabel[] list_lbl = new JLabel[5];
-//        list_lbl[0] = new JLabel();
-//        list_lbl[1] = new JLabel();
-//        list_lbl[2] = new JLabel();
-//        list_lbl[3] = new JLabel();
-//        list_lbl[4] = new JLabel();
-//
-//        panel.setLayout(null);
-//
-//        list_lbl[0].setText(chiTietHD.getStrTenGiay());
-//        list_lbl[1].setText(String.valueOf(hd.getiSoLuong()));
-//        list_lbl[2].setText(String.valueOf(sp.getiGia()) + " đồng");
-//        list_lbl[3].setText((tilekm * 100) + "%");
-//        
-//        list_lbl[0].setBounds(0, 0, 270, 30);
-//        list_lbl[1].setBounds(280, 0, 100, 30);
-//        list_lbl[2].setBounds(400, 0, 150, 30);
-//        list_lbl[3].setBounds(600, 0, 100, 30);
-//        list_lbl[4].setBounds(750, 0, 200, 30);
-//
-//        list_lbl[0].setFont(new Font("Arial", Font.PLAIN, 20));
-//        list_lbl[1].setFont(new Font("Arial", Font.PLAIN, 20));
-//        list_lbl[2].setFont(new Font("Arial", Font.PLAIN, 20));
-//        list_lbl[3].setFont(new Font("Arial", Font.PLAIN, 20));
-//        list_lbl[4].setFont(new Font("Arial", Font.PLAIN, 20));
-//
-//        list_lbl[0].setBackground(new Color(255, 255, 255));
-//        list_lbl[1].setBackground(new Color(255, 255, 255));
-//        list_lbl[2].setBackground(new Color(255, 255, 255));
-//        list_lbl[3].setBackground(new Color(255, 255, 255));
-//        list_lbl[4].setBackground(new Color(255, 255, 255));
-//
-//        panel.add(list_lbl[0]);
-//        panel.add(list_lbl[1]);
-//        panel.add(list_lbl[2]);
-//        panel.add(list_lbl[3]);
-//        panel.add(list_lbl[4]);
-//
-//        panel.setBackground(new Color(255, 255, 255));
-//        return panel;
-//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
