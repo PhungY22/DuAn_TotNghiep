@@ -35,7 +35,14 @@ public class PhieuNhapHanggDAO extends QuanLyVatLieuXayDungDAO<PhieuNhapHangg, S
                 entity.getHinhThucThanhToan(),
                 entity.getNgayNhap(),
                 entity.getTongTien(),
-                entity.getGhiChu());        
+                entity.getVatlieu(),
+                entity.getDienDai(),
+                entity.getSoPhieuNhap(),
+                entity.getDonGia(),
+                entity.getSoLuong(),
+                entity.getNguoiGiao(),
+                entity.getDonViTinh(),
+                entity.isIsGhiChu());        
     }
 
     @Override
@@ -47,7 +54,14 @@ public class PhieuNhapHanggDAO extends QuanLyVatLieuXayDungDAO<PhieuNhapHangg, S
                 entity.getHinhThucThanhToan(),
                 entity.getNgayNhap(),
                 entity.getTongTien(),
-                entity.getGhiChu()); 
+                entity.getVatlieu(),
+                entity.getDienDai(),
+                entity.getSoPhieuNhap(),
+                entity.getDonGia(),
+                entity.getSoLuong(),
+                entity.getNguoiGiao(),
+                entity.getDonViTinh(),
+                entity.isIsGhiChu());   
     }
 
     @Override
@@ -82,8 +96,16 @@ public class PhieuNhapHanggDAO extends QuanLyVatLieuXayDungDAO<PhieuNhapHangg, S
                 entity.setHinhThucThanhToan(rs.getString("HinhThucThanhToan"));
                 entity.setNgayNhap(rs.getString("NgayNhap"));
                 entity.setTongTien(rs.getString("TongTien"));
+                entity.setVatlieu(rs.getString("VatLieu"));
+                entity.setSoPhieuNhap(rs.getString("SoPhieuNhap"));
+                entity.setDiaDiem(rs.getString("DiaDiem"));
+                entity.setDienDai(rs.getString("DienDai"));
+                entity.setSoLuong(rs.getString("SoLuong"));
+                entity.setDonGia(rs.getString("DonGia"));
+                entity.setNguoiGiao(rs.getString("NguoiGiao"));
+                entity.setDonViTinh(rs.getString("DonViTinh"));
                 entity.setIsGhiChu(rs.getBoolean("isGhiChu"));
-                entity.setGhiChu(rs.getString("GhiChu"));
+                
                
              
                 list.add(entity);
