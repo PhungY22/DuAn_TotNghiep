@@ -4,6 +4,8 @@
  */
 package com.poly.entity;
 
+import static javax.management.Query.value;
+
 /**
  *
  * @author Nhu Y
@@ -13,13 +15,13 @@ public class SanPham {
     private String TenSanPham;
     private String Hinh = "NoImage.png";
     private String MaLoaiSanPham;
-    private String GiaNhap;
-    private String GiaXuat;
+    private double GiaNhap;
+    private double GiaXuat;
     private int SoLuong;
     public SanPham() {
         
 }
-    public SanPham(String MaSanPham, String TenSanPham, String Hinh, String MaLoaiSanPham, String GiaNhap, String GiaXuat, int SoLuong) {
+    public SanPham(String MaSanPham, String TenSanPham, String Hinh, String MaLoaiSanPham, double GiaNhap, double GiaXuat, int SoLuong) {
         this.MaSanPham = MaSanPham;
         this.TenSanPham = TenSanPham;
         this.Hinh = Hinh;
@@ -62,19 +64,19 @@ public class SanPham {
         this.MaLoaiSanPham = Loai;
     }
 
-    public String getGiaNhap() {
+    public double getGiaNhap() {
         return GiaNhap;
     }
 
-    public void setGiaNhap(String GiaNhap) {
+    public void setGiaNhap(double GiaNhap) {
         this.GiaNhap = GiaNhap;
     }
 
-    public String getGiaXuat() {
+    public double getGiaXuat() {
         return GiaXuat;
     }
 
-    public void setGiaXuat(String GiaXuat) {
+    public void setGiaXuat(double GiaXuat) {
         this.GiaXuat = GiaXuat;
     }
 
@@ -90,8 +92,9 @@ public class SanPham {
        return MaSanPham != null && !MaSanPham.isEmpty() &&
            TenSanPham != null && !TenSanPham.isEmpty() &&
            SoLuong > 0 && Hinh != null && !Hinh.isEmpty()
-           && MaLoaiSanPham != null && !MaLoaiSanPham.isEmpty() && 
-              GiaNhap != null && !GiaNhap.isEmpty() && GiaXuat != null && !GiaXuat.isEmpty();
+           && MaLoaiSanPham != null && !MaLoaiSanPham.isEmpty();
+      
+    
     }
 
 }
