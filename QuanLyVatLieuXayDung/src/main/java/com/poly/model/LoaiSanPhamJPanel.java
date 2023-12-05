@@ -14,7 +14,7 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-import static org.apache.logging.log4j.ThreadContext.init;
+
 
 /**
  *

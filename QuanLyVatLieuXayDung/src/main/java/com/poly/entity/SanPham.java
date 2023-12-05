@@ -15,13 +15,13 @@ public class SanPham {
     private String TenSanPham;
     private String Hinh = "NoImage.png";
     private String MaLoaiSanPham;
-    private double GiaNhap;
-    private double GiaXuat;
+    private String GiaNhap;
+    private String GiaXuat;
     private int SoLuong;
     public SanPham() {
         
 }
-    public SanPham(String MaSanPham, String TenSanPham, String Hinh, String MaLoaiSanPham, double GiaNhap, double GiaXuat, int SoLuong) {
+    public SanPham(String MaSanPham, String TenSanPham, String Hinh, String MaLoaiSanPham, String GiaNhap, String GiaXuat, int SoLuong) {
         this.MaSanPham = MaSanPham;
         this.TenSanPham = TenSanPham;
         this.Hinh = Hinh;
@@ -64,19 +64,19 @@ public class SanPham {
         this.MaLoaiSanPham = Loai;
     }
 
-    public double getGiaNhap() {
+    public String getGiaNhap() {
         return GiaNhap;
     }
 
-    public void setGiaNhap(double GiaNhap) {
+    public void setGiaNhap(String GiaNhap) {
         this.GiaNhap = GiaNhap;
     }
 
-    public double getGiaXuat() {
+    public String getGiaXuat() {
         return GiaXuat;
     }
 
-    public void setGiaXuat(double GiaXuat) {
+    public void setGiaXuat(String GiaXuat) {
         this.GiaXuat = GiaXuat;
     }
 

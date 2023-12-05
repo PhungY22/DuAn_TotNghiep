@@ -7,6 +7,7 @@ package com.poly.model;
 import com.poly.dao.LoaiSanPhamDAO;
 import com.poly.dao.SanPhamDAO;
 import com.poly.entity.LoaiSanPham;
+import com.poly.entity.NhanVien;
 import com.poly.entity.SanPham;
 import com.poly.utils.XDialog;
 import com.poly.utils.XImage;
@@ -53,7 +54,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
     }
 
     public void fillTable() {
-        DefaultTableModel model = (DefaultTableModel) tblDanhSachSP.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblSP.getModel();
         model.setRowCount(0);
         try {
             List<SanPham> list = spdao.selectAll();
@@ -118,7 +119,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
 }
 
     private void update() {
-        SanPham sp = getForm();
+         SanPham sp = getForm();
         try {
             spdao.update(sp);
             this.fillTable();
@@ -147,54 +148,59 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         txtMaSP.setText("");
         txtMaSP.setEditable(true);
         txtTenSP.setText("");
+        lblHinh.setIcon(XImage.readIconCD("NoImage.png"));
         txtGiaNhap.setText("");
         txtGiaXuat.setText(String.valueOf(""));
         txtSoLuong.setText(String.valueOf(""));
         cboLoaiSP.setSelectedIndex(0);
-        //this.row = -1;
-        lblMaSP.setText("");
-        lblTenSP.setText("");
-        lblLSP.setText("");
-        lblGiaNhap.setText("");
-        lblGiaXuat.setText("");
-        lblSoLuong.setText("");
+        this.row = -1;
     }
 
     private void edit() {
-        this.row = tblDanhSachSP.getSelectedRow();
+        this.row = tblSP.getSelectedRow();
         if (this.row >= 0) {
-            String id = (String) tblDanhSachSP.getValueAt(this.row, 0);
+            String id = (String) tblSP.getValueAt(this.row, 0);
             SanPham sp = spdao.selectById(id);
             this.setForm(sp);
         }
     }
 
-    void first() {
+  private void first() {
         this.row = 0;
+        selectAndScrollToVisible();
         this.edit();
     }
 
-    void prev() {
+    private void prev() {
         if (this.row > 0) {
             this.row--;
-            this.edit();
+            selectAndScrollToVisible();
         }
     }
 
-    void next() {
-        if (this.row < tblDanhSachSP.getRowCount() - 1) {
+    private void next() {
+        int rowCount = tblSP.getRowCount();
+        if (rowCount > 0 && this.row < rowCount - 1) {
             this.row++;
-            this.edit();
+            selectAndScrollToVisible();
         }
     }
 
-    void last() {
-        this.row = tblDanhSachSP.getRowCount() - 1;
+    private void last() {
+        int rowCount = tblSP.getRowCount();
+        if (rowCount > 0) {
+            this.row = rowCount - 1;
+            selectAndScrollToVisible();
+        }
+    }
+
+    private void selectAndScrollToVisible() {
+        tblSP.setRowSelectionInterval(this.row, this.row);
+        tblSP.scrollRectToVisible(tblSP.getCellRect(this.row, 0, true));
         this.edit();
     }
-
     void ASC() {
-        DefaultTableModel model = (DefaultTableModel) tblDanhSachSP.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblSP.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
 
         // Chỉ định cột "mã" và thứ tự sắp xếp là tăng dần
@@ -204,25 +210,25 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         sorter.setSortKeys(List.of(sortKey));
 
         // Đặt TableRowSorter cho JTable
-        tblDanhSachSP.setRowSorter(sorter);
+        tblSP.setRowSorter(sorter);
 
         // Thực hiện sắp xếp
         sorter.sort();
     }
 
     void DESC() {
-        DefaultTableModel model = (DefaultTableModel) tblDanhSachSP.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblSP.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-        tblDanhSachSP.setRowSorter(sorter);
+        tblSP.setRowSorter(sorter);
         List<RowSorter.SortKey> sortKeys = List.of(new RowSorter.SortKey(0, SortOrder.DESCENDING));
         sorter.setSortKeys(sortKeys);
         sorter.sort();
     }
 
     void search(String str) {
-        DefaultTableModel model = (DefaultTableModel) tblDanhSachSP.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblSP.getModel();
         TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
-        tblDanhSachSP.setRowSorter(trs);
+        tblSP.setRowSorter(trs);
 
         // Chỉ định cột "ID" và cột "Tên" để áp dụng bộ lọc
         int columnIndexID = 0; // Index của cột "ID" trong model
@@ -358,7 +364,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         txtSearch = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblDanhSachSP = new javax.swing.JTable();
+        tblSP = new javax.swing.JTable();
         btnFirst = new javax.swing.JButton();
         btnPrev = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
@@ -622,7 +628,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
             }
         });
 
-        tblDanhSachSP.setModel(new javax.swing.table.DefaultTableModel(
+        tblSP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -641,12 +647,12 @@ public class SanPhamJPanel extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
-        tblDanhSachSP.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblSP.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblDanhSachSPMouseClicked(evt);
+                tblSPMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblDanhSachSP);
+        jScrollPane1.setViewportView(tblSP);
 
         btnFirst.setBackground(new java.awt.Color(204, 204, 255));
         btnFirst.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -756,18 +762,53 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tblDanhSachSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDanhSachSPMouseClicked
+    private void tblSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSPMouseClicked
         // TODO add your handling code here:
-        if (evt.getClickCount() == 2) {
-            this.edit();
-    }//GEN-LAST:event_tblDanhSachSPMouseClicked
+       int selectedRow = tblSP.getSelectedRow();
+    if (selectedRow != -1) {
+        DefaultTableModel model = (DefaultTableModel) tblSP.getModel();
+        String MaSanPham = model.getValueAt(selectedRow, 0).toString();
+        String TenSanPham = model.getValueAt(selectedRow, 1).toString();
+        String GiaNhap = model.getValueAt(selectedRow, 3).toString();
+        String GiaXuat = model.getValueAt(selectedRow, 4).toString();
+        int SoLuong = Integer.parseInt(model.getValueAt(selectedRow, 5).toString());
+        
+        // Handling Gender
+       
+        
+        // Handling ChucVu (Position/Role)
+        Object loaiSanPhamValue = model.getValueAt(selectedRow, 2);
+        String LoaiSanPham = (loaiSanPhamValue != null) ? loaiSanPhamValue.toString() : "";
+        
+        // Populating text fields with retrieved data
+        txtMaSP.setText(MaSanPham);
+        txtTenSP.setText(TenSanPham);
+        txtGiaNhap.setText(GiaNhap);
+        txtGiaXuat.setText(GiaXuat);
+        txtSoLuong.setText(Integer.toString(SoLuong));
+        
+        // Set Gender based on retrieved data
+        // (Double-check this logic to ensure it sets the correct gender based on your data structure)
+        
+        // Set ChucVu in the combo box
+        cboLoaiSP.setSelectedItem(LoaiSanPham);
     }
+    }//GEN-LAST:event_tblSPMouseClicked
+    
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
-        this.insert();
+        SanPham sp = getForm();
+        try {
+            spdao.insert(sp);
+            this.fillTable();
+            XDialog.alert(this, "Thêm mới sản phẩm thành công");
+        } catch (Exception e) {
+            XDialog.alert(this, "Thêm mới sản phẩm thất bại");
+            throw new RuntimeException(e);
+        }
     }//GEN-LAST:event_btnInsertActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        if (txtTenSP.getText().equals("")) {
+        if (txtMaSP.getText().equals("")) {
             XDialog.alert(main, "Vui lòng chọn sản phẩm cần sửa");
         } else {
             this.update();
@@ -896,7 +937,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblMaSP;
     private javax.swing.JLabel lblSoLuong;
     private javax.swing.JLabel lblTenSP;
-    private javax.swing.JTable tblDanhSachSP;
+    private javax.swing.JTable tblSP;
     private javax.swing.JTextField txtGiaNhap;
     private javax.swing.JTextField txtGiaXuat;
     private javax.swing.JTextField txtMaSP;
@@ -931,8 +972,8 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         sp.setTenSanPham(txtTenSP.getText());
         sp.setHinh(lblHinh.getToolTipText());
         sp.setMaLoaiSanPham(lspdao.findIdByName((String) cboLoaiSP.getSelectedItem()));
-        sp.setGiaNhap(txtTenSP.getText());
-        sp.setGiaXuat(txtTenSP.getText());
+        sp.setGiaNhap(txtGiaNhap.getText());
+        sp.setGiaXuat(txtGiaXuat.getText());
         int soLuong = Integer.parseInt(txtSoLuong.getText());
         return sp;
     }

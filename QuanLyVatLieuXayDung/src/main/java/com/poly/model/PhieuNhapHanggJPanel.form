@@ -155,7 +155,7 @@
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Th&#xf4;ng tin phi&#x1ebf;u nh&#x1ead;p">
+            <TitledBorder title="&lt;PhieuNhapHanggJPanel.jPanel1.border.title&gt;">
               <ResourceString PropertyName="titleX" bundle="com/poly/model/Bundle.properties" key="PhieuNhapHanggJPanel.jPanel1.border.title" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
               <Font PropertyName="font" name="Segoe UI" size="14" style="3"/>
             </TitledBorder>
@@ -181,7 +181,7 @@
                       <Component id="txtMaNhacc" alignment="1" max="32767" attributes="0"/>
                       <Component id="txtNguoigiao" alignment="1" max="32767" attributes="0"/>
                       <Component id="txtDiengiai" alignment="0" max="32767" attributes="0"/>
-                      <Component id="cboNhacc" alignment="1" pref="301" max="32767" attributes="0"/>
+                      <Component id="cboNhacc" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -193,7 +193,7 @@
                   </Group>
                   <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="txtSoLuong" alignment="0" pref="290" max="32767" attributes="0"/>
+                      <Component id="txtSoLuong" alignment="0" max="32767" attributes="0"/>
                       <Component id="txtNgayNhap" alignment="0" max="32767" attributes="0"/>
                       <Component id="txtSoPhieuNhap" alignment="0" max="32767" attributes="0"/>
                       <Component id="txtDonViTinh" alignment="0" max="32767" attributes="0"/>
@@ -407,7 +407,7 @@
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Danh s&#xe1;ch phi&#x1ebf;u nh&#x1ead;p">
+            <TitledBorder title="&lt;PhieuNhapHanggJPanel.jPanel2.border.title&gt;">
               <ResourceString PropertyName="titleX" bundle="com/poly/model/Bundle.properties" key="PhieuNhapHanggJPanel.jPanel2.border.title" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
               <Font PropertyName="font" name="Segoe UI" size="14" style="3"/>
             </TitledBorder>
@@ -443,7 +443,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="80" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

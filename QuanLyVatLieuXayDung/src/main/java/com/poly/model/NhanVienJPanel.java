@@ -7,8 +7,6 @@ package com.poly.model;
 import com.poly.dao.NhanVienDAO;
 import com.poly.entity.NhanVien;
 import static com.poly.model.DangNhapJFrame.main;
-import com.poly.utils.DateHelper;
-import com.poly.utils.ShareHelper;
 import com.poly.utils.XDate;
 //import com.poly.utils.XDate;
 import com.poly.utils.XDialog;
@@ -950,14 +948,14 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         txtMaNhanVien.setText(nv.getMaNhanVien());
         lblHinh.setToolTipText(nv.getHinh());
         if (nv.getHinh() != null) {
-            lblHinh.setIcon(ShareHelper.readLogo(nv.getHinh()));
+            //lblHinh.setIcon(ShareHelper.readLogo(nv.getHinh()));
         }
         txtTenNhanVien.setText(nv.getTenNhanVien());
         txtMatKhau.setText(nv.getMatKhau());
         txtSoDienThoai.setText(nv.getSoDienThoai());
         txtDiaChi.setText(nv.getDiaChi());
         txtEmail.setText(nv.getEmail());
-        txtNamSinh.setText(DateHelper.toString(nv.getNgayThangNamSinh()));
+       // txtNamSinh.setText(DateHelper.toString(nv.getNgayThangNamSinh()));
         boolean gt = nv.isGioiTinh();
         if (gt == false) {
             rdoGioiTinhNu.isSelected();

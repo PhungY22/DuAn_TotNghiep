@@ -18,7 +18,7 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-import static org.apache.logging.log4j.ThreadContext.init;
+
 
 /**
  *
@@ -731,7 +731,7 @@ public class PhieuNhapHanggJPanel extends javax.swing.JPanel {
         txtNhanVienmuahang.setText(pnh.getMaNhanVien());
         txtVatLieu.setText(pnh.getVatlieu());
         txtDiaDiem.setText(pnh.getDiaDiem());
-        txtSoPhieuNhap.setText(XDate.toString(pnh.getSoPhieuNhap()));
+        //txtSoPhieuNhap.setText(XDate.toString(pnh.getSoPhieuNhap()));
         txtThanhTien.setText(pnh.getTongTien());
         txtSoLuong.setText(pnh.getSoLuong());
         txtDiengiai.setText(pnh.getDienDai());

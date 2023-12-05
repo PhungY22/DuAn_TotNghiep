@@ -13,6 +13,6 @@ import com.poly.model.MainJFrame;
 public class QuanLyVatLieuXayDung {
 
     public static void main(String[] args) {
-     new MainJFrame().setVisible(true);
+    new MainJFrame("","","").setVisible(true);
     }
 }

@@ -6,7 +6,8 @@ package com.poly.model;
 
 import com.poly.dao.NhanVienDAO;
 import com.poly.entity.NhanVien;
-//import com.poly.utils.XAuth;
+import com.poly.utils.XAuth;
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,8 +21,8 @@ import org.openide.util.Exceptions;
  * @author Nhu Y
  */
 public class DangNhapJFrame extends javax.swing.JFrame {
-        Connection ketnoi;
-        NhanVienDAO nvdao = new NhanVienDAO();
+    Connection ketnoi;
+    NhanVienDAO tkDao = new NhanVienDAO();
     /**
      * Creates new form DangNhapJFrame
      */
@@ -38,83 +39,105 @@ public class DangNhapJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        txtTenTaiKhoan = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtPass = new javax.swing.JPasswordField();
-        txtTenTk = new javax.swing.JTextField();
-        lblQuenMk = new javax.swing.JLabel();
-        lblThoat = new javax.swing.JLabel();
         btnDangNhap = new javax.swing.JButton();
+        lblThoat = new javax.swing.JLabel();
+        lblQuenMatKhau = new javax.swing.JLabel();
+        txtPass = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(null);
+
+        jPanel1.setLayout(null);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jLabel2.text")); // NOI18N
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(220, 20, 160, 32);
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(280, 20, 160, 32);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jLabel3.text")); // NOI18N
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(110, 80, 110, 20);
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(110, 90, 110, 20);
+
+        txtTenTaiKhoan.setText(org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.txtTenTaiKhoan.text")); // NOI18N
+        jPanel1.add(txtTenTaiKhoan);
+        txtTenTaiKhoan.setBounds(110, 120, 470, 40);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         org.openide.awt.Mnemonics.setLocalizedText(jLabel4, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jLabel4.text")); // NOI18N
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(110, 170, 70, 20);
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(110, 190, 80, 20);
 
-        txtPass.setText(org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.txtPass.text")); // NOI18N
-        getContentPane().add(txtPass);
-        txtPass.setBounds(110, 200, 370, 40);
-
-        txtTenTk.setText(org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.txtTenTk.text")); // NOI18N
-        getContentPane().add(txtTenTk);
-        txtTenTk.setBounds(110, 110, 370, 40);
-
-        lblQuenMk.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblQuenMk.setForeground(new java.awt.Color(255, 255, 255));
-        org.openide.awt.Mnemonics.setLocalizedText(lblQuenMk, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.lblQuenMk.text")); // NOI18N
-        lblQuenMk.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblQuenMkMouseClicked(evt);
-            }
-        });
-        getContentPane().add(lblQuenMk);
-        lblQuenMk.setBounds(110, 250, 120, 20);
-
-        lblThoat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblThoat.setForeground(new java.awt.Color(255, 255, 255));
-        org.openide.awt.Mnemonics.setLocalizedText(lblThoat, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.lblThoat.text")); // NOI18N
-        lblThoat.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblThoatMouseClicked(evt);
-            }
-        });
-        getContentPane().add(lblThoat);
-        lblThoat.setBounds(430, 250, 50, 20);
-
-        btnDangNhap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnDangNhap.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(btnDangNhap, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.btnDangNhap.text")); // NOI18N
         btnDangNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDangNhapActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDangNhap);
-        btnDangNhap.setBounds(240, 310, 130, 27);
+        jPanel1.add(btnDangNhap);
+        btnDangNhap.setBounds(270, 370, 150, 40);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/wepik-export-20231108142252Lqnj.jpeg"))); // NOI18N
+        lblThoat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblThoat, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.lblThoat.text")); // NOI18N
+        lblThoat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblThoatMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblThoatMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblThoatMouseExited(evt);
+            }
+        });
+        jPanel1.add(lblThoat);
+        lblThoat.setBounds(530, 270, 50, 16);
+
+        lblQuenMatKhau.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblQuenMatKhau.setForeground(new java.awt.Color(255, 51, 51));
+        org.openide.awt.Mnemonics.setLocalizedText(lblQuenMatKhau, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.lblQuenMatKhau.text")); // NOI18N
+        lblQuenMatKhau.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblQuenMatKhauMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblQuenMatKhauMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblQuenMatKhauMouseExited(evt);
+            }
+        });
+        jPanel1.add(lblQuenMatKhau);
+        lblQuenMatKhau.setBounds(110, 270, 130, 20);
+
+        txtPass.setText(org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.txtPass.text")); // NOI18N
+        jPanel1.add(txtPass);
+        txtPass.setBounds(110, 220, 470, 40);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/BANNER2.jpg"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jLabel1.text")); // NOI18N
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, 0, 580, 370);
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(0, 0, 700, 465);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+        );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
@@ -132,32 +155,52 @@ public class DangNhapJFrame extends javax.swing.JFrame {
 
     private void lblThoatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblThoatMouseClicked
         // TODO add your handling code here:
-        if (evt.getClickCount() == 1) {
+          if (evt.getClickCount() == 1) {
             System.exit(0);
-        }
+          }
     }//GEN-LAST:event_lblThoatMouseClicked
 
-    private void lblQuenMkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuenMkMouseClicked
+    private void lblQuenMatKhauMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuenMatKhauMouseClicked
         // TODO add your handling code here:
-        new QuenMatKhauJFrame().setVisible(true);
+         new QuenMatKhauJFrame().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_lblQuenMkMouseClicked
- public void DangNhap() throws SQLException {
+    }//GEN-LAST:event_lblQuenMatKhauMouseClicked
+
+    private void lblThoatMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblThoatMouseEntered
+        // TODO add your handling code here:
+         lblThoat.setForeground(Color.red);
+    }//GEN-LAST:event_lblThoatMouseEntered
+
+    private void lblThoatMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblThoatMouseExited
+        // TODO add your handling code here:
+         lblThoat.setForeground(Color.white);
+    }//GEN-LAST:event_lblThoatMouseExited
+
+    private void lblQuenMatKhauMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuenMatKhauMouseEntered
+        // TODO add your handling code here:
+          lblQuenMatKhau.setForeground(Color.red);
+    }//GEN-LAST:event_lblQuenMatKhauMouseEntered
+
+    private void lblQuenMatKhauMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuenMatKhauMouseExited
+        // TODO add your handling code here:
+         lblQuenMatKhau.setForeground(Color.white);
+    }//GEN-LAST:event_lblQuenMatKhauMouseExited
+public void DangNhap() throws SQLException {
         KetNoiCSDL();
         String sql = "SELECT * FROM NhanVien where TenNhanVien =? and MatKhau = ?";
         PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
-        cauLenh.setString(1, txtTenTk.getText());
+        cauLenh.setString(1, txtTenTaiKhoan.getText());
         cauLenh.setString(2, String.copyValueOf(txtPass.getPassword()));
         ResultSet ketQua = cauLenh.executeQuery();
         if (ketQua.next()) {
-            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
             System.out.println(ketQua.getString(9));
-            NhanVien nv = nvdao.selectById(txtTenTk.getText());
-            //XAuth.user = nv;
-            //String userID = XAuth.user.getTenNhanVien();
-            //String role = XAuth.user.equals("ChucVu")? "Nhân Viên" : "Admin";
-            //String hoTen = XAuth.user.getTenNhanVien();
-            //new MainJFrame(userID, role, hoTen).setVisible(true);
+            NhanVien tk = tkDao.selectById(txtTenTaiKhoan.getText());
+            XAuth.user = tk;
+            String userID = XAuth.user.getTenNhanVien();
+            String role = String.valueOf(XAuth.user.isChucVu()).equals("true") ? "Admin" : "Nhân Viên";
+            String hoTen = XAuth.user.getTenNhanVien();
+            new MainJFrame(userID, role, hoTen).setVisible(true);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Tên tài khoản hoặc mật khẩu sai", "Đăng nhập thất bại", JOptionPane.ERROR_MESSAGE);
@@ -165,7 +208,7 @@ public class DangNhapJFrame extends javax.swing.JFrame {
     }
 
     public boolean checknull() {
-        String tendangnhap = txtTenTk.getText();
+        String tendangnhap = txtTenTaiKhoan.getText();
         String matkhau = txtPass.getText();
 
         if (tendangnhap.isEmpty() && matkhau.isEmpty()) {
@@ -189,6 +232,7 @@ public class DangNhapJFrame extends javax.swing.JFrame {
         }
 
     }
+
     /**
      * @param args the command line arguments
      */
@@ -230,9 +274,10 @@ public class DangNhapJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel lblQuenMk;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblQuenMatKhau;
     private javax.swing.JLabel lblThoat;
     private javax.swing.JPasswordField txtPass;
-    private javax.swing.JTextField txtTenTk;
+    private javax.swing.JTextField txtTenTaiKhoan;
     // End of variables declaration//GEN-END:variables
 }

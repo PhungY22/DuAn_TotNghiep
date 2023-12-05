@@ -7,6 +7,8 @@ package com.poly.model;
 import com.poly.bean.DanhMucBean;
 import com.poly.bean.MenuBean;
 import com.poly.controller.ChuyenManHinhChinh;
+import com.poly.utils.XAuth;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +17,55 @@ import java.util.List;
  * @author Nhu Y
  */
 public class MainJFrame extends javax.swing.JFrame {
-List<DanhMucBean> listDanhMuc = new ArrayList<>();
     List<MenuBean> listMenu = new ArrayList<>();
     /**
      * Creates new form MainJFrame
      */
-    public MainJFrame() {
+
+
+    /**
+     * Creates new form MainJFrame
+     */
+    public MainJFrame(String userID, String role, String ngDung) {
         initComponents();
-          this.setMenuAction();
+        this.checkLogin(userID, role, ngDung);
+        setExtendedState(MAXIMIZED_BOTH);
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        this.setMenuAction(); // Assuming you have a method to set actions for buttons
+    }
+
+void checkLogin(String userID, String role, String ngDung) {
+//    if (ngDung.equals("")) {
+//        btnDoiMatKhau.setVisible(false);
+//        btnThoat.setVisible(false);
+//    }
+
+    if (role.equals("Admin")) {
+        btnNhanVien.setVisible(true);
+        btnKhachHang.setVisible(true);
+        btnSanPham.setVisible(true);
+        btnLoaiSanPham.setVisible(true);
+        btnPhieuNhapHang.setVisible(true);
+        btnHoaDon.setVisible(true);
+        btnThongKe.setVisible(true);
+        btnVoucher.setVisible(true);
+        btnDoiMatKhau.setVisible(true);
+        btnThoat.setVisible(false);
+        
+    }
+
+    if (role.equals("Nhân Viên")) {
+        btnKhachHang.setVisible(true);
+        btnSanPham.setVisible(true);
+        btnLoaiSanPham.setVisible(true);
+        btnPhieuNhapHang.setVisible(true);
+        btnHoaDon.setVisible(true);
+        btnThongKe.setVisible(true);
+        btnVoucher.setVisible(true);
+        btnDoiMatKhau.setVisible(true);
+        btnThoat.setVisible(false);
+    }
+
     }
   void setMenuAction() {
         //
@@ -45,6 +88,9 @@ List<DanhMucBean> listDanhMuc = new ArrayList<>();
         controller.setDashBoaed(pnlView);
         controller.setEventMenu(listMenu);
     }
+//  void openLogin(){
+//        new DangNhapJFrame(this, true).setVisible(true);
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -300,6 +346,9 @@ List<DanhMucBean> listDanhMuc = new ArrayList<>();
 
     private void btnDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoiMatKhauActionPerformed
         // TODO add your handling code here:
+         DoiMatKhauJFrame dmk = new DoiMatKhauJFrame();
+         dmk.setVisible(true);
+         this.dispose();
     }//GEN-LAST:event_btnDoiMatKhauActionPerformed
 
     private void btnVoucherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoucherActionPerformed
@@ -346,8 +395,20 @@ List<DanhMucBean> listDanhMuc = new ArrayList<>();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainJFrame().setVisible(true);
+             public void run() {
+
+                try {
+                    String userID = XAuth.user.getTenNhanVien();
+                     String role = String.valueOf(XAuth.user.isChucVu()).equals("true") ? "Admin" : "Nhân Viên";
+                    String ngDung = XAuth.user.getTenNhanVien();
+                    new MainJFrame(userID, role, ngDung).setVisible(true);
+                } catch (Exception e) {
+//                    String userID = "daohoa1";
+//                    String role = "Cán Bộ";
+//                    String ngDung = "Đào Văn Hòa";
+//                    new MainJFrame(userID, role, ngDung).setVisible(true);
+                    throw new RuntimeException(e);
+                }
             }
         });
     }

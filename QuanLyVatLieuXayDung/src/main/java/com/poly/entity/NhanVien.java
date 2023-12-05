@@ -118,6 +118,12 @@ public class NhanVien {
         this.ChucVu = ChucVu;
     }
 
+    public boolean isChucVu() {
+        
+        return false;
+        
+    }
+
     
 
     
