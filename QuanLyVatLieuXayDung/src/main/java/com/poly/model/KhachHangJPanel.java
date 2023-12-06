@@ -114,7 +114,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
             this.edit();
         }
     }
-
+    
     private void next() {
         if (this.row < tblDanhSachKH.getRowCount() - 1) {
             this.row++;
@@ -153,7 +153,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
         btnCapNhat = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         btnLamMoi = new javax.swing.JButton();
-        txtDiachi = new javax.swing.JTextField();
+        txtDiaChi = new javax.swing.JTextField();
         rdoNam = new javax.swing.JRadioButton();
         rdoNu = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
@@ -268,7 +268,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtMaKH, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtDiachi, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(183, 183, 183)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
@@ -319,7 +319,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(txtDiachi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jblGioiTinh)
                             .addComponent(rdoNam)
                             .addComponent(rdoNu)))
@@ -450,9 +450,9 @@ public class KhachHangJPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -486,7 +486,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
             // Populate text fields with the retrieved data
             txtMaKH.setText(MaKhachHang);
             txtTenKH.setText(TenKhachHang);
-            txtDiachi.setText(DiaChi);
+            txtDiaChi.setText(DiaChi);
             txtSDT.setText(SoDienThoai);
             txtEmail.setText(Email);
             if (model.getValueAt(selectedRow, 5) instanceof Boolean) {
@@ -503,7 +503,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void txtMaKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaKHActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:   
     }//GEN-LAST:event_txtMaKHActionPerformed
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
@@ -546,7 +546,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton rdoNam;
     private javax.swing.JRadioButton rdoNu;
     private javax.swing.JTable tblDanhSachKH;
-    private javax.swing.JTextField txtDiachi;
+    private javax.swing.JTextField txtDiaChi;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtMaKH;
     private javax.swing.JTextField txtSDT;
@@ -558,7 +558,7 @@ private KhachHang getForm() {
         KhachHang sp = new KhachHang();
         sp.setMaKhachHang(txtMaKH.getText());
         sp.setTenKhachHang(txtTenKH.getText());
-        sp.setDiaChi(txtDiachi.getText());
+        sp.setDiaChi(txtDiaChi.getText());
         sp.setSoDienThoai(txtSDT.getText());
         sp.setEmail(txtEmail.getText());
         boolean gt = false;
@@ -582,7 +582,7 @@ private KhachHang getForm() {
 //        rdoNu.setSelected(!hv.isGioiTinh());
         txtSDT.setText(hv.getSoDienThoai());
         txtEmail.setText(hv.getEmail());
-        txtDiachi.setText(hv.getDiaChi());
+        txtDiaChi.setText(hv.getDiaChi());
     }
     
 }

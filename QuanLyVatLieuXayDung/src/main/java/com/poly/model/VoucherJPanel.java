@@ -9,7 +9,11 @@ import com.poly.entity.KhachHang;
 import com.poly.entity.Voucher;
 import com.poly.utils.XDialog;
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -49,13 +53,15 @@ public class VoucherJPanel extends javax.swing.JPanel {
 //            System.out.println("Lỗi truy vấn dữ liệu");
         }
     }
+    
+    
 
     private void insert() {
         Voucher sp = this.getForm();
         try {
             Voudao.insert(sp); // thêm mới
             this.fillTable(); // đỗ lại bảng
-//            this.clearForm(); // xóa trắng form
+            this.clearForm(); // xóa trắng form
             XDialog.alert(this, "Thêm sản phẩm mới thành công!");
         } catch (Exception e) {
             XDialog.alert(this, "Thêm sản phẩm mới thất bại!");
@@ -91,10 +97,13 @@ public class VoucherJPanel extends javax.swing.JPanel {
     }
 
     private void clearForm() {
-        Voucher hv = new Voucher();
-//        this.setForm(hv);
-        this.row = -1;
-        //this.updateStatus();
+        txtMaVou.setText("");
+        txtTenVou.setText("");
+        txtGiaTriVou.setText("");
+        txtNgayHetHan.setText(null); // Đặt phần tử được chọn là null, nếu có
+        txtSoLuong.setText("");
+
+        txtMaVou.requestFocus();
     }
 
     private void edit() {
@@ -213,10 +222,20 @@ public class VoucherJPanel extends javax.swing.JPanel {
         btnXoa.setBackground(new java.awt.Color(204, 204, 255));
         btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         btnLamMoi.setBackground(new java.awt.Color(204, 204, 255));
         btnLamMoi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnLamMoi.setText("Làm mới");
+        btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLamMoiActionPerformed(evt);
+            }
+        });
 
         txtGiaTriVou.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -238,38 +257,34 @@ public class VoucherJPanel extends javax.swing.JPanel {
                         .addGap(89, 89, 89)
                         .addComponent(btnCapNhat, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(236, 236, 236))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(89, 89, 89)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(33, 33, 33)
-                                .addComponent(txtMaVou, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addGap(33, 33, 33))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addGap(48, 48, 48)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(1, 1, 1))
-                                    .addComponent(txtTenVou))))
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtGiaTriVou))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addGap(33, 33, 33)
+                                    .addComponent(txtMaVou, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addGap(33, 33, 33)
+                                    .addComponent(txtTenVou, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(154, 154, 154)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
-                            .addComponent(jLabel6))
-                        .addGap(85, 85, 85)
+                            .addComponent(jLabel8))
+                        .addGap(91, 91, 91)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNgayHetHan, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(108, 108, 108)
                                 .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(txtGiaTriVou))))
+                            .addComponent(txtSoLuong))))
                 .addGap(184, 184, 184))
         );
         jPanel1Layout.setVerticalGroup(
@@ -285,13 +300,13 @@ public class VoucherJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtTenVou, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtGiaTriVou, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtGiaTriVou, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -438,39 +453,52 @@ public class VoucherJPanel extends javax.swing.JPanel {
     private void tblDanhSachVouMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDanhSachVouMouseClicked
         int selectedRow = tblDanhSachVou.getSelectedRow();
 
-        if (selectedRow != -1) { // Check if a row is selected
-            DefaultTableModel model = (DefaultTableModel) tblDanhSachVou.getModel();
-            String maHoaDon = model.getValueAt(selectedRow, 0).toString();
-            String maKhachHang = model.getValueAt(selectedRow, 1).toString(); // Assuming the first column contains the MaKhachHang
-            String maNhanVien = model.getValueAt(selectedRow, 2).toString(); // Assuming the second column contains the TenKhachHang
-            String MaVoucher = model.getValueAt(selectedRow, 6).toString();
+    if (selectedRow != -1) { // Check if a row is selected
+        DefaultTableModel model = (DefaultTableModel) tblDanhSachVou.getModel();
 
-            // Populate text fields with the retrieved data
-//            txtMaHoaDon.setText(maHoaDon);
-//            txtMaKhachHang.setText(maKhachHang);
-//            txtMaNhanVien.setText(maNhanVien);
+        // Lấy dữ liệu từ bảng và gán vào các biến
+//        String MaVoucher = model.getValueAt(selectedRow, 0).toString();
+//        String TenVoucher = model.getValueAt(selectedRow, 1).toString();
+//        BigDecimal GiaTriVoucher = (BigDecimal) model.getValueAt(selectedRow, 2);
+//        Date NgayHetHan = (Date) model.getValueAt(selectedRow, 3);
+//        int SoLuong = (int) model.getValueAt(selectedRow, 4);
 //
-//            // Calculate the total amount based on the selected row
-//            BigDecimal tongtien = tinhTongTien(maHoaDon);
-//
-//            // Set the total amount in the text field as a string
-//            txtTongTien.setText(tongtien.toString());
-//
-//            // Retrieve the corresponding maVoucher from the map
-//            String tenVoucher = voucherMap.get(MaVoucher);
-//
-//            cbMaVoucher.setSelectedItem(tenVoucher);
-//
-//            BangChiTietHoaDon bang = new BangChiTietHoaDon(maHoaDon);
-//
-//            bang.setVisible(true);
-//
-        } 
+//        // Gán dữ liệu vào các textfield
+//        txtMaVou.setText(MaVoucher);
+//        txtTenVou.setText(TenVoucher);
+//        txtGiaTriVou.setText(GiaTriVoucher.toString());
+//        txtNgayHetHan.setText(NgayHetHan.toString());
+//        txtSoLuong.setText(String.valueOf(SoLuong));
+        String MaVoucher = model.getValueAt(selectedRow, 0).toString();
+        String TenVoucher = model.getValueAt(selectedRow, 1).toString();
+        BigDecimal GiaTriVoucher = (BigDecimal) model.getValueAt(selectedRow, 2);
+        Date NgayHetHan = (Date) model.getValueAt(selectedRow, 3); // Kiểm tra lại định dạng ngày tháng trả về từ bảng
+        int SoLuong = Integer.parseInt(model.getValueAt(selectedRow, 4).toString()); // Chuyển đổi sang kiểu Integer
+
+        // Gán dữ liệu vào các textfield
+        txtMaVou.setText(MaVoucher);
+        txtTenVou.setText(TenVoucher);
+        txtGiaTriVou.setText(GiaTriVoucher.toString());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strNgayHetHan = dateFormat.format(NgayHetHan);
+        txtNgayHetHan.setText(strNgayHetHan);
+
+        txtSoLuong.setText(String.valueOf(SoLuong));
+    }
     }//GEN-LAST:event_tblDanhSachVouMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         this.insert();
     }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
+        this.clearForm();
+    }//GEN-LAST:event_btnLamMoiActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        this.delete();
+    }//GEN-LAST:event_btnXoaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -504,23 +532,30 @@ public class VoucherJPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private Voucher getForm() {
-        Voucher sp = new Voucher();
-        sp.setMaVoucher(txtMaVou.getText());
-        sp.setTenVoucher(txtTenVou.getText());
-        String voucher = txtGiaTriVou.getText();
-        BigDecimal value = new BigDecimal(voucher);
-        sp.setGiaTriVoucher(value);
-//        sp.setNgayHetHan(txtNgayHetHan.getText());
-//        sp.setSoLuong(txtSoLuong.getText());
-        return sp;
+        String maVoucher = txtMaVou.getText();
+        String tenVoucher = txtTenVou.getText();
+        BigDecimal giaTriVoucher = new BigDecimal(txtGiaTriVou.getText());
+        Date ngayHetHan = null;
+        int soLuong = Integer.parseInt(txtSoLuong.getText());
+
+//        try {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//            ngayHetHan = (Date) dateFormat.parse(txtNgayHetHan.getText());
+//        } catch (ParseException ex) {
+//            ex.printStackTrace();
+//        }
+
+        return new Voucher(maVoucher, tenVoucher, giaTriVoucher, ngayHetHan, soLuong);
     }
 
-//    private void setForm(Voucher hv) {
-//        txtMaVou.setText(hv.getMaVoucher());
-//        txtTenVou.setText(hv.getTenVoucher());
-//       String value = (hv.getGiaTriVoucher().toString());
-//       txtGiaTriVou.setText(value);
-//        txtNgayHetHan.setText(hv.getNgayHetHan());
-//        txtSoLuong.setText(hv.getSoLuong());
-//    }
+    private void setForm(Voucher voucher) {
+        txtMaVou.setText(voucher.getMaVoucher());
+        txtTenVou.setText(voucher.getTenVoucher());
+        txtGiaTriVou.setText(voucher.getGiaTriVoucher().toString());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        txtNgayHetHan.setText(dateFormat.format(voucher.getNgayHetHan()));
+        txtSoLuong.setText(String.valueOf(voucher.getSoLuong()));
+    }
+
+    
 }
