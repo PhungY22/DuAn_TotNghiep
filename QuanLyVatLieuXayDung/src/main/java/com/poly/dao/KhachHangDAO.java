@@ -4,7 +4,7 @@
  */
 package com.poly.dao;
 
-import com.poly.entity.KhachHang;
+import com.poly.entity.KhachHang;        
 import com.poly.utils.JdbcUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,6 +27,7 @@ import java.util.Map;
     String SORT_ASC = "SELECT * FROM KhachHang WHERE isDelete = 0 ORDER BY MaKhachHang ASC";
     String FIND_ID_BY_NAME = "SELECT ID FROM KhachHang WHERE TenKhachHang = ?";
     public static String SELECT_BY_KEYWORD_SQL = "SELECT * FROM KhachHang WHERE (TenKhachHang LIKE ? )";
+    private Object MaKhachHang;
 
 
     @Override
@@ -59,10 +60,10 @@ import java.util.Map;
             entity.getMaKhachHang());
     }
 
-    @Override
-    public void delete(String maKhachHang) {
+    @Override                                                                                                       
+    public void delete(String MaKhachHang) {
     // Kiểm tra xem mã khách hàng có null hay không
-        if (maKhachHang == null) {
+        if (MaKhachHang == null) {
             return;
         }
 //        KhachHang khachHang = findByMaKhachHang(maKhachHang);
@@ -74,7 +75,7 @@ import java.util.Map;
         String sql = "DELETE FROM KhachHang WHERE MaKhachHang = ?";
 
     // Thực thi câu lệnh SQL
-        JdbcUtil.executeUpdate(sql, maKhachHang);
+        JdbcUtil.executeUpdate(sql, MaKhachHang);
     }
 
     @Override
@@ -130,7 +131,7 @@ while (rs.next()) {
         return this.selectBySql(SELECT_BY_KEYWORD_SQL, "%" + key + "%");
     }
 
-    private KhachHang findByMaKhachHang(String maKhachHang) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+//    private KhachHang findByMaKhachHang(String maKhachHang) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
 }
