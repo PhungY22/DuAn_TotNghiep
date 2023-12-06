@@ -78,46 +78,60 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         }
     }
 
- private void insert() {
-    // Tạo đối tượng DAO
-    SanPhamDAO dao = new SanPhamDAO();
-    
-    // Lấy thông tin từ form
-    
-   
-        String MaSanPham = txtMaSP.getText();
-        String TenSanPham = txtTenSP.getText();
-        String Hinh = lblHinh.getToolTipText();
-        String MaLoaiSanPham = String.valueOf(cboLoaiSP.getSelectedItem());
-        String GiaNhap = txtGiaNhap.getText();
-        String GiaXuat = txtGiaXuat.getText();
-        int SoLuong;
 
-    try {
-        // Parse the quantity
-        SoLuong = Integer.parseInt(txtSoLuong.getText());
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Xin vui lòng nhập số ", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+private boolean validateProduct(SanPham sp) {
+    // Implement validation logic for each data field
+    if (sp.getMaSanPham() == null || sp.getMaSanPham().isEmpty()) {
+      XDialog.alert(this, "Mã sản phẩm không được trống");
+      return false;
+  } else if (sp.getTenSanPham() == null || sp.getTenSanPham().isEmpty()) {
+      XDialog.alert(this, "Tên sản phẩm không được trống");
+      return false;
+  } else if (sp.getGiaNhap() == null || sp.getGiaNhap().isEmpty()) {
+      XDialog.alert(this, "Giá nhập không được trống");
+      return false;
+  } else if (sp.getSoLuong() > 0) {
+      XDialog.alert(this, "Số lượng phải là một số nguyên dương");
+      return true;
+  } else if (cboLoaiSP.getSelectedItem() == null) {
+      XDialog.alert(this, "Vui lòng chọn loại sản phẩm");
+      return true;
+  } else {
+      // Validate GiaNhap is a non-negative number
+      try {
+          double giaNhapValue = Double.parseDouble(sp.getGiaNhap());
 
-    // Tạo đối tượng sản phẩm
-    SanPham sp = new SanPham(MaSanPham, TenSanPham, Hinh, MaLoaiSanPham, GiaNhap, GiaXuat, SoLuong);
+          // Check if giaNhap is a non-negative value
+          if (giaNhapValue < 0) {
+              XDialog.alert(this, "Giá nhập không được là số âm");
+              return false;
+          }
+      } catch (NumberFormatException e) {
+          // Handle the case where giaNhap is not a valid number
+          XDialog.alert(this, "Giá nhập phải là một số");
+          return false;
+      }
 
-    // Kiểm tra tính hợp lệ của sản phẩm
-    if (!sp.isValid()) {
-        JOptionPane.showMessageDialog(this, "Thông tin sản phẩm không hợp lệ. Vui lòng điền vào tất cả các lĩnh vực.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+      // Validate GiaXuat is a non-negative number
+      try {
+          double giaXuatValue = Double.parseDouble(sp.getGiaXuat());
 
-    
-    
-    // Thêm sản phẩm vào cơ sở dữ liệu bằng lớp DAO
-    dao.insert(sp);
-    // Đóng form (hoặc thực hiện các hành động khác sau khi thêm sản phẩm)
-    dispose();
-}
+          // Check if giaXuat is a non-negative value
+          if (giaXuatValue < 0) {
+              XDialog.alert(this, "Giá xuất không được là số âm");
+              return false;
+          }
+      } catch (NumberFormatException e) {
+          // Handle the case where giaXuat is not a valid number
+          XDialog.alert(this, "Giá xuất phải là một số");
+          return false;
+      }
+  }
 
+  // If all validations pass, return true
+  return true;
+
+  }
     private void update() {
          SanPham sp = getForm();
         try {
@@ -125,7 +139,8 @@ public class SanPhamJPanel extends javax.swing.JPanel {
             this.fillTable();
             this.reset();
             XDialog.alert(this, "Cập nhật sản phẩm thành công");
-        } catch (Exception e) {
+       } catch (Exception e) {
+            e.printStackTrace(); // or log the exception
             XDialog.alert(this, "Cập nhật sản phẩm thất bại");
             throw new RuntimeException(e);
         }
@@ -240,72 +255,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
 
         trs.setRowFilter(RowFilter.orFilter(Arrays.asList(idFilter, tenFilter)));
     }
-//      boolean validateForm() {
-//        List<SanPham> list = spdao.selectAll();
-//        if (txtMaSP.getText().equalsIgnoreCase("")
-//                && txtTenSP.getText().equalsIgnoreCase("")
-//                && txtGiaNhap.getText().equalsIgnoreCase("")
-//                && txtGiaXuat.getText().equalsIgnoreCase("")
-//                && txtSoLuong.getText().equalsIgnoreCase("")
-//                && cboLoaiSP.getSelectedIndex() == 0) {
-//            lblMaSP.setText("*Không được để trống");
-//            lblTenSP.setText("*Không được để trống");
-//            lblGiaNhap.setText("*Không được để trống");
-//            lblGiaXuat.setText("*Không được để trống");
-//            lblSoLuong.setText("*Không được để trống");
-//            lblLSP.setText("Vui lòng chọn loại sản phẩm");
-//            return false;
-//        }
-//        if (txtMaSP.getText().equalsIgnoreCase("")) {
-//            lblTenSP.setText("*Không được để trống");
-//            return false;
-//        }
-//        for (int i = 0; i < list.size(); i++) {
-//            if (list.get(i).getMaSanPham().equalsIgnoreCase(txtMaSP.getText().trim())) {
-//                lblMaSP.setText("Mã sản phẩm đã tồn tại!");
-//                return false;
-//            }
-//        }
-//        if (txtTenSP.getText().equalsIgnoreCase("")) {
-//            lblTenSP.setText("*Không được để trống tên sản phẩm");
-//            return false;
-//        }
-//        if (txtGiaNhap.getText().equalsIgnoreCase("")) {
-//            lblGiaNhap.setText("*Không được để trống giá xuất");
-//            return false;
-//        }
-//        if (txtGiaXuat.getText().equalsIgnoreCase("")) {
-//            lblGiaXuat.setText("*Không được để trống giá nhập");
-//            return false;
-//        }
-//        if (txtSoLuong.getText().equalsIgnoreCase("")) {
-//            lblSoLuong.setText("*Không được để trống số lượng");
-//            return false;
-//        }
-//        if (cboLoaiSP.getSelectedIndex() == 0) {
-//            lblLSP.setText("Vui lòng chọn tên loại sản phẩm");
-//            return false;
-//        }
-//        try {
-//            Integer.parseInt(txtGiaNhap.getText());
-//        } catch (NumberFormatException e) {
-//            lblGiaNhap.setText("Vui lòng nhập số!");
-//            return false;
-//        }
-//        try {
-//            Integer.parseInt(txtGiaXuat.getText());
-//        } catch (NumberFormatException e) {
-//            lblGiaXuat.setText("Vui lòng nhập số!");
-//            return false;
-//        }
-//        try {
-//            Integer.parseInt(txtSoLuong.getText());
-//        } catch (NumberFormatException e) {
-//            lblSoLuong.setText("Vui lòng nhập số!");
-//            return false;
-//        }
-//        return true;
-//    }
+
 
     private void selectIcon() {
 
@@ -773,38 +723,37 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         String GiaXuat = model.getValueAt(selectedRow, 4).toString();
         int SoLuong = Integer.parseInt(model.getValueAt(selectedRow, 5).toString());
         
-        // Handling Gender
-       
-        
-        // Handling ChucVu (Position/Role)
         Object loaiSanPhamValue = model.getValueAt(selectedRow, 2);
         String LoaiSanPham = (loaiSanPhamValue != null) ? loaiSanPhamValue.toString() : "";
         
-        // Populating text fields with retrieved data
         txtMaSP.setText(MaSanPham);
         txtTenSP.setText(TenSanPham);
         txtGiaNhap.setText(GiaNhap);
         txtGiaXuat.setText(GiaXuat);
         txtSoLuong.setText(Integer.toString(SoLuong));
-        
-        // Set Gender based on retrieved data
-        // (Double-check this logic to ensure it sets the correct gender based on your data structure)
-        
-        // Set ChucVu in the combo box
         cboLoaiSP.setSelectedItem(LoaiSanPham);
     }
     }//GEN-LAST:event_tblSPMouseClicked
     
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
         SanPham sp = getForm();
+
+// Validate each data field
+        if (validateProduct(sp)) {
         try {
+            // Attempt to insert into the database
             spdao.insert(sp);
             this.fillTable();
             XDialog.alert(this, "Thêm mới sản phẩm thành công");
         } catch (Exception e) {
+            // Handle database insertion error
             XDialog.alert(this, "Thêm mới sản phẩm thất bại");
             throw new RuntimeException(e);
         }
+    } else {
+        // Handle validation errors
+        XDialog.alert(this, "Dữ liệu sản phẩm không hợp lệ");
+}
     }//GEN-LAST:event_btnInsertActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -974,6 +923,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         sp.setMaLoaiSanPham(lspdao.findIdByName((String) cboLoaiSP.getSelectedItem()));
         sp.setGiaNhap(txtGiaNhap.getText());
         sp.setGiaXuat(txtGiaXuat.getText());
+        int SoLuong = sp.getSoLuong();
         int soLuong = Integer.parseInt(txtSoLuong.getText());
         return sp;
     }
