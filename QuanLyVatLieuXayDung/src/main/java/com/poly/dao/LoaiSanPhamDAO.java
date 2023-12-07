@@ -4,12 +4,15 @@
  */
 package com.poly.dao;
 
+import com.poly.entity.ChiTietPhieuNhap;
 import com.poly.entity.LoaiSanPham;
 import com.poly.utils.JdbcUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -97,4 +100,5 @@ public class LoaiSanPhamDAO extends QuanLyVatLieuXayDungDAO<LoaiSanPham, String>
      public List<LoaiSanPham> selectByKeyword( String key) {
         return this.selectBySql(SELECT_BY_KEYWORD_SQL, "%" + key + "%");
     }
+     
 }

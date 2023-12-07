@@ -16,16 +16,16 @@ import java.util.List;
  * @author ASUS X515EA
  */
 public class PhieuNhapHanggDAO extends QuanLyVatLieuXayDungDAO<PhieuNhapHangg, String> {
-       String INSERT_SQL = "INSERT INTO PhieuNhapHang (MaPhieuNhapHang,MaNhaCungCap,MaNhanVien,NgayNhap,TongTien,HinhThucThanhToan,GhiChu) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    String UPDATE_SQL = "UPDATE PhieuNhapHang SET MaNhaCungCap =?, MaNhanVien =?, NgayNhap =?, TongTien =?, HinhThucThanhToan =?, GhiChu =? WHERE MaPhieuNhapHang=?";
-    String DELETE_SQL = "DELETE FROM PhieuNhapHang WHERE MaPhieuNhapHang=?";
-    String SELECT_ALL_SQL = "SELECT * FROM PhieuNhapHang";
-    String SELECT_BY_ID_SQL = "SELECT * FROM PhieuNhapHang WHERE MaPhieuNhapHang= ?";
-    String SORT_DECS = "SELECT * FROM PhieuNhapHang WHERE isDelete = 0 ORDER BY MaPhieuNhapHang DESC";
-    String SORT_ASC = "SELECT * FROM PhieuNhapHang WHERE isDelete = 0 ORDER BY MaPhieuNhapHang ASC";
-    String FIND_ID_BY_NAME = "SELECT ID FROM PhieuNhapHang WHERE MaNhaCungCap = ?";
-    public static String SELECT_BY_KEYWORD_SQL = "SELECT * FROM PhieuNhapHang WHERE (MaNhaCungCap LIKE ? )";
-    
+        private static final String INSERT_SQL = "INSERT INTO PhieuNhapHang (MaPhieuNhapHang, MaNhaCungCap, MaNhanVien, NgayNhap, TongTien, HinhThucThanhToan, VatLieu, DiaDiem, NguoiGiao, SoLuong, DonGia) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    private static final String UPDATE_SQL = "UPDATE PhieuNhapHang SET MaNhaCungCap = ?, MaNhanVien = ?, NgayNhap = ? , TongTien = ?, HinhThucThanhToan = ?, VatLieu = ?, DiaDiem = ?, NguoiGiao = ?, SoLuong = ?, DonGia = ?  WHERE MaPhieuNhapHang = ?";
+    private static final String DELETE_SQL = "DELETE FROM PhieuNhapHang WHERE MaPhieuNhapHang = ?";
+    private static final String SELECT_ALL_SQL = "SELECT * FROM PhieuNhapHang";
+    private static final String SELECT_BY_ID_SQL = "SELECT * FROM PhieuNhapHang WHERE MaPhieuNhapHang = ?";
+    private static final String SELECT_BY_KEYWORD_SQL = "SELECT * FROM PhieuNhapHang WHERE (MaPhieuNhapHang LIKE ?)";
+
+    private static final String SELECT_TOP_BY_ORDER_BY_MAPHIEUNHAPHANG_DESC_SQL
+            = "SELECT TOP 1 * FROM PhieuNhapHang ORDER BY MaPhieuNhapHang DESC";
+
     @Override
     public void insert(PhieuNhapHangg entity) {
          JdbcUtil.executeUpdate(INSERT_SQL,
@@ -36,13 +36,10 @@ public class PhieuNhapHanggDAO extends QuanLyVatLieuXayDungDAO<PhieuNhapHangg, S
                 entity.getNgayNhap(),
                 entity.getTongTien(),
                 entity.getVatlieu(),
-                entity.getDienDai(),
                 entity.getSoPhieuNhap(),
                 entity.getDonGia(),
                 entity.getSoLuong(),
-                entity.getNguoiGiao(),
-                entity.getDonViTinh(),
-                entity.isIsGhiChu());        
+                entity.getNguoiGiao());        
     }
 
     @Override
@@ -55,13 +52,10 @@ public class PhieuNhapHanggDAO extends QuanLyVatLieuXayDungDAO<PhieuNhapHangg, S
                 entity.getNgayNhap(),
                 entity.getTongTien(),
                 entity.getVatlieu(),
-                entity.getDienDai(),
                 entity.getSoPhieuNhap(),
                 entity.getDonGia(),
                 entity.getSoLuong(),
-                entity.getNguoiGiao(),
-                entity.getDonViTinh(),
-                entity.isIsGhiChu());   
+                entity.getNguoiGiao());   
     }
 
     @Override
@@ -82,6 +76,9 @@ public class PhieuNhapHanggDAO extends QuanLyVatLieuXayDungDAO<PhieuNhapHangg, S
     public List<PhieuNhapHangg> selectAll() {
          return this.selectBySql(SELECT_ALL_SQL);
     }
+      public List<PhieuNhapHangg> selectByKeyword( String key) {
+        return this.selectBySql(SELECT_BY_KEYWORD_SQL, "%" + key + "%");
+    }
 
     @Override
     protected List<PhieuNhapHangg> selectBySql(String sql, Object... args) {
@@ -99,12 +96,11 @@ public class PhieuNhapHanggDAO extends QuanLyVatLieuXayDungDAO<PhieuNhapHangg, S
                 entity.setVatlieu(rs.getString("VatLieu"));
                 entity.setSoPhieuNhap(rs.getString("SoPhieuNhap"));
                 entity.setDiaDiem(rs.getString("DiaDiem"));
-                entity.setDienDai(rs.getString("DienDai"));
+               
                 entity.setSoLuong(rs.getString("SoLuong"));
                 entity.setDonGia(rs.getString("DonGia"));
                 entity.setNguoiGiao(rs.getString("NguoiGiao"));
-                entity.setDonViTinh(rs.getString("DonViTinh"));
-                entity.setIsGhiChu(rs.getBoolean("isGhiChu"));
+               
                 
                
              
@@ -116,22 +112,39 @@ public class PhieuNhapHanggDAO extends QuanLyVatLieuXayDungDAO<PhieuNhapHangg, S
             throw new RuntimeException(e);
         }
     }
-     public String findIdByName(String name) {
-        String id = "";
+     public String findTopMaPhieuNhapHangOrderByMaPhieuNhapDesc (){
+         List<String> list = selectMaPhieuNhapHangSql(SELECT_TOP_BY_ORDER_BY_MAPHIEUNHAPHANG_DESC_SQL);
+         if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+     }
+   
+
+    private List<String> selectMaPhieuNhapHangSql(String sql, Object... args) {
+       List<String> list = new ArrayList<>();
         try {
-            ResultSet rs = JdbcUtil.executeQuery(FIND_ID_BY_NAME, name);
+            ResultSet rs = JdbcUtil.executeQuery(sql, args);
             while (rs.next()) {
-                id = rs.getString(1);
+                String maPhieuNhapHang = rs.getString("MaPhieuNhapHang");
+                list.add(maPhieuNhapHang);
             }
-            rs.getStatement().getConnection().close();
-            return id;
-        } catch (Exception e) {
+            // It's good practice to close ResultSet, Statement, and Connection in a finally block
+            // to ensure resources are properly released even if an exception occurs
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace(); // Handle the exception appropriately
+            }
+            return list;
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-     public List<PhieuNhapHangg> selectByKeyword( String key) {
-        return this.selectBySql(SELECT_BY_KEYWORD_SQL, "%" + key + "%");
-    }
+
+   
     }
     
 
