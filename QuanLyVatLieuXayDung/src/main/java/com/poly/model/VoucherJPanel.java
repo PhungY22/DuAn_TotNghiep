@@ -12,9 +12,14 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -63,41 +68,59 @@ public class VoucherJPanel extends javax.swing.JPanel {
                 Voudao.insert(sp); // thêm mới
                 this.fillTable(); // đổ lại bảng
                 this.clearForm(); // xóa trắng form
-                XDialog.alert(this, "Thêm sản phẩm mới thành công!");
+                XDialog.alert(this, "Thêm Voucher mới thành công!");
             } else {
                 XDialog.alert(this, "Vui lòng nhập đầy đủ thông tin và đúng định dạng cho các trường sau:\n" + getErrorMessage(sp));
             }
         } catch (Exception e) {
-            XDialog.alert(this, "Thêm sản phẩm mới thất bại!");
+            XDialog.alert(this, "Thêm Voucher mới thất bại!");
             e.printStackTrace();
         }
     }
 
     private boolean validateData(Voucher voucher) {
-        return !voucher.getMaVoucher().isEmpty() &&
-        !voucher.getTenVoucher().isEmpty() &&
-        voucher.getNgayHetHan() != null &&
-        voucher.getGiaTriVoucher().compareTo(BigDecimal.ZERO) > 0 &&
-        voucher.getSoLuong() > 0;
+        return isStringValid(voucher.getMaVoucher()) &&
+               isStringValid(voucher.getTenVoucher()) &&
+               isBigDecimalValid(voucher.getGiaTriVoucher()) &&
+               isDateValid(voucher.getNgayHetHan()) &&
+               isIntValid(voucher.getSoLuong());
+    }
+    
+    private boolean isBigDecimalValid(BigDecimal value) {
+        return value != null && value.compareTo(BigDecimal.ZERO) >= 0; // Sửa thành kiểm tra lớn hơn hoặc bằng 0
+    }
+    
+    private boolean isStringValid(String str) {
+        return str != null && !str.isEmpty();
+    }
+
+    private boolean isDateValid(Date date) {
+        return date != null; // Có thể thêm kiểm tra định dạng ngày tháng nếu cần thiết
+    }
+
+    private boolean isIntValid(int value) {
+        return value > 0; // Số lượng phải là số nguyên dương
     }
 
     private String getErrorMessage(Voucher voucher) {
         StringBuilder errorMessage = new StringBuilder();
 
-        if (voucher.getMaVoucher().isEmpty()) {
+        if (!isStringValid(voucher.getMaVoucher())) {
             errorMessage.append("- Mã Voucher\n");
         }
-        if (voucher.getTenVoucher().isEmpty()) {
+        if (!isStringValid(voucher.getTenVoucher())) {
             errorMessage.append("- Tên Voucher\n");
         }
-        if (voucher.getNgayHetHan() == null) {
-            errorMessage.append("- Ngày Hết Hạn\n");
-        }
-        if (voucher.getGiaTriVoucher().compareTo(BigDecimal.ZERO) <= 0) {
+        if (!isBigDecimalValid(voucher.getGiaTriVoucher())) {
             errorMessage.append("- Giá Trị Voucher\n");
         }
-        if (voucher.getSoLuong() <= 0) {
+        if (!isDateValid(voucher.getNgayHetHan())) {
+            errorMessage.append("- Ngày Hết Hạn\n");
+        }
+        if (!isIntValid(voucher.getSoLuong())) {
             errorMessage.append("- Số Lượng Voucher\n");
+        } else if (voucher.getSoLuong() == 0) {
+            errorMessage.append("- Số Lượng Voucher phải lớn hơn 0\n");
         }
 
         return errorMessage.toString();
@@ -108,23 +131,23 @@ public class VoucherJPanel extends javax.swing.JPanel {
         try {
             Voudao.update(sp); // cập nhật
             this.fillTable(); // đổ lại bảng
-            XDialog.alert(this, "Cập nhật sản phẩm thành công!");
+            XDialog.alert(this, "Cập nhật Voucher thành công!");
         } catch (Exception e) {
-            XDialog.alert(this, "Cập nhật sản phẩm thất bại!");
+            XDialog.alert(this, "Cập nhật Voucher thất bại!");
             e.printStackTrace();
         }
     }
 
     private void delete() {
-        if (XDialog.confirm(this, "Bạn có thực sự muốn xóa sản phẩm này không?")) {
+        if (XDialog.confirm(this, "Bạn có thực sự muốn xóa Voucher này không?")) {
             String sp = txtMaVou.getText();
             try {
                 Voudao.delete(sp);
                 this.fillTable();
                 this.clearForm();
-                XDialog.alert(this, "Xóa sản phẩm thành công!");
+                XDialog.alert(this, "Xóa Voucher thành công!");
             } catch (Exception e) {
-                XDialog.alert(this, "Xóa sản phẩm thất bại!");
+                XDialog.alert(this, "Xóa Voucher thất bại!");
                 e.printStackTrace();
             }
         }
@@ -172,6 +195,48 @@ public class VoucherJPanel extends javax.swing.JPanel {
         this.row = tblDanhSachVou.getRowCount() - 1;
         this.edit();
     }
+    
+        void ASC() {
+        DefaultTableModel model = (DefaultTableModel) tblDanhSachVou.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+
+        // Chỉ định cột "mã" và thứ tự sắp xếp là tăng dần
+        RowSorter.SortKey sortKey = new RowSorter.SortKey(0, SortOrder.ASCENDING);
+
+        // Đặt danh sách SortKey chỉ chứa một phần tử vào TableRowSorter
+        sorter.setSortKeys(List.of(sortKey));
+
+        // Đặt TableRowSorter cho JTable
+        tblDanhSachVou.setRowSorter(sorter);
+
+        // Thực hiện sắp xếp
+        sorter.sort();
+    }
+    
+    void DESC() {
+        DefaultTableModel model = (DefaultTableModel) tblDanhSachVou.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        tblDanhSachVou.setRowSorter(sorter);
+        List<RowSorter.SortKey> sortKeys = List.of(new RowSorter.SortKey(0, SortOrder.DESCENDING));
+        sorter.setSortKeys(sortKeys);
+        sorter.sort();
+    }
+    
+    void search(String str) {
+        DefaultTableModel model = (DefaultTableModel) tblDanhSachVou.getModel();
+        TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
+        tblDanhSachVou.setRowSorter(trs);
+
+        // Chỉ định cột "ID" và cột "Tên" để áp dụng bộ lọc
+        int columnIndexID = 0; // Index của cột "ID" trong model
+        int columnIndexTen = 1; // Index của cột "Tên" trong model
+
+        // Sử dụng RowFilter.orFilter để kết hợp hai điều kiện tìm kiếm
+        RowFilter<DefaultTableModel, Object> idFilter = RowFilter.regexFilter(str, columnIndexID);
+        RowFilter<DefaultTableModel, Object> tenFilter = RowFilter.regexFilter(str, columnIndexTen);
+
+        trs.setRowFilter(RowFilter.orFilter(Arrays.asList(idFilter, tenFilter)));
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -199,8 +264,8 @@ public class VoucherJPanel extends javax.swing.JPanel {
         btnLamMoi = new javax.swing.JButton();
         txtGiaTriVou = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnASC = new javax.swing.JButton();
+        btnDESC = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtSearch = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -361,18 +426,34 @@ public class VoucherJPanel extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách khuyến mãi", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 14))); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(204, 204, 255));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/performance.png"))); // NOI18N
-        jButton1.setText("Sắp xếp tăng dần ");
+        btnASC.setBackground(new java.awt.Color(204, 204, 255));
+        btnASC.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnASC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/performance.png"))); // NOI18N
+        btnASC.setText("Sắp xếp tăng dần ");
+        btnASC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnASCActionPerformed(evt);
+            }
+        });
 
-        jButton2.setBackground(new java.awt.Color(204, 204, 255));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/statistics.png"))); // NOI18N
-        jButton2.setText("Sắp xếp giảm dần");
+        btnDESC.setBackground(new java.awt.Color(204, 204, 255));
+        btnDESC.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnDESC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/statistics.png"))); // NOI18N
+        btnDESC.setText("Sắp xếp giảm dần");
+        btnDESC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDESCActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel2.setText("Tìm kiếm");
+
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
 
         tblDanhSachVou.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -414,9 +495,9 @@ public class VoucherJPanel extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(62, 62, 62)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnASC, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(70, 70, 70)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDESC, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(52, 52, 52)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
@@ -424,16 +505,17 @@ public class VoucherJPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 19, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1096, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton3)
                         .addGap(63, 63, 63)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(56, 56, 56)
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(61, 61, 61)
-                        .addComponent(jButton6)))
+                        .addComponent(jButton6)
+                        .addGap(290, 290, 290)))
                 .addGap(39, 39, 39))
         );
         jPanel2Layout.setVerticalGroup(
@@ -441,8 +523,8 @@ public class VoucherJPanel extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
+                    .addComponent(btnASC)
+                    .addComponent(btnDESC)
                     .addComponent(jLabel2)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
@@ -549,14 +631,27 @@ public class VoucherJPanel extends javax.swing.JPanel {
         this.update();
     }//GEN-LAST:event_btnCapNhatActionPerformed
 
+    private void btnASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnASCActionPerformed
+        this.ASC();
+    }//GEN-LAST:event_btnASCActionPerformed
+
+    private void btnDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDESCActionPerformed
+        this.DESC();
+    }//GEN-LAST:event_btnDESCActionPerformed
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        String str = txtSearch.getText();
+        search(str);
+    }//GEN-LAST:event_txtSearchActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnASC;
     private javax.swing.JButton btnCapNhat;
+    private javax.swing.JButton btnDESC;
     private javax.swing.JButton btnLamMoi;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
