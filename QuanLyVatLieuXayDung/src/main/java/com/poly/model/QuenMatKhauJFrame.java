@@ -51,6 +51,7 @@ public class QuenMatKhauJFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
         jPanel1.setLayout(null);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
@@ -61,29 +62,29 @@ public class QuenMatKhauJFrame extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Tên tài khoản:");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(80, 90, 120, 20);
+        jLabel3.setBounds(160, 90, 120, 20);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Email:");
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(360, 90, 50, 20);
+        jLabel4.setBounds(420, 90, 50, 20);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("Mật khẩu mới:");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(80, 180, 110, 20);
+        jLabel5.setBounds(160, 180, 110, 20);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setText("Xác nhận lại mật khẩu:");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(360, 180, 170, 20);
+        jLabel6.setBounds(420, 180, 170, 20);
         jPanel1.add(txtTenTaiKhoan);
-        txtTenTaiKhoan.setBounds(80, 120, 220, 40);
+        txtTenTaiKhoan.setBounds(160, 120, 220, 40);
         jPanel1.add(txtEmail);
-        txtEmail.setBounds(360, 120, 220, 40);
+        txtEmail.setBounds(420, 120, 220, 40);
 
+        lblQuayLai.setBackground(new java.awt.Color(0, 0, 0));
         lblQuayLai.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblQuayLai.setForeground(new java.awt.Color(255, 255, 255));
         lblQuayLai.setText("Quay lại");
         lblQuayLai.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -97,35 +98,37 @@ public class QuenMatKhauJFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(lblQuayLai);
-        lblQuayLai.setBounds(550, 380, 60, 20);
+        lblQuayLai.setBounds(570, 340, 60, 20);
 
+        btnDoiMatKhau.setBackground(new java.awt.Color(204, 204, 255));
         btnDoiMatKhau.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnDoiMatKhau.setText("Đăng nhập");
+        btnDoiMatKhau.setText("ĐĂNG NHẬP");
+        btnDoiMatKhau.setBorder(null);
         btnDoiMatKhau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDoiMatKhauActionPerformed(evt);
             }
         });
         jPanel1.add(btnDoiMatKhau);
-        btnDoiMatKhau.setBounds(230, 320, 160, 40);
+        btnDoiMatKhau.setBounds(320, 290, 160, 40);
         jPanel1.add(txtPass);
-        txtPass.setBounds(80, 210, 220, 40);
+        txtPass.setBounds(160, 210, 220, 40);
         jPanel1.add(txtNhapLaiPass);
-        txtNhapLaiPass.setBounds(360, 210, 220, 40);
+        txtNhapLaiPass.setBounds(420, 210, 220, 40);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/BANNER2.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/poly/model/phishing.png"))); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 0, 640, 420);
+        jLabel1.setBounds(10, 90, 130, 180);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
         );
 
         pack();

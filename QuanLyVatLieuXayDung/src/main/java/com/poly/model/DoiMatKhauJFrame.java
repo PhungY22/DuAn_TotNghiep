@@ -46,32 +46,29 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
         jPanel1.setLayout(null);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ĐỔI MẬT KHẨU");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(160, 10, 190, 30);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Mật khẩu mới:");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(70, 60, 120, 20);
+        jLabel3.setBounds(160, 80, 120, 20);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Nhập lại mật khẩu mới:");
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(70, 130, 160, 20);
+        jLabel4.setBounds(160, 160, 160, 20);
         jPanel1.add(txtPass1);
-        txtPass1.setBounds(70, 80, 350, 40);
+        txtPass1.setBounds(160, 110, 320, 40);
         jPanel1.add(txtPass2);
-        txtPass2.setBounds(70, 160, 350, 40);
+        txtPass2.setBounds(160, 190, 320, 40);
 
         lblQuaylai.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblQuaylai.setForeground(new java.awt.Color(255, 255, 255));
         lblQuaylai.setText("Quay lại");
         lblQuaylai.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -85,35 +82,35 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(lblQuaylai);
-        lblQuaylai.setBounds(360, 210, 60, 20);
+        lblQuaylai.setBounds(420, 240, 60, 20);
 
+        btnDangNhap.setBackground(new java.awt.Color(204, 204, 255));
         btnDangNhap.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnDangNhap.setText("Đăng nhập");
         btnDangNhap.setToolTipText("");
+        btnDangNhap.setBorder(null);
         btnDangNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDangNhapActionPerformed(evt);
             }
         });
         jPanel1.add(btnDangNhap);
-        btnDangNhap.setBounds(160, 250, 140, 40);
+        btnDangNhap.setBounds(220, 260, 140, 40);
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/banner5.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/account.png"))); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 0, 500, 330);
+        jLabel1.setBounds(10, 80, 130, 150);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -154,17 +151,17 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
         }
 
     }
-    public void doimatkhau(String TenNhanVien, String currentPassword, String newPassword) throws SQLException {
+    public void doimatkhau(String MaNhanVien, String currentPassword, String newPassword) throws SQLException {
     KetNoiCSDL();
     try {
         // Kiểm tra xem người dùng có quyền đổi mật khẩu hay không (ví dụ: dựa trên username và currentPassword)
-        if (kiemTraQuyenDoiMatKhau(TenNhanVien, currentPassword)) {
-            String sql = "UPDATE NhanVien SET MatKhau = ? WHERE TenNhanVien = ?";
+        if (kiemTraQuyenDoiMatKhau(MaNhanVien, currentPassword)) {
+            String sql = "UPDATE NhanVien SET MatKhau = ? WHERE MaNhanVien = ?";
             PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
             
             // Thiết lập giá trị cho các tham số trong câu lệnh SQL
             cauLenh.setString(1, newPassword);
-            cauLenh.setString(2, TenNhanVien);
+            cauLenh.setString(2, MaNhanVien);
             
             // Thực hiện cập nhật mật khẩu trong CSDL
             cauLenh.executeUpdate();
@@ -179,12 +176,12 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
     }
 }
 
-private boolean kiemTraQuyenDoiMatKhau(String TenNhanVien, String currentPassword) throws SQLException {
-    String sql = "SELECT * FROM NhanVien WHERE TenNhanVien = ? AND Matkhau = ?";
+private boolean kiemTraQuyenDoiMatKhau(String MaNhanVien, String currentPassword) throws SQLException {
+    String sql = "SELECT * FROM NhanVien WHERE MaNhanVien = ? AND Matkhau = ?";
     PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
     
     // Thiết lập giá trị cho các tham số trong câu lệnh SQL
-    cauLenh.setString(1, TenNhanVien);
+    cauLenh.setString(1, MaNhanVien);
     cauLenh.setString(2, currentPassword);
     
     ResultSet ketQua = cauLenh.executeQuery();

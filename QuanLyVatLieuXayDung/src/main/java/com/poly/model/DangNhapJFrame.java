@@ -52,36 +52,39 @@ public class DangNhapJFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
         jPanel1.setLayout(null);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jLabel2.text")); // NOI18N
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(280, 20, 160, 32);
+        jLabel2.setBounds(280, 10, 160, 32);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jLabel3.text")); // NOI18N
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(110, 90, 110, 20);
+        jLabel3.setBounds(290, 90, 110, 20);
 
         txtTenTaiKhoan.setText(org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.txtTenTaiKhoan.text")); // NOI18N
         jPanel1.add(txtTenTaiKhoan);
-        txtTenTaiKhoan.setBounds(110, 120, 470, 40);
+        txtTenTaiKhoan.setBounds(290, 120, 380, 40);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel4, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jLabel4.text")); // NOI18N
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(110, 190, 80, 20);
+        jLabel4.setBounds(290, 190, 80, 20);
 
+        btnDangNhap.setBackground(new java.awt.Color(204, 204, 255));
         btnDangNhap.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(btnDangNhap, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.btnDangNhap.text")); // NOI18N
+        btnDangNhap.setBorder(null);
         btnDangNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDangNhapActionPerformed(evt);
             }
         });
         jPanel1.add(btnDangNhap);
-        btnDangNhap.setBounds(270, 370, 150, 40);
+        btnDangNhap.setBounds(390, 330, 150, 40);
 
         lblThoat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(lblThoat, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.lblThoat.text")); // NOI18N
@@ -97,7 +100,7 @@ public class DangNhapJFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(lblThoat);
-        lblThoat.setBounds(530, 270, 50, 16);
+        lblThoat.setBounds(620, 270, 50, 16);
 
         lblQuenMatKhau.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblQuenMatKhau.setForeground(new java.awt.Color(255, 51, 51));
@@ -114,16 +117,16 @@ public class DangNhapJFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(lblQuenMatKhau);
-        lblQuenMatKhau.setBounds(110, 270, 130, 20);
+        lblQuenMatKhau.setBounds(290, 270, 130, 20);
 
         txtPass.setText(org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.txtPass.text")); // NOI18N
         jPanel1.add(txtPass);
-        txtPass.setBounds(110, 220, 470, 40);
+        txtPass.setBounds(290, 220, 380, 40);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/BANNER2.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/profile.png"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(DangNhapJFrame.class, "DangNhapJFrame.jLabel1.text")); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 0, 700, 465);
+        jLabel1.setBounds(10, 80, 260, 260);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,7 +136,7 @@ public class DangNhapJFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
         );
 
         pack();
@@ -187,17 +190,17 @@ public class DangNhapJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lblQuenMatKhauMouseExited
 public void DangNhap() throws SQLException {
         KetNoiCSDL();
-        String sql = "SELECT * FROM NhanVien where TenNhanVien =? and MatKhau = ?";
+        String sql = "SELECT * FROM NhanVien where MaNhanVien =? and MatKhau = ?";
         PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
         cauLenh.setString(1, txtTenTaiKhoan.getText());
         cauLenh.setString(2, String.copyValueOf(txtPass.getPassword()));
         ResultSet ketQua = cauLenh.executeQuery();
         if (ketQua.next()) {
-            //JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thông Báo", JOptionPane.INFORMATION_MESSAGE);
             System.out.println(ketQua.getString(9));
             NhanVien tk = tkDao.selectById(txtTenTaiKhoan.getText());
             XAuth.user = tk;
-            String userID = XAuth.user.getTenNhanVien();
+            String userID = XAuth.user.getMaNhanVien();
             String role = String.valueOf(XAuth.user.isChucVu()).equals("true") ? "Admin" : "Nhân Viên";
             String hoTen = XAuth.user.getTenNhanVien();
             new MainJFrame(userID, role, hoTen).setVisible(true);
