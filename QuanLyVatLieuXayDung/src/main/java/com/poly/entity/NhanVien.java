@@ -127,6 +127,10 @@ public class NhanVien {
     public void setChucVu(String ChucVu) {
         this.ChucVu = ChucVu;
     }
-
     
+    public boolean isChucVu() {
+        
+        return false;
+        
+    }
 }
