@@ -18,6 +18,7 @@ public class NhanVien {
     private String SoDienThoai;
     private String Email;
     private String DiaChi;
+    private Date NgayNhanViec;
     private Date NgayThangNamSinh;
     private boolean GioiTinh;
     private String ChucVu;
@@ -25,7 +26,7 @@ public class NhanVien {
     public NhanVien() {
     }
 
-    public NhanVien(String MaNhanVien, String TenNhanVien, String Hinh, String MatKhau, String SoDienThoai, String Email, String DiaChi, Date NgayThangNamSinh, boolean GioiTinh, String ChucVu) {
+    public NhanVien(String MaNhanVien, String TenNhanVien, String Hinh, String MatKhau, String SoDienThoai, String Email, String DiaChi, Date NgayNhanViec, Date NgayThangNamSinh, boolean GioiTinh, String ChucVu) {
         this.MaNhanVien = MaNhanVien;
         this.TenNhanVien = TenNhanVien;
         this.Hinh = Hinh;
@@ -33,6 +34,7 @@ public class NhanVien {
         this.SoDienThoai = SoDienThoai;
         this.Email = Email;
         this.DiaChi = DiaChi;
+        this.NgayNhanViec = NgayNhanViec;
         this.NgayThangNamSinh = NgayThangNamSinh;
         this.GioiTinh = GioiTinh;
         this.ChucVu = ChucVu;
@@ -94,6 +96,14 @@ public class NhanVien {
         this.DiaChi = DiaChi;
     }
 
+    public Date getNgayNhanViec() {
+        return NgayNhanViec;
+    }
+
+    public void setNgayNhanViec(Date NgayNhanViec) {
+        this.NgayNhanViec = NgayNhanViec;
+    }
+
     public Date getNgayThangNamSinh() {
         return NgayThangNamSinh;
     }
@@ -118,14 +128,5 @@ public class NhanVien {
         this.ChucVu = ChucVu;
     }
 
-    public boolean isChucVu() {
-        
-        return false;
-        
-    }
-
-    
-
-    
     
 }
