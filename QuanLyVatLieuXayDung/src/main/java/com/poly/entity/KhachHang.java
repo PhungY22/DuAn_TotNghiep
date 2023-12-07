@@ -20,6 +20,20 @@ public class KhachHang {
     private boolean GioiTinh;
     public KhachHang(){}
 
+    
+
+//    public List<File> getDanhSachFile() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
+//
+//    public Object getSDT() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
+//
+//    public Object getGioiTinh() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
+
     public KhachHang(String MaKhachHang, String TenKhachHang, String DiaChi, String SoDienThoai, String Email, boolean GioiTinh) {
         this.MaKhachHang = MaKhachHang;
         this.TenKhachHang = TenKhachHang;
@@ -28,6 +42,7 @@ public class KhachHang {
         this.Email = Email;
         this.GioiTinh = GioiTinh;
     }
+
     public String getMaKhachHang() {
         return MaKhachHang;
     }
@@ -75,17 +90,6 @@ public class KhachHang {
     public void setGioiTinh(boolean GioiTinh) {
         this.GioiTinh = GioiTinh;
     }
-
-    public List<File> getDanhSachFile() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public Object getSDT() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public Object getGioiTinh() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    
+    
 }

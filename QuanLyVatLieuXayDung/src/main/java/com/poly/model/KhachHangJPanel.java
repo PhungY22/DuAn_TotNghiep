@@ -7,7 +7,9 @@ package com.poly.model;
 import com.poly.dao.KhachHangDAO;
 import com.poly.entity.KhachHang;
 import com.poly.entity.SanPham;
+import static com.poly.model.MainJFrame.main;
 import com.poly.utils.XDialog;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +25,12 @@ import javax.swing.table.TableRowSorter;
  * @author Nhu Y
  */
 public class KhachHangJPanel extends javax.swing.JPanel {
+
     KhachHangDAO khdao = new KhachHangDAO();
     ArrayList<KhachHang> list = new ArrayList<>();
     int row = -1;
+    private Component main;
+
     /**
      * Creates new form KhachHangJPanel
      */
@@ -33,19 +38,19 @@ public class KhachHangJPanel extends javax.swing.JPanel {
         initComponents();
         init();
     }
-    
-    public void init(){
+
+    public void init() {
         this.fillTable();
     }
-    
-    public void fillTable(){
-         DefaultTableModel model = (DefaultTableModel) tblDanhSachKH.getModel();
+
+    public void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) tblDanhSachKH.getModel();
         model.setRowCount(0);
         try {
             String keyword = txtSearch.getText();
-             List<KhachHang> list = khdao.selectAll();
+            List<KhachHang> list = khdao.selectAll();
             for (KhachHang sp : list) {
-                Object[] row = {sp.getMaKhachHang(), sp.getTenKhachHang(),sp.getDiaChi(),sp.getSoDienThoai(),sp.getEmail(),sp.isGioiTinh() ? "Nam" : "Nữ"};
+                Object[] row = {sp.getMaKhachHang(), sp.getTenKhachHang(), sp.getDiaChi(), sp.getSoDienThoai(), sp.getEmail(), sp.isGioiTinh() ? "Nam" : "Nữ"};
                 model.addRow(row);
             }
         } catch (Exception e) {
@@ -54,66 +59,147 @@ public class KhachHangJPanel extends javax.swing.JPanel {
 //            System.out.println("Lỗi truy vấn dữ liệu");
         }
     }
-    
-    private void insert() {
-    KhachHang sp = this.getForm();
-    try {
-        if (validateData(sp)) {
-            khdao.insert(sp); // thêm mới
-            this.fillTable(); // đổ lại bảng
-            this.clearForm(); // xóa trắng form
-            XDialog.alert(this, "Thêm khách hàng mới thành công!");
-        } else {
-            XDialog.alert(this, "Vui lòng nhập đầy đủ thông tin cho các trường dữ liệu!");
-        }
-    } catch (Exception e) {
-        XDialog.alert(this, "Thêm khách hàng mới thất bại!");
-        e.printStackTrace();
-    }
-}
 
-    private boolean validateData(KhachHang khachHang) {
-        return !khachHang.getMaKhachHang().isEmpty() &&
-                !khachHang.getTenKhachHang().isEmpty() &&
-                !khachHang.getDiaChi().isEmpty() &&
-                !khachHang.getSoDienThoai().isEmpty() &&
-                !khachHang.getEmail().isEmpty();
-    }
-    private void update() {
-        KhachHang sp = this.getForm();
+    private void insert() {
+        KhachHang khachHang = getForm();
         try {
-            khdao.update(sp); // cập nhật
-            this.fillTable(); // đổ lại bảng
+            String errorMessage = validateDataAndGetErrorMessage(khachHang);
+            if (errorMessage.isEmpty()) {
+                insertAndNotify(khachHang);
+            } else {
+                XDialog.alert(this, errorMessage);
+            }
+        } catch (Exception e) {
+            handleInsertionFailure(e);
+        }
+    }
+
+    private String validateDataAndGetErrorMessage(KhachHang khachHang) {
+        String maKhachHang = khachHang.getMaKhachHang();
+        String tenKhachHang = khachHang.getTenKhachHang();
+        String diaChi = khachHang.getDiaChi();
+        String soDienThoai = khachHang.getSoDienThoai();
+        String email = khachHang.getEmail();
+
+        // Kiểm tra các điều kiện nhập liệu cụ thể
+        boolean isValidMaKhachHang = maKhachHang.matches("^[a-zA-Z0-9]+$");
+        boolean isValidTenKhachHang = tenKhachHang.matches("^[a-zA-Z\\s]+$");
+        boolean isValidDiaChi = !diaChi.isEmpty();
+        boolean isValidSoDienThoai = soDienThoai.matches("^\\d{10,}$"); // Kiểm tra số điện thoại có ít nhất 10 chữ số
+        boolean isValidEmail = email.matches("^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$"); // Kiểm tra định dạng email
+
+        // Xác định thông báo lỗi
+        StringBuilder errorMessage = new StringBuilder();
+        if (!isValidMaKhachHang) {
+            errorMessage.append("Mã khách hàng không hợp lệ!\n");
+        }
+        if (!isValidTenKhachHang) {
+            errorMessage.append("Tên khách hàng không hợp lệ!\n");
+        }
+        if (!isValidDiaChi) {
+            errorMessage.append("Địa chỉ không được để trống!\n");
+        }
+        if (!isValidSoDienThoai) {
+            errorMessage.append("Số điện thoại không hợp lệ!\n");
+        }
+        if (!isValidEmail) {
+            errorMessage.append("Email không hợp lệ!\n");
+        }
+
+        // Trả về thông báo lỗi
+        return errorMessage.toString();
+    }
+
+    private void update() {
+        KhachHang khachHang = this.getForm();
+        try {
+            String errorMessage = validateUpdateDataAndGetErrorMessage(khachHang);
+            if (errorMessage.isEmpty()) {
+                updateAndNotify(khachHang);
+            } else {
+                XDialog.alert(this, errorMessage);
+            }
+        } catch (Exception e) {
+            handleUpdateFailure(e);
+        }
+    }
+
+    private String validateUpdateDataAndGetErrorMessage(KhachHang khachHang) {
+        String maKhachHang = khachHang.getMaKhachHang();
+        String tenKhachHang = khachHang.getTenKhachHang();
+        String diaChi = khachHang.getDiaChi();
+        String soDienThoai = khachHang.getSoDienThoai();
+        String email = khachHang.getEmail();
+        boolean gioiTinh = khachHang.isGioiTinh();
+
+        // Kiểm tra các điều kiện nhập liệu cụ thể
+        boolean isValidMaKhachHang = maKhachHang.matches("^[a-zA-Z0-9]+$");
+        boolean isValidTenKhachHang = tenKhachHang.matches("^[a-zA-Z\\s]+$");
+        boolean isValidDiaChi = !diaChi.isEmpty();
+        boolean isValidSoDienThoai = soDienThoai.matches("^\\d{10,}$"); // Kiểm tra số điện thoại có ít nhất 10 chữ số
+        boolean isValidEmail = email.matches("^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$"); // Kiểm tra định dạng email
+
+        // Xác định thông báo lỗi
+        StringBuilder errorMessage = new StringBuilder();
+        if (!isValidMaKhachHang) {
+            errorMessage.append("Mã khách hàng không hợp lệ!\n");
+        }
+        if (!isValidTenKhachHang) {
+            errorMessage.append("Tên khách hàng không hợp lệ!\n");
+        }
+        if (!isValidDiaChi) {
+            errorMessage.append("Địa chỉ không được để trống!\n");
+        }
+        if (!isValidSoDienThoai) {
+            errorMessage.append("Số điện thoại không hợp lệ!\n");
+        }
+        if (!isValidEmail) {
+            errorMessage.append("Email không hợp lệ!\n");
+        }
+
+        // Trả về thông báo lỗi
+        return errorMessage.toString();
+    }
+
+    private void updateAndNotify(KhachHang khachHang) {
+        try {
+            khdao.update(khachHang); // Cập nhật
+            fillTable(); // Đổ lại bảng
             XDialog.alert(this, "Cập nhật khách hàng thành công!");
         } catch (Exception e) {
-            XDialog.alert(this, "Cập nhật khách hàng thất bại!");
-            e.printStackTrace();
+            handleUpdateFailure(e);
         }
     }
-    
+
+    private void handleUpdateFailure(Exception e) {
+        XDialog.alert(this, "Cập nhật khách hàng thất bại!");
+        e.printStackTrace();
+    }
+
     private void delete() {
         if (XDialog.confirm(this, "Bạn có thực sự muốn xóa khách hàng này không?")) {
-           String sp = txtMaKH.getText();
+            String sp = txtMaKH.getText();
             try {
                 khdao.delete(sp);
-               this.fillTable();
+                this.fillTable();
                 this.clearForm();
-               XDialog.alert(this, "Xóa khách hàng thành công!");
+                XDialog.alert(this, "Xóa khách hàng thành công!");
             } catch (Exception e) {
-               XDialog.alert(this, "Xóa khách hàng thất bại!");
-               e.printStackTrace();
-                 }
+                XDialog.alert(this, "Xóa khách hàng thất bại!");
+                e.printStackTrace();
+            }
+        }
     }
-    }
+
     private void edit() {
-            this.row = tblDanhSachKH.getSelectedRow();
+        this.row = tblDanhSachKH.getSelectedRow();
         if (this.row >= 0) {
             String id = (String) tblDanhSachKH.getValueAt(this.row, 0);
             KhachHang sp = khdao.selectById(id);
             this.setForm(sp);
         }
     }
-    
+
     private void clearForm() {
         txtMaKH.setText("");
         txtTenKH.setText("");
@@ -125,32 +211,33 @@ public class KhachHangJPanel extends javax.swing.JPanel {
         group.add(rdoNu);
         group.clearSelection();
     }
-    
+
     private void first() {
         this.row = 0;
+        selectAndScrollToVisible();
         this.edit();
     }
 
     private void prev() {
         if (this.row > 0) {
             this.row--;
-            this.edit();
+            selectAndScrollToVisible();
         }
     }
-    
+
     private void next() {
         if (this.row < tblDanhSachKH.getRowCount() - 1) {
             this.row++;
-            this.edit();
+            selectAndScrollToVisible();
         }
     }
 
     private void last() {
         this.row = tblDanhSachKH.getRowCount() - 1;
-        this.edit();
+        selectAndScrollToVisible();
     }
-    
-        void ASC() {
+
+    void ASC() {
         DefaultTableModel model = (DefaultTableModel) tblDanhSachKH.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
 
@@ -166,7 +253,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
         // Thực hiện sắp xếp
         sorter.sort();
     }
-    
+
     void DESC() {
         DefaultTableModel model = (DefaultTableModel) tblDanhSachKH.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
@@ -175,7 +262,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
         sorter.setSortKeys(sortKeys);
         sorter.sort();
     }
-    
+
     void search(String str) {
         DefaultTableModel model = (DefaultTableModel) tblDanhSachKH.getModel();
         TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
@@ -191,7 +278,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
 
         trs.setRowFilter(RowFilter.orFilter(Arrays.asList(idFilter, tenFilter)));
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -445,18 +532,38 @@ public class KhachHangJPanel extends javax.swing.JPanel {
         btnFirst.setBackground(new java.awt.Color(204, 204, 255));
         btnFirst.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnFirst.setText("|<");
+        btnFirst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFirstActionPerformed(evt);
+            }
+        });
 
         btnPrev.setBackground(new java.awt.Color(204, 204, 255));
         btnPrev.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnPrev.setText("<");
+        btnPrev.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrevActionPerformed(evt);
+            }
+        });
 
         btnNext.setBackground(new java.awt.Color(204, 204, 255));
         btnNext.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnNext.setText(">");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
 
         btnLast.setBackground(new java.awt.Color(204, 204, 255));
         btnLast.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnLast.setText(">|");
+        btnLast.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLastActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -552,14 +659,14 @@ public class KhachHangJPanel extends javax.swing.JPanel {
             String SoDienThoai = model.getValueAt(selectedRow, 3).toString(); // Assuming the second column contains the TenKhachHang
             String Email = model.getValueAt(selectedRow, 4).toString();
             if (model.getValueAt(selectedRow, 5) instanceof Boolean) {
-            Boolean GioiTinh = (Boolean) model.getValueAt(selectedRow, 5);
-            if (GioiTinh) {
-                rdoNam.setSelected(true);
-            } else {
-                rdoNu.setSelected(true);
+                Boolean GioiTinh = (Boolean) model.getValueAt(selectedRow, 5);
+                if (GioiTinh) {
+                    rdoNam.setSelected(true);
+                } else {
+                    rdoNu.setSelected(true);
+                }
             }
-            }
-   
+
             // Populate text fields with the retrieved data
             txtMaKH.setText(MaKhachHang);
             txtTenKH.setText(TenKhachHang);
@@ -568,11 +675,11 @@ public class KhachHangJPanel extends javax.swing.JPanel {
             txtEmail.setText(Email);
             if (model.getValueAt(selectedRow, 5) instanceof Boolean) {
                 rdoNam.setSelected(true);
-            }else {
+            } else {
                 rdoNu.setSelected(true);
             }
+
         }
-            // Calculate the total amount based on the selected row
     }//GEN-LAST:event_tblDanhSachKHMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
@@ -588,11 +695,19 @@ public class KhachHangJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
-        this.update();
+        if (txtMaKH.getText().equals("")) {
+            XDialog.alert(main, "Vui lòng chọn khách hàng cần sửa");
+        } else {
+            this.update();
+        }
     }//GEN-LAST:event_btnCapNhatActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-       this.delete();
+        if (txtMaKH.getText().equals("")) {
+            XDialog.alert(main, "Vui lòng chọn khách hàng cần xóa");
+        } else {
+            this.delete();
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnASCActionPerformed
@@ -607,6 +722,22 @@ public class KhachHangJPanel extends javax.swing.JPanel {
         String str = txtSearch.getText();
         search(str);
     }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
+        this.first();
+    }//GEN-LAST:event_btnFirstActionPerformed
+
+    private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
+        this.prev();
+    }//GEN-LAST:event_btnPrevActionPerformed
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        this.next();
+    }//GEN-LAST:event_btnNextActionPerformed
+
+    private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
+        this.last();
+    }//GEN-LAST:event_btnLastActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -643,7 +774,7 @@ public class KhachHangJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtTenKH;
     // End of variables declaration//GEN-END:variables
 
-private KhachHang getForm() {
+    private KhachHang getForm() {
         KhachHang sp = new KhachHang();
         sp.setMaKhachHang(txtMaKH.getText());
         sp.setTenKhachHang(txtTenKH.getText());
@@ -651,7 +782,7 @@ private KhachHang getForm() {
         sp.setSoDienThoai(txtSDT.getText());
         sp.setEmail(txtEmail.getText());
         boolean gt = false;
-        if(rdoNam.isSelected()){
+        if (rdoNam.isSelected()) {
             gt = true;
         }
         sp.setGioiTinh(gt);
@@ -662,17 +793,39 @@ private KhachHang getForm() {
         KhachHang sp = new KhachHang();
         txtMaKH.setText(hv.getMaKhachHang());
         txtTenKH.setText(hv.getTenKhachHang());
+        txtDiaChi.setText(hv.getDiaChi());
+        txtSDT.setText(hv.getSoDienThoai());
+        txtEmail.setText(hv.getEmail());
         boolean gt = sp.isGioiTinh();
-        if(gt == false){
+        if (gt == false) {
             rdoNu.isSelected();
         }
         sp.setGioiTinh(gt);
 //        rdoNam.setSelected(hv.isGioiTinh());
 //        rdoNu.setSelected(!hv.isGioiTinh());
-        txtSDT.setText(hv.getSoDienThoai());
-        txtEmail.setText(hv.getEmail());
-        txtDiaChi.setText(hv.getDiaChi());
-    }
-    
-}
 
+    }
+
+    private void selectAndScrollToVisible() {
+        tblDanhSachKH.setRowSelectionInterval(this.row, this.row);
+        tblDanhSachKH.scrollRectToVisible(tblDanhSachKH.getCellRect(this.row, 0, true));
+        this.edit();
+    }
+
+    private void insertAndNotify(KhachHang khachHang) {
+        try {
+            khdao.insert(khachHang); // Thêm mới
+            fillTable(); // Đổ lại bảng
+            clearForm(); // Xóa trắng form
+            XDialog.alert(this, "Thêm khách hàng mới thành công!");
+        } catch (Exception e) {
+            handleInsertionFailure(e);
+        }
+    }
+
+    private void handleInsertionFailure(Exception e) {
+        XDialog.alert(this, "Thêm khách hàng mới thất bại!");
+        e.printStackTrace();
+    }
+
+}

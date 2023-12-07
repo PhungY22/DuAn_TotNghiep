@@ -20,6 +20,8 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import static com.poly.model.DangNhapJFrame.main;
+import java.awt.Component;
 
 /**
  *
@@ -29,6 +31,7 @@ public class VoucherJPanel extends javax.swing.JPanel {
 
     VoucherDAO Voudao = new VoucherDAO();
     int row = -1;
+    private Component main;
 
     /**
      * Creates new form VoucherJPanel
@@ -174,26 +177,27 @@ public class VoucherJPanel extends javax.swing.JPanel {
 
     private void first() {
         this.row = 0;
+        selectAndScrollToVisible();
         this.edit();
     }
 
     private void prev() {
         if (this.row > 0) {
             this.row--;
-            this.edit();
+            selectAndScrollToVisible();
         }
     }
 
     private void next() {
         if (this.row < tblDanhSachVou.getRowCount() - 1) {
             this.row++;
-            this.edit();
+            selectAndScrollToVisible();
         }
     }
 
     private void last() {
         this.row = tblDanhSachVou.getRowCount() - 1;
-        this.edit();
+        selectAndScrollToVisible();
     }
     
         void ASC() {
@@ -270,10 +274,10 @@ public class VoucherJPanel extends javax.swing.JPanel {
         txtSearch = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDanhSachVou = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnFisrt = new javax.swing.JButton();
+        btnPrev = new javax.swing.JButton();
+        btnNext = new javax.swing.JButton();
+        btnLast = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 255));
 
@@ -473,21 +477,41 @@ public class VoucherJPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tblDanhSachVou);
 
-        jButton3.setBackground(new java.awt.Color(204, 204, 255));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton3.setText("|<");
+        btnFisrt.setBackground(new java.awt.Color(204, 204, 255));
+        btnFisrt.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnFisrt.setText("|<");
+        btnFisrt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFisrtActionPerformed(evt);
+            }
+        });
 
-        jButton4.setBackground(new java.awt.Color(204, 204, 255));
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton4.setText("<");
+        btnPrev.setBackground(new java.awt.Color(204, 204, 255));
+        btnPrev.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnPrev.setText("<");
+        btnPrev.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrevActionPerformed(evt);
+            }
+        });
 
-        jButton5.setBackground(new java.awt.Color(204, 204, 255));
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton5.setText(">");
+        btnNext.setBackground(new java.awt.Color(204, 204, 255));
+        btnNext.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnNext.setText(">");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
 
-        jButton6.setBackground(new java.awt.Color(204, 204, 255));
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton6.setText(">|");
+        btnLast.setBackground(new java.awt.Color(204, 204, 255));
+        btnLast.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnLast.setText(">|");
+        btnLast.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLastActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -508,13 +532,13 @@ public class VoucherJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1096, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton3)
+                        .addComponent(btnFisrt)
                         .addGap(63, 63, 63)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPrev, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(56, 56, 56)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(61, 61, 61)
-                        .addComponent(jButton6)
+                        .addComponent(btnLast)
                         .addGap(290, 290, 290)))
                 .addGap(39, 39, 39))
         );
@@ -531,10 +555,10 @@ public class VoucherJPanel extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6)
-                    .addComponent(jButton5)
-                    .addComponent(jButton4)
-                    .addComponent(jButton3))
+                    .addComponent(btnLast)
+                    .addComponent(btnNext)
+                    .addComponent(btnPrev)
+                    .addComponent(btnFisrt))
                 .addGap(14, 14, 14))
         );
 
@@ -628,7 +652,11 @@ public class VoucherJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
-        this.update();
+        if (txtMaVou.getText().equals("")) {
+            XDialog.alert(main, "Vui lòng chọn Voucher cần sửa");
+        } else {
+            this.update();
+        }
     }//GEN-LAST:event_btnCapNhatActionPerformed
 
     private void btnASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnASCActionPerformed
@@ -644,18 +672,34 @@ public class VoucherJPanel extends javax.swing.JPanel {
         search(str);
     }//GEN-LAST:event_txtSearchActionPerformed
 
+    private void btnFisrtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFisrtActionPerformed
+        this.first();
+    }//GEN-LAST:event_btnFisrtActionPerformed
+
+    private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
+        this.prev();
+    }//GEN-LAST:event_btnPrevActionPerformed
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        this.next();
+    }//GEN-LAST:event_btnNextActionPerformed
+
+    private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
+        this.last();
+    }//GEN-LAST:event_btnLastActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnASC;
     private javax.swing.JButton btnCapNhat;
     private javax.swing.JButton btnDESC;
+    private javax.swing.JButton btnFisrt;
     private javax.swing.JButton btnLamMoi;
+    private javax.swing.JButton btnLast;
+    private javax.swing.JButton btnNext;
+    private javax.swing.JButton btnPrev;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -701,5 +745,10 @@ public class VoucherJPanel extends javax.swing.JPanel {
         txtSoLuong.setText(String.valueOf(voucher.getSoLuong()));
     }
 
+    private void selectAndScrollToVisible() {
+        tblDanhSachVou.setRowSelectionInterval(this.row, this.row);
+        tblDanhSachVou.scrollRectToVisible(tblDanhSachVou.getCellRect(this.row, 0, true));
+        this.edit();
+    }
     
 }

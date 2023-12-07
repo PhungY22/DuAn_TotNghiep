@@ -10,6 +10,7 @@ import com.poly.utils.JdbcUtil;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,56 +42,71 @@ import java.util.List;
                 entity.getSoLuong());
     }
 
-//    @Override
-//    public void update(Voucher entity) {
-//        JdbcUtil.executeUpdate(UPDATE_SQL,
-//               entity.getMaVoucher(),
-//                entity.getTenVoucher(),
-//                entity.getGiaTriVoucher(),
-//                entity.getNgayHetHan(),
-//                entity.getSoLuong());
-//    }
-    
-    public void update(String MaVoucher, String TenVoucher, BigDecimal GiaTriVoucher, Date NgayHetHan, int SoLuong) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
+    public void update(Voucher entity) {
+    String updateQuery = "UPDATE Voucher SET TenVoucher = ?, GiaTriVoucher = ?, NgayHetHan = ?, SoLuong = ? WHERE MaVoucher = ?";
 
-        try {
-            // Kết nối đến cơ sở dữ liệu
-//            connection = DriverManager.getConnection("jdbc:mysql://your_database_url", "username", "password");
-
-            // Chuẩn bị câu lệnh SQL để cập nhật dữ liệu
-            String updateQuery = "UPDATE Voucher SET TenVoucher = ?, GiaTriVoucher = ?, NgayHetHan = ?, SoLuong = ? WHERE MaVoucher = ?";
-            preparedStatement = connection.prepareStatement(updateQuery);
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=quanlydonoithat;encrypt=true;trustServerCertificate=true", "sa", "123");
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             // Thiết lập các tham số trong câu lệnh SQL
-            preparedStatement.setString(1, TenVoucher);
-            preparedStatement.setBigDecimal(2, GiaTriVoucher);
-            preparedStatement.setDate(3, new java.sql.Date(NgayHetHan.getTime())); // Chuyển từ Date sang java.sql.Date
-            preparedStatement.setInt(4, SoLuong);
-            preparedStatement.setString(5, MaVoucher);
+            preparedStatement.setString(1, entity.getTenVoucher());
+            preparedStatement.setBigDecimal(2, entity.getGiaTriVoucher());
+            preparedStatement.setDate(3, entity.getNgayHetHan());
+            preparedStatement.setInt(4, entity.getSoLuong());
+            preparedStatement.setString(5, entity.getMaVoucher());
 
             // Thực hiện cập nhật dữ liệu
             int rowsUpdated = preparedStatement.executeUpdate();
             if (rowsUpdated > 0) {
                 System.out.println("Dữ liệu đã được cập nhật thành công!");
+            } else {
+                System.out.println("Không có bản ghi nào được cập nhật!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // Đóng các tài nguyên
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
+    
+//    public void update(String MaVoucher, String TenVoucher, BigDecimal GiaTriVoucher, Date NgayHetHan, int SoLuong) {
+//        Connection connection = null;
+//        PreparedStatement preparedStatement = null;
+//
+//        try {
+//            // Kết nối đến cơ sở dữ liệu
+////            connection = DriverManager.getConnection("jdbc:mysql://your_database_url", "username", "password");
+//
+//            // Chuẩn bị câu lệnh SQL để cập nhật dữ liệu
+//            String updateQuery = "UPDATE Voucher SET TenVoucher = ?, GiaTriVoucher = ?, NgayHetHan = ?, SoLuong = ? WHERE MaVoucher = ?";
+//            preparedStatement = connection.prepareStatement(updateQuery);
+//
+//            // Thiết lập các tham số trong câu lệnh SQL
+//            preparedStatement.setString(1, TenVoucher);
+//            preparedStatement.setBigDecimal(2, GiaTriVoucher);
+//            preparedStatement.setDate(3, new java.sql.Date(NgayHetHan.getTime())); // Chuyển từ Date sang java.sql.Date
+//            preparedStatement.setInt(4, SoLuong);
+//            preparedStatement.setString(5, MaVoucher);
+//
+//            // Thực hiện cập nhật dữ liệu
+//            int rowsUpdated = preparedStatement.executeUpdate();
+//            if (rowsUpdated > 0) {
+//                System.out.println("Dữ liệu đã được cập nhật thành công!");
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } finally {
+//            // Đóng các tài nguyên
+//            try {
+//                if (preparedStatement != null) {
+//                    preparedStatement.close();
+//                }
+//                if (connection != null) {
+//                    connection.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     @Override
     public void delete(String MaVoucher) {
@@ -170,8 +186,8 @@ while (rs.next()) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    @Override
-    public void update(Voucher entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+//    @Override
+//    public void update(Voucher entity) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
 }
