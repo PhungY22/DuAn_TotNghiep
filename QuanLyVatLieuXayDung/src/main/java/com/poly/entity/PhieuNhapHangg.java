@@ -20,19 +20,19 @@ public class PhieuNhapHangg {
     private String Vatlieu;
     private String SoPhieuNhap;
     private String DiaDiem;
-    private String DienDai;
+
     private String SoLuong;
     private String DonGia;
     private String NguoiGiao;
-    private String DonViTinh;
+ 
     
-    private boolean isGhiChu;
+  
     
     public PhieuNhapHangg(){
     
     }
 
-    public PhieuNhapHangg(String MaPhieuNhapHang, String MaNhaCungCap, String MaNhanVien, String NgayNhap, String TongTien, String HinhThucThanhToan, String Vatlieu, String SoPhieuNhap, String DiaDiem, String DienDai, String SoLuong, String DonGia, String NguoiGiao, String DonViTinh, boolean isGhiChu) {
+    public PhieuNhapHangg(String MaPhieuNhapHang, String MaNhaCungCap, String MaNhanVien, String NgayNhap, String TongTien, String HinhThucThanhToan, String Vatlieu, String SoPhieuNhap, String DiaDiem, String DienDai, String SoLuong, String DonGia, String NguoiGiao) {
         this.MaPhieuNhapHang = MaPhieuNhapHang;
         this.MaNhaCungCap = MaNhaCungCap;
         this.MaNhanVien = MaNhanVien;
@@ -42,12 +42,11 @@ public class PhieuNhapHangg {
         this.Vatlieu = Vatlieu;
         this.SoPhieuNhap = SoPhieuNhap;
         this.DiaDiem = DiaDiem;
-        this.DienDai = DienDai;
         this.SoLuong = SoLuong;
         this.DonGia = DonGia;
         this.NguoiGiao = NguoiGiao;
-        this.DonViTinh = DonViTinh;
-        this.isGhiChu = isGhiChu;
+      
+        
     }
 
     
@@ -124,13 +123,7 @@ public class PhieuNhapHangg {
         this.DiaDiem = DiaDiem;
     }
 
-    public String getDienDai() {
-        return DienDai;
-    }
-
-    public void setDienDai(String DienDai) {
-        this.DienDai = DienDai;
-    }
+   
 
     public String getSoLuong() {
         return SoLuong;
@@ -156,22 +149,9 @@ public class PhieuNhapHangg {
         this.NguoiGiao = NguoiGiao;
     }
 
-    public boolean isIsGhiChu() {
-        return isGhiChu;
-    }
+   
 
-    public void setIsGhiChu(boolean isGhiChu) {
-        this.isGhiChu = isGhiChu;
-    }
-
-    public String getDonViTinh() {
-        return DonViTinh;
-    }
-
-    public void setDonViTinh(String DonViTinh) {
-        this.DonViTinh = DonViTinh;
-    }
-
+   
     
 
     
