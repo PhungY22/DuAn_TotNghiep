@@ -17,8 +17,8 @@ import java.util.List;
  * @author Nhu Y
  */
 public class NhanVienDAO extends QuanLyVatLieuXayDungDAO<NhanVien, String>{
-    String INSERT_SQL = "INSERT INTO NhanVien (MaNhanVien,Hinh,TenNhanVien,MatKhau,SoDienThoai,Email,DiaChi,NgayThangNamSinh,GioiTinh,ChucVu) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    String UPDATE_SQL = "UPDATE NhanVien SET Hinh=?, TenNhanVien=?, MatKhau=?, SoDienThoai=?, Email=?, DiaChi=?, NgayThangNamSinh=?, GioiTinh=?, ChucVu=? WHERE MaNhanVien=?";
+    String INSERT_SQL = "INSERT INTO NhanVien (MaNhanVien,Hinh,TenNhanVien,MatKhau,SoDienThoai,Email,DiaChi,NgayNhanViec,NgayThangNamSinh,GioiTinh,ChucVu) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    String UPDATE_SQL = "UPDATE NhanVien SET Hinh=?, TenNhanVien=?, MatKhau=?, SoDienThoai=?, Email=?, DiaChi=?,NgayNhanViec=?, NgayThangNamSinh=?, GioiTinh=?, ChucVu=? WHERE MaNhanVien=?";
     String DELETE_SQL = "DELETE FROM NhanVien WHERE MaNhanVien=?";
     String SELECT_ALL_SQL = "SELECT * FROM NhanVien";
     String SELECT_BY_ID_SQL = "SELECT * FROM NhanVien WHERE MaNhanVien= ?";
@@ -36,6 +36,7 @@ public class NhanVienDAO extends QuanLyVatLieuXayDungDAO<NhanVien, String>{
                 entity.getSoDienThoai(),
                 entity.getEmail(),
                 entity.getDiaChi(),
+                entity.getNgayNhanViec(),
                 entity.getNgayThangNamSinh(),
                 entity.isGioiTinh(),
                 entity.getChucVu());           
@@ -43,16 +44,17 @@ public class NhanVienDAO extends QuanLyVatLieuXayDungDAO<NhanVien, String>{
 
     public void update(NhanVien entity) {
         JdbcUtil.executeUpdate(UPDATE_SQL,
-                entity.getMaNhanVien(),
                 entity.getHinh(),
                 entity.getTenNhanVien(),
                 entity.getMatKhau(),
                 entity.getSoDienThoai(),
                 entity.getEmail(),
                 entity.getDiaChi(),
+                entity.getNgayNhanViec(),
                 entity.getNgayThangNamSinh(),
                 entity.isGioiTinh(),
-                entity.getChucVu());            
+                entity.getChucVu(),
+                entity.getMaNhanVien());            
     }
 
     @Override
@@ -88,6 +90,7 @@ public class NhanVienDAO extends QuanLyVatLieuXayDungDAO<NhanVien, String>{
                 entity.setSoDienThoai(rs.getString("SoDienThoai"));
                 entity.setEmail(rs.getString("Email"));
                 entity.setDiaChi(rs.getString("DiaChi"));
+                entity.setNgayNhanViec(rs.getDate("NgayNhanViec"));
                 entity.setNgayThangNamSinh(rs.getDate("NgayThangNamSinh"));
                 entity.setGioiTinh(rs.getBoolean("GioiTinh"));
                 entity.setChucVu(rs.getString("ChucVu"));
