@@ -50,7 +50,7 @@ void checkLogin(String userID, String role, String ngDung) {
         btnThongKe.setVisible(true);
         btnVoucher.setVisible(true);
         btnDoiMatKhau.setVisible(true);
-        btnThoat.setVisible(false);
+        btnThoat.setVisible(true);
         
     }
 
@@ -63,7 +63,7 @@ void checkLogin(String userID, String role, String ngDung) {
         btnThongKe.setVisible(true);
         btnVoucher.setVisible(true);
         btnDoiMatKhau.setVisible(true);
-        btnThoat.setVisible(false);
+        btnThoat.setVisible(true);
     }
 
     }

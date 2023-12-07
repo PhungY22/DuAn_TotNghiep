@@ -202,14 +202,14 @@ public class QuenMatKhauJFrame extends javax.swing.JFrame {
     }
     public void doimatkhau() throws SQLException {
         KetNoiCSDL();
-        String sql = "SELECT * FROM NhanVien where TenTaiKhoan =? and Email = ?";
+        String sql = "SELECT * FROM NhanVien where MaNhanVien =? and Email = ?";
         PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
         cauLenh.setString(1, txtTenTaiKhoan.getText());
         cauLenh.setString(2, txtEmail.getText());
         ResultSet ketQua = cauLenh.executeQuery();
         if (ketQua.next()) {
             if (checktk()==true) {
-                String update = "UPDATE NhanVien SET MatKhau = ? WHERE TenTaiKhoan=? and Email= ?";
+                String update = "UPDATE NhanVien SET MatKhau = ? WHERE MaNhanVien=? and Email= ?";
                 PreparedStatement updateStmt = ketnoi.prepareStatement(update);
                 updateStmt.setString(1, txtPass.getText());
                 updateStmt.setString(2, txtTenTaiKhoan.getText());

@@ -4,6 +4,8 @@
  */
 package com.poly.model;
 
+import com.poly.dao.NhanVienDAO;
+import com.poly.utils.XAuth;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,14 +19,24 @@ import javax.swing.JOptionPane;
  * @author Nhu Y
  */
 public class DoiMatKhauJFrame extends javax.swing.JFrame {
-         Connection ketnoi;
+         NhanVienDAO nvdao = new NhanVienDAO();
     /**
      * Creates new form DoiMatKhau
      */
     public DoiMatKhauJFrame() {
         initComponents();
     }
-
+public boolean check(){
+      if(txtPass1.getText().equals("")){
+          JOptionPane.showMessageDialog(this, "Không dể trống mật khẩu mới");
+          return false;
+      }
+       if(txtPass2.getText().equals("")){
+          JOptionPane.showMessageDialog(this, "Không dể trống mật xác nhận");
+          return false;
+      }
+       return true;
+  }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -119,7 +131,24 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
         // TODO add your handling code here:
+         String matKhau1 = txtPass1.getText();
+        String matKhau2 = txtPass2.getText();
+        boolean isMatch = matKhau1.equals(matKhau2);
+        if( check()){
+        if (isMatch) {
+            XAuth.user.getMaNhanVien();
+            nvdao.update(txtPass1.getText(), XAuth.user.getMaNhanVien());
+            JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công");
+            String userID = XAuth.user.getMaNhanVien();
+            String role = String.valueOf(XAuth.user.isChucVu()).equals("true") ? "Admin" : "Nhân Viên";
+            String hoTen = XAuth.user.getTenNhanVien();
+            new MainJFrame(userID, role, hoTen).setVisible(true);
+            this.dispose();
+        }else {
+            JOptionPane.showMessageDialog(this, "Mật khẩu không trùng khớp");
+        }
         
+        }
     }//GEN-LAST:event_btnDangNhapActionPerformed
 
     private void lblQuaylaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuaylaiMouseClicked
@@ -137,58 +166,7 @@ public class DoiMatKhauJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
          lblQuaylai.setForeground(Color.white);
     }//GEN-LAST:event_lblQuaylaiMouseExited
- public void KetNoiCSDL() throws SQLException {
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=quanlydonoithat;encrypt=true;trustServerCertificate=true";
-            String user = "sa";
-            String pass = "123";
-            ketnoi = DriverManager.getConnection(url, user, pass);
-
-        } catch (ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(this, ex);
-
-        }
-
-    }
-    public void doimatkhau(String MaNhanVien, String currentPassword, String newPassword) throws SQLException {
-    KetNoiCSDL();
-    try {
-        // Kiểm tra xem người dùng có quyền đổi mật khẩu hay không (ví dụ: dựa trên username và currentPassword)
-        if (kiemTraQuyenDoiMatKhau(MaNhanVien, currentPassword)) {
-            String sql = "UPDATE NhanVien SET MatKhau = ? WHERE MaNhanVien = ?";
-            PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
-            
-            // Thiết lập giá trị cho các tham số trong câu lệnh SQL
-            cauLenh.setString(1, newPassword);
-            cauLenh.setString(2, MaNhanVien);
-            
-            // Thực hiện cập nhật mật khẩu trong CSDL
-            cauLenh.executeUpdate();
-            
-            JOptionPane.showMessageDialog(this, "Mật khẩu đã được cập nhật thành công!");
-        } else {
-            JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập hoặc không có quyền đổi mật khẩu.");
-        }
-    } finally {
-        // Đảm bảo đóng kết nối sau khi sử dụng
-        ketnoi.close();
-    }
-}
-
-private boolean kiemTraQuyenDoiMatKhau(String MaNhanVien, String currentPassword) throws SQLException {
-    String sql = "SELECT * FROM NhanVien WHERE MaNhanVien = ? AND Matkhau = ?";
-    PreparedStatement cauLenh = ketnoi.prepareStatement(sql);
-    
-    // Thiết lập giá trị cho các tham số trong câu lệnh SQL
-    cauLenh.setString(1, MaNhanVien);
-    cauLenh.setString(2, currentPassword);
-    
-    ResultSet ketQua = cauLenh.executeQuery();
-    
-    // Nếu có kết quả, người dùng tồn tại và thông tin đăng nhập đúng
-    return ketQua.next();
-}
+ 
     /**
      * @param args the command line arguments
      */
