@@ -59,14 +59,48 @@ public class VoucherJPanel extends javax.swing.JPanel {
     private void insert() {
         Voucher sp = this.getForm();
         try {
-            Voudao.insert(sp); // thêm mới
-            this.fillTable(); // đỗ lại bảng
-            this.clearForm(); // xóa trắng form
-            XDialog.alert(this, "Thêm sản phẩm mới thành công!");
+            if (validateData(sp)) {
+                Voudao.insert(sp); // thêm mới
+                this.fillTable(); // đổ lại bảng
+                this.clearForm(); // xóa trắng form
+                XDialog.alert(this, "Thêm sản phẩm mới thành công!");
+            } else {
+                XDialog.alert(this, "Vui lòng nhập đầy đủ thông tin và đúng định dạng cho các trường sau:\n" + getErrorMessage(sp));
+            }
         } catch (Exception e) {
             XDialog.alert(this, "Thêm sản phẩm mới thất bại!");
             e.printStackTrace();
         }
+    }
+
+    private boolean validateData(Voucher voucher) {
+        return !voucher.getMaVoucher().isEmpty() &&
+        !voucher.getTenVoucher().isEmpty() &&
+        voucher.getNgayHetHan() != null &&
+        voucher.getGiaTriVoucher().compareTo(BigDecimal.ZERO) > 0 &&
+        voucher.getSoLuong() > 0;
+    }
+
+    private String getErrorMessage(Voucher voucher) {
+        StringBuilder errorMessage = new StringBuilder();
+
+        if (voucher.getMaVoucher().isEmpty()) {
+            errorMessage.append("- Mã Voucher\n");
+        }
+        if (voucher.getTenVoucher().isEmpty()) {
+            errorMessage.append("- Tên Voucher\n");
+        }
+        if (voucher.getNgayHetHan() == null) {
+            errorMessage.append("- Ngày Hết Hạn\n");
+        }
+        if (voucher.getGiaTriVoucher().compareTo(BigDecimal.ZERO) <= 0) {
+            errorMessage.append("- Giá Trị Voucher\n");
+        }
+        if (voucher.getSoLuong() <= 0) {
+            errorMessage.append("- Số Lượng Voucher\n");
+        }
+
+        return errorMessage.toString();
     }
 
     private void update() {
@@ -208,6 +242,7 @@ public class VoucherJPanel extends javax.swing.JPanel {
 
         btnThem.setBackground(new java.awt.Color(204, 204, 255));
         btnThem.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnThem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/insert.png"))); // NOI18N
         btnThem.setText("Thêm");
         btnThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -217,10 +252,17 @@ public class VoucherJPanel extends javax.swing.JPanel {
 
         btnCapNhat.setBackground(new java.awt.Color(204, 204, 255));
         btnCapNhat.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnCapNhat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/update.png"))); // NOI18N
         btnCapNhat.setText("Cập Nhật");
+        btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapNhatActionPerformed(evt);
+            }
+        });
 
         btnXoa.setBackground(new java.awt.Color(204, 204, 255));
         btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/delete.png"))); // NOI18N
         btnXoa.setText("Xóa");
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -230,6 +272,7 @@ public class VoucherJPanel extends javax.swing.JPanel {
 
         btnLamMoi.setBackground(new java.awt.Color(204, 204, 255));
         btnLamMoi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLamMoi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/clear.png"))); // NOI18N
         btnLamMoi.setText("Làm mới");
         btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -250,13 +293,13 @@ public class VoucherJPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(79, 79, 79)
+                        .addGap(261, 261, 261)
+                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(89, 89, 89)
-                        .addComponent(btnCapNhat, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(236, 236, 236))
+                        .addComponent(btnCapNhat)
+                        .addGap(218, 218, 218))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(89, 89, 89)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -280,11 +323,11 @@ public class VoucherJPanel extends javax.swing.JPanel {
                         .addGap(91, 91, 91)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNgayHetHan, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                            .addComponent(txtSoLuong)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(108, 108, 108)
-                                .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(txtSoLuong))))
+                                .addComponent(btnLamMoi)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(184, 184, 184))
         );
         jPanel1Layout.setVerticalGroup(
@@ -320,10 +363,12 @@ public class VoucherJPanel extends javax.swing.JPanel {
 
         jButton1.setBackground(new java.awt.Color(204, 204, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/performance.png"))); // NOI18N
         jButton1.setText("Sắp xếp tăng dần ");
 
         jButton2.setBackground(new java.awt.Color(204, 204, 255));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/statistics.png"))); // NOI18N
         jButton2.setText("Sắp xếp giảm dần");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
@@ -499,6 +544,10 @@ public class VoucherJPanel extends javax.swing.JPanel {
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         this.delete();
     }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
+        this.update();
+    }//GEN-LAST:event_btnCapNhatActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
