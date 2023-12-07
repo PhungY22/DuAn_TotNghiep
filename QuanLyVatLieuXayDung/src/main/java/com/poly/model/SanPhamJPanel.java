@@ -7,16 +7,20 @@ package com.poly.model;
 import com.poly.dao.LoaiSanPhamDAO;
 import com.poly.dao.SanPhamDAO;
 import com.poly.entity.LoaiSanPham;
-import com.poly.entity.NhanVien;
 import com.poly.entity.SanPham;
 import com.poly.utils.XDialog;
 import com.poly.utils.XImage;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import static java.util.Locale.filter;
-import java.util.Map;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -33,7 +37,6 @@ import javax.swing.table.TableRowSorter;
  * @author Nhu Y
  */
 public class SanPhamJPanel extends javax.swing.JPanel {
-
     SanPhamDAO spdao = new SanPhamDAO();
     LoaiSanPhamDAO lspdao = new LoaiSanPhamDAO();
 
@@ -60,8 +63,8 @@ public class SanPhamJPanel extends javax.swing.JPanel {
             List<SanPham> list = spdao.selectAll();
             for (SanPham sp : list) {
                 String tenLSP = lspdao.selectById(sp.getMaLoaiSanPham()).getTenLoaiSanPham();
-                Object[] row = {sp.getMaSanPham(), sp.getTenSanPham(), tenLSP,
-                    sp.getGiaNhap(), sp.getGiaXuat(), sp.getSoLuong(), sp.getHinh()};
+                Object[] row = {sp.getMaSanPham(), sp.getTenSanPham(),sp.getHinh(), tenLSP,
+                    sp.getGiaNhap(), sp.getGiaXuat(), sp.getSoLuong()};
                 model.addRow(row);
             }
         } catch (Exception e) {
@@ -95,7 +98,7 @@ private boolean validateProduct(SanPham sp) {
       return true;
   } else if (cboLoaiSP.getSelectedItem() == null) {
       XDialog.alert(this, "Vui lòng chọn loại sản phẩm");
-      return true;
+      return false;
   } else {
       // Validate GiaNhap is a non-negative number
       try {
@@ -145,6 +148,7 @@ private boolean validateProduct(SanPham sp) {
             throw new RuntimeException(e);
         }
     }
+
 
     private void delete() {
         SanPham sp = getForm();
@@ -259,7 +263,7 @@ private boolean validateProduct(SanPham sp) {
 
     private void selectIcon() {
 
-        JFileChooser fc = new JFileChooser("logos\\avatars");
+        JFileChooser fc = new JFileChooser("D:\\images");
         FileFilter filter = new FileNameExtensionFilter("Image Files", "gif", "jpeg", "jpg", "png");
         fc.setFileFilter(filter);
         fc.setMultiSelectionEnabled(false);
@@ -272,7 +276,6 @@ private boolean validateProduct(SanPham sp) {
             lblHinh.setToolTipText(file.getName());
         }
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -580,17 +583,17 @@ private boolean validateProduct(SanPham sp) {
 
         tblSP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Giá nhập", "Giá xuất", "Số lượng"
+                "Mã sản phẩm", "Tên sản phẩm", "Hình", "Loại sản phẩm", "Giá nhập", "Giá xuất", "Số lượng"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -715,24 +718,30 @@ private boolean validateProduct(SanPham sp) {
     private void tblSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSPMouseClicked
         // TODO add your handling code here:
        int selectedRow = tblSP.getSelectedRow();
-    if (selectedRow != -1) {
-        DefaultTableModel model = (DefaultTableModel) tblSP.getModel();
-        String MaSanPham = model.getValueAt(selectedRow, 0).toString();
-        String TenSanPham = model.getValueAt(selectedRow, 1).toString();
-        String GiaNhap = model.getValueAt(selectedRow, 3).toString();
-        String GiaXuat = model.getValueAt(selectedRow, 4).toString();
-        int SoLuong = Integer.parseInt(model.getValueAt(selectedRow, 5).toString());
-        
-        Object loaiSanPhamValue = model.getValueAt(selectedRow, 2);
-        String LoaiSanPham = (loaiSanPhamValue != null) ? loaiSanPhamValue.toString() : "";
-        
-        txtMaSP.setText(MaSanPham);
-        txtTenSP.setText(TenSanPham);
-        txtGiaNhap.setText(GiaNhap);
-        txtGiaXuat.setText(GiaXuat);
-        txtSoLuong.setText(Integer.toString(SoLuong));
-        cboLoaiSP.setSelectedItem(LoaiSanPham);
-    }
+        if (selectedRow != -1) {
+            DefaultTableModel model = (DefaultTableModel) tblSP.getModel();
+            String MaSanPham = model.getValueAt(selectedRow, 0).toString();
+            String TenSanPham = model.getValueAt(selectedRow, 1).toString();
+            String GiaNhap = model.getValueAt(selectedRow, 4).toString();
+            String GiaXuat = model.getValueAt(selectedRow, 5).toString();
+            int SoLuong = Integer.parseInt(model.getValueAt(selectedRow, 6).toString());
+            Object loaiSanPhamValue = model.getValueAt(selectedRow, 3);
+            String LoaiSanPham = (loaiSanPhamValue != null) ? loaiSanPhamValue.toString() : "";
+            String Hinh = model.getValueAt(selectedRow, 2).toString();
+            if (Hinh != null && !Hinh.isEmpty()) {
+            lblHinh.setToolTipText(Hinh);
+            lblHinh.setIcon(XImage.readIconCD(Hinh));
+        } else {
+            lblHinh.setToolTipText("D:\\images");
+            lblHinh.setIcon(null);
+        }
+            txtMaSP.setText(MaSanPham);
+            txtTenSP.setText(TenSanPham);
+            txtGiaNhap.setText(GiaNhap);
+            txtGiaXuat.setText(GiaXuat);
+            txtSoLuong.setText(Integer.toString(SoLuong));
+            cboLoaiSP.setSelectedItem(LoaiSanPham);
+        }
     }//GEN-LAST:event_tblSPMouseClicked
     
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
@@ -752,16 +761,12 @@ private boolean validateProduct(SanPham sp) {
         }
     } else {
         // Handle validation errors
-        XDialog.alert(this, "Dữ liệu sản phẩm không hợp lệ");
+        XDialog.alert(this, "Vui lòng điền đầy đủ thông tin");
 }
     }//GEN-LAST:event_btnInsertActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        if (txtMaSP.getText().equals("")) {
-            XDialog.alert(main, "Vui lòng chọn sản phẩm cần sửa");
-        } else {
-            this.update();
-        }
+     this.update();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -898,13 +903,14 @@ private boolean validateProduct(SanPham sp) {
     private void setForm(SanPham sp) {
         txtMaSP.setText(sp.getMaSanPham());
         txtTenSP.setText(sp.getTenSanPham());
-        lblHinh.setIcon(XImage.readIconCD("NoImage.png"));
+        lblHinh.setIcon(XImage.readIconCD("D:\\images"));
         if (sp.getHinh() != null) {
             lblHinh.setToolTipText(sp.getHinh());
             lblHinh.setIcon(XImage.readIconCD(sp.getHinh()));
         }
         txtGiaNhap.setText(sp.getGiaNhap());
         txtGiaXuat.setText(sp.getGiaXuat());
+        
         int SoLuong = sp.getSoLuong();
         txtSoLuong.setText(String.valueOf(SoLuong));
         String tenLSP = lspdao.selectById(sp.getMaLoaiSanPham()).getTenLoaiSanPham();
@@ -923,9 +929,11 @@ private boolean validateProduct(SanPham sp) {
         sp.setMaLoaiSanPham(lspdao.findIdByName((String) cboLoaiSP.getSelectedItem()));
         sp.setGiaNhap(txtGiaNhap.getText());
         sp.setGiaXuat(txtGiaXuat.getText());
-        int SoLuong = sp.getSoLuong();
-        int soLuong = Integer.parseInt(txtSoLuong.getText());
+        
+       int soLuong = Integer.parseInt(txtSoLuong.getText());
+       sp.setSoLuong(soLuong);
         return sp;
+       
     }
 
     private void dispose() {
