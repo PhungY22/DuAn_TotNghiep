@@ -14,7 +14,7 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-import static org.apache.logging.log4j.ThreadContext.init;
+
 
 /**
  *
@@ -52,39 +52,54 @@ public class LoaiSanPhamJPanel extends javax.swing.JPanel {
     }
     private void insert() {
         LoaiSanPham lsp = this.getForm();
-        try {
-            lspdao.insert(lsp); // thêm mới
-            this.fillTable(); // đỗ lại bảng
-            this.clearForm(); // xóa trắng form
-            XDialog.alert(this, "Thêm loại sản phẩm mới thành công!");
-        } catch (Exception e) {
-            XDialog.alert(this, "Thêm loại sản phẩm mới thất bại!");
-            e.printStackTrace();
-        }
+         // Validate the LoaiSanPham object before attempting to insert
+    if (lsp.getMaLoaiSanPham()== null || lsp.getMaLoaiSanPham().isEmpty() || lsp.getTenLoaiSanPham()== null || lsp.getTenLoaiSanPham().isEmpty()) {
+        XDialog.alert(this, "Vui lòng nhập đầy đủ thông tin loại sản phẩm!");
+        return; // Exit the method if validation fails
+    }
+
+    try {
+        lspdao.insert(lsp); // Thêm mới
+        this.fillTable(); // Đổ lại bảng
+        this.clearForm(); // Xóa trắng form
+        XDialog.alert(this, "Thêm loại sản phẩm mới thành công!");
+    } catch (Exception e) {
+        XDialog.alert(this, "Thêm loại sản phẩm mới thất bại!");
+        e.printStackTrace();
+    }
     }
       private void update() {
         LoaiSanPham lsp = this.getForm();
         try {
-            lspdao.update(lsp); // cập nhật
-            this.fillTable(); // đổ lại bảng
-            XDialog.alert(this, "Cập nhật loại sản phẩm thành công!");
-        } catch (Exception e) {
-            XDialog.alert(this, "Cập nhật loại sản phẩm thất bại!");
-            e.printStackTrace();
-        }
+//             String sql = "YOUR_UPDATE_SQL_QUERY";
+//             System.out.println("Executing SQL: " + sql);
+             lspdao.update(lsp);
+             this.fillTable();
+             XDialog.alert(this, "Cập nhật loại sản phẩm thành công!");
+         } catch (Exception e) {
+             XDialog.alert(this, "Cập nhật loại sản phẩm thất bại!");
+             e.printStackTrace();
+}
     }
        private void delete() {
-         if (XDialog.confirm(this, "Bạn có thực sự muốn xóa sản phẩm này không?")) {
-           String lsp = txtMaLoaiSP.getText();
-            try {
-                lspdao.delete(lsp);
-               this.fillTable();
-                this.clearForm();
-               XDialog.alert(this, "Xóa loại sản phẩm thành công!");
-            } catch (Exception e) {
-               XDialog.alert(this, "Xóa loại sản phẩm thất bại!");
-               e.printStackTrace();
-                 }
+          if (XDialog.confirm(this, "Bạn có thực sự muốn xóa sản phẩm này không?")) {
+        String maLoaiSP = txtMaLoaiSP.getText();
+
+        // Validate maLoaiSP before attempting to delete
+        if (maLoaiSP == null || maLoaiSP.isEmpty()) {
+            XDialog.alert(this, "Vui lòng chọn một sản phẩm để xóa!");
+            return; // Exit the method if validation fails
+        }
+
+        try {
+            lspdao.delete(maLoaiSP);
+            this.fillTable();
+            this.clearForm();
+            XDialog.alert(this, "Xóa loại sản phẩm thành công!");
+        } catch (Exception e) {
+            XDialog.alert(this, "Xóa loại sản phẩm thất bại!");
+            e.printStackTrace();
+        }
     }
     }
        
@@ -96,39 +111,53 @@ public class LoaiSanPhamJPanel extends javax.swing.JPanel {
             this.setForm(lsp);
         }
     }
-           private void clearForm() {
+            private void clearForm() {
           LoaiSanPham lsp = new LoaiSanPham();
           this.setForm(lsp);
           this.row = -1;
         //this.updateStatus();
     }
-        void first() {
+            
+       private void first() {
         this.row = 0;
+        selectAndScrollToVisible();
         this.edit();
     }
-         void prev() {
+       
+        private void prev() {
         if (this.row > 0) {
             this.row--;
-            this.edit();
+            selectAndScrollToVisible();
         }
     }
+        
 
-    void next() {
-        if (this.row < tblDanhSachlsp.getRowCount() - 1) {
+      private void next() {
+        int rowCount = tblDanhSachlsp.getRowCount();
+        if (rowCount > 0 && this.row < rowCount - 1) {
             this.row++;
-            this.edit();
+            selectAndScrollToVisible();
         }
     }
 
-    void last() {
-        this.row = tblDanhSachlsp.getRowCount() - 1;
+       private void last() {
+        int rowCount = tblDanhSachlsp.getRowCount();
+        if (rowCount > 0) {
+            this.row = rowCount - 1;
+            selectAndScrollToVisible();
+        }
+    }
+            private void selectAndScrollToVisible() {
+        tblDanhSachlsp.setRowSelectionInterval(this.row, this.row);
+        tblDanhSachlsp.scrollRectToVisible(tblDanhSachlsp.getCellRect(this.row, 0, true));
         this.edit();
     }
+            
     void ASC() {
         DefaultTableModel model = (DefaultTableModel) tblDanhSachlsp.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
         tblDanhSachlsp.setRowSorter(sorter);
-        List<RowSorter.SortKey> sortKeys = List.of(new RowSorter.SortKey(2, SortOrder.ASCENDING));
+        List<RowSorter.SortKey> sortKeys = List.of(new RowSorter.SortKey(0, SortOrder.ASCENDING));
         sorter.setSortKeys(sortKeys);
         sorter.sort();
     }
@@ -137,7 +166,7 @@ public class LoaiSanPhamJPanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tblDanhSachlsp.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
         tblDanhSachlsp.setRowSorter(sorter);
-        List<RowSorter.SortKey> sortKeys = List.of(new RowSorter.SortKey(2, SortOrder.DESCENDING));
+        List<RowSorter.SortKey> sortKeys = List.of(new RowSorter.SortKey(0, SortOrder.DESCENDING));
         sorter.setSortKeys(sortKeys);
         sorter.sort();
     }
