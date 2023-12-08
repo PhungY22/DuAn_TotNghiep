@@ -735,16 +735,14 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             }
 
             // Handling Gender
-            Object gioiTinhObj = model.getValueAt(selectedRow, 8);
-            if (gioiTinhObj instanceof Boolean) {
-                Boolean gioiTinh = (Boolean) gioiTinhObj;
-                if (gioiTinh != null) {
-                    if (gioiTinh) {
-                        rdoGioiTinhNam.setSelected(true);
-                    } else {
-                        rdoGioiTinhNu.setSelected(true);
-                    }
-                }
+            String gioiTinhValue = model.getValueAt(selectedRow, 8).toString(); // Lấy giá trị của giới tính (Nam/Nữ)
+            boolean gioiTinh = gioiTinhValue.equals("Nam"); // Chuyển giá trị về boolean
+
+            // Thiết lập giá trị cho radio button
+            if (gioiTinh) {
+                rdoGioiTinhNam.setSelected(true);
+            } else {
+                rdoGioiTinhNu.setSelected(true);
             }
 
             // Handling ChucVu (Position/Role)
@@ -762,12 +760,7 @@ public class NhanVienJPanel extends javax.swing.JPanel {
             txtNamSinh.setText(NamSinh);
             // Set Gender based on retrieved data
             // (Double-check this logic to ensure it sets the correct gender based on your data structure)
-            if (model.getValueAt(selectedRow, 8) instanceof Boolean) {
-                rdoGioiTinhNam.setSelected(true);
-            } else {
-                rdoGioiTinhNu.setSelected(true);
-            }
-
+            
             // Set ChucVu in the combo box
             cboChucVu.setSelectedItem(ChucVu);
         }
@@ -1010,11 +1003,12 @@ public class NhanVienJPanel extends javax.swing.JPanel {
         txtEmail.setText(nv.getEmail());
         txtNgayNhanViec.setText(XDate.toString(nv.getNgayNhanViec()));
         txtNamSinh.setText(XDate.toString(nv.getNgayThangNamSinh()));
-        boolean gt = nv.isGioiTinh();
-        if (gt == false) {
-            rdoGioiTinhNu.isSelected();
+        boolean gt = nv.isGioiTinh(); // Lấy giá trị giới tính từ đối tượng hv
+        if (gt) {
+            rdoGioiTinhNam.setSelected(true); // Nếu là true (nam), chọn radio button rdoNam
+        } else {
+            rdoGioiTinhNu.setSelected(true); // Nếu là false (nữ), chọn radio button rdoNu
         }
-        nv.setGioiTinh(gt);
         String tenLNV = nvdao.selectById(nv.getMaNhanVien()).getTenNhanVien();
         cboChucVu.setSelectedItem(tenLNV);
 
